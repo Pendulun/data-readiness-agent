@@ -2,4 +2,4 @@ install:
 	uv sync
 
 run:
-	uv run python -m main.py
+	uv run python -m streamlit run main.py

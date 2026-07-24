@@ -85,7 +85,7 @@ class AgentResponse(BaseModel):
 
     def to_markdown(self) -> str:
         output = [
-            f"### Status: \n{self.readiness_status}", "",
+            f"### Status: {str(self.readiness_status.value).title()}", "",
             f"### Resumo: \n{self.summary}", "", "### Problemas encontrados:"
         ]
 

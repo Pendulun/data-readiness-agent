@@ -26,6 +26,7 @@ st.markdown(
 required_values = None
 target_col = None
 openai_api_key = None
+data_url = "user_data/dados_originais.csv"
 
 with st.sidebar:
     uploaded_file = st.file_uploader("Base de dados",
@@ -37,7 +38,6 @@ with st.sidebar:
     if uploaded_file is not None:
         dataframe = pd.read_csv(uploaded_file)
         print("Salvando dados originais...")
-        data_url = "user_data/dados_originais.csv"
         dataframe.to_csv(data_url, index=None)
 
         all_cols = dataframe.columns.tolist()
@@ -65,15 +65,18 @@ if gerar:
     deu_erro = False
     st.subheader("Avaliação da base")
     with st.spinner("Gerando resposta...", show_time=True):
-        time.sleep(5)
         try:
-            resposta = 'Resposta do agente'
+            resposta = agent.get_avaliacao(
+                data_url,
+                openai_api_key=openai_api_key,
+            )
         except Exception as e:
             deu_erro = True
             resposta = str(e)
+            raise e
     if not deu_erro:
         st.success("Resposta gerada!")
-        st.write(resposta)
+        st.markdown(resposta)
     else:
         st.error("Um erro aconteceu!")
         st.error(resposta)

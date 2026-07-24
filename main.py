@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from timeit import timeit as default_timer
+from timeit import default_timer as timer
 
 from data_readyness_agent import agent
 
@@ -59,7 +59,9 @@ with st.sidebar:
         min_value=0,
         max_value=50,
         value=None,
-        step=1)
+        step=1,
+        help="Isso não limita, necessariamente, a quantidade de tools chamadas"
+    )
 
     if len(openai_api_key) == 0:
         openai_api_key = None
@@ -74,7 +76,7 @@ with st.sidebar:
 if gerar:
     deu_erro = False
     st.subheader("Avaliação da base")
-    start_time = default_timer()
+    start_time = timer()
     with st.spinner("Gerando resposta...", show_time=True):
         try:
             resposta = agent.get_avaliacao(
@@ -86,7 +88,7 @@ if gerar:
             deu_erro = True
             resposta = str(e)
             raise e
-    end_time = default_timer()
+    end_time = timer()
     if not deu_erro:
         st.success(f"Resposta gerada em {end_time - start_time:.2f} segundos!")
         st.markdown(resposta)

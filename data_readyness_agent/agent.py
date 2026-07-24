@@ -3,14 +3,13 @@ from langchain.agents import create_agent
 from langchain.agents.structured_output import ToolStrategy
 from langchain.agents.middleware import AgentMiddleware
 from langchain.tools import tool, ToolRuntime
-from langchain.messages import AIMessage, HumanMessage
+from langchain.messages import AIMessage, HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.graph import MessagesState
 import pandas as pd
-from pprint import pprint
 from pydantic import BaseModel, Field
-from typing_extensions import Dict, List
+from typing_extensions import Any, Dict, List
 
 
 class DebugMiddleware(AgentMiddleware):
@@ -24,6 +23,40 @@ class DebugMiddleware(AgentMiddleware):
             print("Tool calls:", last_message.tool_calls)
 
         return None
+
+
+class IterationLimitMiddleware(AgentMiddleware):
+
+    def __init__(self, max_iterations: int):
+        self.max_iterations = max_iterations
+
+    def wrap_model_call(self, request, handler):
+        iteration = self.count_model_calls(request.state["messages"])
+
+        print(f"Iteração do agente: "
+              f"{iteration}/{self.max_iterations}")
+
+        # A última iteração é reservada para gerar a resposta final
+        if iteration >= self.max_iterations - 1:
+            print("Limite de iterações atingido.")
+
+            request = request.override(
+                tools=[],
+                messages=[
+                    *request.messages,
+                    SystemMessage(
+                        content=("O limite de investigação foi atingido. "
+                                 "Não execute mais ferramentas. "
+                                 "Gere agora a resposta final estruturada "
+                                 "com base nas informações coletadas."))
+                ])
+
+        return handler(request)
+
+    def count_model_calls(self, messages) -> int:
+        # Conta quantas respostas da LLM já existem
+        return sum(1 for message in messages
+                   if message.__class__.__name__ == "AIMessage")
 
 
 class ReadinessStatus(str, Enum):
@@ -83,7 +116,41 @@ class DatasetProfile(BaseModel):
 class State(MessagesState):
     data_url: str
     dataset_profile: DatasetProfile | None = None
-    findings: list[str] = []
+
+
+@tool
+def get_n_rows(runtime: ToolRuntime) -> int:
+    """Retorna a quantidade de linhas na base"""
+    return runtime.state['dataset_profile'].n_rows
+
+
+@tool
+def get_n_cols(runtime: ToolRuntime) -> int:
+    """Retorna a quantidade de colunas na base"""
+    return runtime.state['dataset_profile'].n_columns
+
+
+@tool
+def get_null_counts(runtime: ToolRuntime) -> int:
+    """Retorna a quantidade de valores nulos de cada coluna na base"""
+    return runtime.state['dataset_profile'].null_counts
+
+
+@tool
+def get_unique_counts(runtime: ToolRuntime) -> int:
+    """Retorna a quantidade de valores únicos em cada coluna na base"""
+    return runtime.state['dataset_profile'].unique_counts
+
+
+@tool
+def get_col_preview(column: str,
+                    runtime: ToolRuntime) -> Dict[str, List[Any] | str]:
+    """Retorna um preview dos valores contidos na coluna da base"""
+    data_profile = runtime.state['dataset_profile']
+    if column not in data_profile.samples.keys():
+        return {"error": f"Coluna {column} não está presente na base"}
+
+    return data_profile.samples[column]
 
 
 @tool
@@ -99,13 +166,24 @@ def check_duplicate_rows(columns: List[str],
                       "Colunas disponíveis: " + str(df.columns.tolist()))
         }
 
-    qt_duplicados = df.duplicated(subset=target_cols).sum()
+    qt_duplicados = int(df.duplicated(subset=target_cols).sum())
+    return {'qt_duplicados': qt_duplicados}
+
+
+# Essa função existe para evitar de o agente chamar a função check_duplicate_rows
+# informando todas as colunas existentes
+@tool
+def check_duplicate_rows_all_cols(runtime: ToolRuntime) -> Dict[str, int]:
+    """Retorna a quantidade de linhas duplicadas usando todas as colunas da base"""
+    df = pd.read_csv(runtime.state['data_url'])
+
+    qt_duplicados = int(df.duplicated().sum())
     return {'qt_duplicados': qt_duplicados}
 
 
 @tool
 def check_column_consistency(col_name: str, runtime: ToolRuntime) -> dict:
-    """Analisa os tipos nos valores de uma coluna"""
+    """Retorna quantos tipos de dados diferentes a coluna informada possui"""
     df = pd.read_csv(runtime.state["data_url"])
 
     if col_name not in df.columns:
@@ -120,7 +198,7 @@ def check_column_consistency(col_name: str, runtime: ToolRuntime) -> dict:
 
 @tool
 def get_column_value_distribution(col_name: str, runtime: ToolRuntime) -> dict:
-    """Retorna a distribuição dos 50 valores mais comuns de uma coluna"""
+    """Retorna a distribuição de até 50 valores mais comuns da coluna informada"""
     df = pd.read_csv(runtime.state["data_url"])
 
     if col_name not in df.columns:
@@ -133,13 +211,19 @@ def get_column_value_distribution(col_name: str, runtime: ToolRuntime) -> dict:
 
 @tool
 def analyze_missingness_patterns(col_name: str, runtime: ToolRuntime) -> dict:
-    """Analisa se valores ausentes de uma coluna estão associados a outras colunas categóricas"""
+    """
+    Analisa se valores ausentes da coluna informada estão associados a outras colunas categóricas.
+    Só chame para colunas que, de fato, possuam valores nulos.
+    """
     df = pd.read_csv(runtime.state["data_url"])
 
     if col_name not in df.columns:
         return {"error": f"Coluna '{col_name}' não encontrada."}
 
     missing_mask = df[col_name].isna()
+
+    if missing_mask.sum() == 0:
+        return {"msg": "A coluna não possui valores faltantes."}
 
     results = {}
 
@@ -153,7 +237,10 @@ def analyze_missingness_patterns(col_name: str, runtime: ToolRuntime) -> dict:
             grouped = (missing_mask.groupby(
                 df[col]).mean().sort_values(ascending=False))
 
-            results[col] = {str(k): float(v) for k, v in grouped.items()}
+            results[col] = {
+                str(k): round(float(v), 2)
+                for k, v in grouped.items()
+            }
 
     return results
 
@@ -161,7 +248,7 @@ def analyze_missingness_patterns(col_name: str, runtime: ToolRuntime) -> dict:
 @tool
 def detect_outliers(col_name: str, runtime: ToolRuntime) -> dict:
     """
-    Detecta possíveis outliers em uma coluna numérica usando o método IQR.
+    Detecta possíveis outliers na coluna numérica informada usando o método IQR.
 
     Retorna a quantidade, o percentual de outliers e os limites
     inferior e superior para a detecção.
@@ -199,39 +286,76 @@ def detect_outliers(col_name: str, runtime: ToolRuntime) -> dict:
     n_valid = int(values.shape[0])
 
     return {
-        "q1": float(q1),
-        "q3": float(q3),
-        "iqr": float(iqr),
-        "lower_bound": float(lower_bound),
-        "upper_bound": float(upper_bound),
-        "n_outliers": n_outliers,
+        "q1":
+        round(float(q1), 2),
+        "q3":
+        round(float(q3), 2),
+        "iqr":
+        round(float(iqr), 2),
+        "lower_bound":
+        round(float(lower_bound), 2),
+        "upper_bound":
+        round(float(upper_bound), 2),
+        "n_outliers":
+        n_outliers,
         "outlier_percentage":
-        (n_outliers / n_valid * 100 if n_valid > 0 else 0)
+        round((n_outliers / n_valid * 100 if n_valid > 0 else 0), 2)
     }
 
 
-def get_agent(openai_api_key: str) -> CompiledStateGraph:
+@tool
+def get_columns_names(runtime: ToolRuntime) -> List[str]:
+    """Retorna os nomes de todas as colunas existentes na base"""
+    df = pd.read_csv(runtime.state['data_url'])
+    return df.columns.tolist()
+
+
+def get_agent(openai_api_key: str,
+              qt_maxima_iteracoes_agente: int = 15) -> CompiledStateGraph:
     model = ChatOpenAI(model='gpt-5-nano',
                        temperature=0.0,
                        api_key=openai_api_key)
     system_prompt = """
-    Você é um cientista de dados que está avaliando a base de dados informada. Seu objetivo é
-    atestar a qualidade das colunas de acordo com a tarefa informada. Use as ferramentas disponíveis para 
-    analisar os dados e montar sua resposta. Seja conciso e estruture a sua resposta 
-    de acordo com o formato indicado
+    Você é responsável por avaliar a prontidão de uma base de dados
+    para um projeto de Data Science.
+
+    Comece utilizando o DatasetProfile fornecido. Depois, planeje a investigação
+    que você vai fazer. Uma vez planejado, siga o planejamento usando as ferramentas
+    necessárias.
+
+    Não solicite novamente informações já disponíveis no DatasetProfile.
+
+    Use as ferramentas apenas quando:
+    1. uma informação não estiver disponível no perfil;
+    2. for necessário aprofundar uma possível inconsistência;
+    3. for necessário validar uma hipótese levantada durante a análise.
+
+    Evite repetir chamadas de ferramentas com os mesmos argumentos,
+    a menos que exista uma justificativa clara para obter novos dados.
     """
-    return create_agent(model=model,
-                        system_prompt=system_prompt,
-                        response_format=ToolStrategy(AgentResponse),
-                        state_schema=State,
-                        tools=[
-                            check_duplicate_rows,
-                            check_column_consistency,
-                            get_column_value_distribution,
-                            analyze_missingness_patterns,
-                            detect_outliers,
-                        ],
-                        middleware=[DebugMiddleware()])
+    return create_agent(
+        model=model,
+        system_prompt=system_prompt,
+        response_format=ToolStrategy(AgentResponse),
+        state_schema=State,
+        tools=[
+            get_columns_names,
+            check_duplicate_rows,
+            check_duplicate_rows_all_cols,
+            check_column_consistency,
+            get_column_value_distribution,
+            analyze_missingness_patterns,
+            detect_outliers,
+            get_n_rows,
+            get_n_cols,
+            get_null_counts,
+            get_unique_counts,
+            get_col_preview,
+        ],
+        middleware=[
+            DebugMiddleware(),
+            IterationLimitMiddleware(max_iterations=qt_maxima_iteracoes_agente)
+        ])
 
 
 def create_dataset_profile(data_url: str) -> DatasetProfile:
@@ -256,16 +380,31 @@ def create_dataset_profile(data_url: str) -> DatasetProfile:
                  for col in df.columns})
 
 
-def get_avaliacao(data_url: str, openai_api_key: str) -> AgentResponse:
-    agent = get_agent(openai_api_key)
+def get_avaliacao(data_url: str, openai_api_key: str,
+                  qt_maxima_iteracoes_agente: int) -> AgentResponse:
+    agent = get_agent(openai_api_key, qt_maxima_iteracoes_agente)
     profile = create_dataset_profile(data_url)
+    profile_text = profile.model_dump_json(indent=2)
+
     response = agent.invoke({
-        'messages': [HumanMessage(content="Avalie essa base de dados")],
+        'messages': [
+            HumanMessage(content=f"""
+                Avalie essa base de dados.
+
+                Você já possui o seguinte perfil inicial da base:
+
+                {profile_text}
+
+                Use essas informações como ponto de partida.
+                Não repita análises que já estão presentes no perfil.
+                Use as ferramentas disponíveis apenas para aprofundar
+                a investigação de possíveis problemas de qualidade.
+                """),
+        ],
         'data_url':
         data_url,
         "dataset_profile":
-        profile
+        profile,
     })
-    pprint(response)
     final_response: AgentResponse = response['structured_response']
-    return final_response.to_markdown()
+    return final_response

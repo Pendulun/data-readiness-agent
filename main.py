@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-import time
+from timeit import timeit as default_timer
 
 from data_readyness_agent import agent
 
@@ -53,10 +53,20 @@ with st.sidebar:
                                    key='openai_api_key',
                                    disabled=uploaded_file is None)
 
+    qt_max_iteracoes_agente = st.number_input(
+        label='Quantidade máxima de iterações do agente',
+        disabled=uploaded_file is None,
+        min_value=0,
+        max_value=50,
+        value=None,
+        step=1)
+
     if len(openai_api_key) == 0:
         openai_api_key = None
 
-    required_values = [uploaded_file, target_col, openai_api_key]
+    required_values = [
+        uploaded_file, target_col, openai_api_key, qt_max_iteracoes_agente
+    ]
     can_generate_response = all([val is not None for val in required_values])
     gerar = st.button("Gerar resposta para variável alvo",
                       disabled=not can_generate_response)
@@ -64,18 +74,21 @@ with st.sidebar:
 if gerar:
     deu_erro = False
     st.subheader("Avaliação da base")
+    start_time = default_timer()
     with st.spinner("Gerando resposta...", show_time=True):
         try:
             resposta = agent.get_avaliacao(
                 data_url,
                 openai_api_key=openai_api_key,
-            )
+                qt_maxima_iteracoes_agente=qt_max_iteracoes_agente
+            ).to_markdown()
         except Exception as e:
             deu_erro = True
             resposta = str(e)
             raise e
+    end_time = default_timer()
     if not deu_erro:
-        st.success("Resposta gerada!")
+        st.success(f"Resposta gerada em {end_time - start_time:.2f} segundos!")
         st.markdown(resposta)
     else:
         st.error("Um erro aconteceu!")

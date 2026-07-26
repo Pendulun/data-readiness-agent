@@ -3,3 +3,4 @@
 .env
 __pycache__
 user_data/*.csv
+.vscode

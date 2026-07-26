@@ -1,21 +1,14 @@
-from enum import Enum
-from langchain.agents import create_agent
-from langchain.agents.structured_output import ToolStrategy
-from langchain.agents.middleware import AgentMiddleware
-from langchain.messages import AIMessage, HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI
-from langgraph.graph.state import CompiledStateGraph
-from langgraph.graph import MessagesState
+from langchain.messages import HumanMessage
 import pandas as pd
-from pydantic import BaseModel, Field
+from typing_extensions import Tuple
 
-from data_readyness_agent import data_evaluation_agent
+from data_readyness_agent import common_data_structs, data_evaluation_agent, data_transformation_agent
 
 
 def create_dataset_profile(
-        df: pd.DataFrame) -> data_evaluation_agent.DatasetProfile:
+        df: pd.DataFrame) -> common_data_structs.DatasetProfile:
 
-    return data_evaluation_agent.DatasetProfile(
+    return common_data_structs.DatasetProfile(
         n_rows=len(df),
         n_columns=len(df.columns),
         columns_types={
@@ -34,13 +27,18 @@ def create_dataset_profile(
                  for col in df.columns})
 
 
-def get_avaliacao(data_url: str, openai_api_key: str,
-                  qt_maxima_iteracoes_agente: int,
-                  target_col: str) -> data_evaluation_agent.AgentResponse:
-    dataset = pd.read_csv(data_url)
-    agent = data_evaluation_agent.get_agent(openai_api_key,
-                                            qt_maxima_iteracoes_agente)
-    profile = create_dataset_profile(dataset)
+def get_avaliacao(
+    dataset: pd.DataFrame,
+    profile: common_data_structs.DatasetProfile,
+    openai_api_key: str,
+    qt_maxima_iteracoes_agente: int,
+    target_col: str,
+) -> data_evaluation_agent.AgentResponse:
+
+    agent = data_evaluation_agent.get_agent(
+        openai_api_key,
+        qt_maxima_iteracoes_agente,
+    )
     profile_text = profile.model_dump_json(indent=2)
 
     response = agent.invoke({
@@ -68,3 +66,70 @@ def get_avaliacao(data_url: str, openai_api_key: str,
     final_response: data_evaluation_agent.AgentResponse = response[
         'structured_response']
     return final_response
+
+
+def get_transformed_df(avaliacao: str,
+                       profile: common_data_structs.DatasetProfile,
+                       dataset: pd.DataFrame,
+                       openai_api_key: str) -> Tuple[str, pd.DataFrame]:
+    """
+    Aplica transformações sobre o dataset original de acordo com a avalição feita
+    """
+    agent = data_transformation_agent.get_agent(openai_api_key)
+    profile_text = profile.model_dump_json(indent=2)
+
+    response = agent.invoke({
+        'messages': [
+            HumanMessage(content=f"""
+                Transforme essa base de dados.
+
+                Você já possui a seguinte avaliação da base:
+
+                {avaliacao}
+
+                Você também já possui o seguinte perfil inicial da base:
+
+                {profile_text}
+                
+                Use essas informações como ponto de partida.
+                Use as ferramentas disponíveis apenas para transformar os dados
+                na base.
+                """),
+        ],
+        'original_dataset':
+        dataset,
+        # Dataset a ser transformado
+        'dataset':
+        dataset.copy(),
+        "dataset_profile":
+        profile,
+    })
+    final_response: data_evaluation_agent.AgentResponse = response[
+        'structured_response']
+    return final_response.to_markdown(), response["dataset"]
+
+
+def get_final_response(data_url: str, openai_api_key: str,
+                       qt_maxima_iteracoes_agente: int,
+                       target_col: str) -> Tuple[str, pd.DataFrame]:
+    dataset = pd.read_csv(data_url)
+    profile = create_dataset_profile(dataset)
+
+    avaliacao = get_avaliacao(
+        dataset,
+        profile,
+        openai_api_key=openai_api_key,
+        qt_maxima_iteracoes_agente=qt_maxima_iteracoes_agente,
+        target_col=target_col,
+    ).to_markdown()
+
+    transformacoes_aplicadas, dataset_transformado = get_transformed_df(
+        avaliacao,
+        profile,
+        dataset,
+        openai_api_key,
+    )
+
+    final_text = avaliacao + "\n" + transformacoes_aplicadas
+
+    return final_text, dataset_transformado

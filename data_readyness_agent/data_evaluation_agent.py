@@ -2,27 +2,14 @@ from enum import Enum
 from langchain.agents import create_agent
 from langchain.agents.structured_output import ToolStrategy
 from langchain.agents.middleware import AgentMiddleware
-from langchain.messages import AIMessage, SystemMessage
+from langchain.messages import SystemMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.graph import MessagesState
 import pandas as pd
 from pydantic import BaseModel, Field
 
-from data_readyness_agent import tools
-
-
-class DebugMiddleware(AgentMiddleware):
-
-    def after_model(self, state, runtime):
-        last_message = state["messages"][-1]
-
-        if isinstance(last_message, AIMessage):
-            print("\n--- LLM RESPONSE ---")
-            print("Content:", last_message.content)
-            print("Tool calls:", last_message.tool_calls)
-
-        return None
+from data_readyness_agent import common_data_structs, common_middleware, common_tools, data_evaluation_tools
 
 
 class IterationLimitMiddleware(AgentMiddleware):
@@ -102,20 +89,9 @@ class AgentResponse(BaseModel):
         return "\n".join(output)
 
 
-class DatasetProfile(BaseModel):
-    n_rows: int = Field(description="Quantidade de linhas na base")
-    n_columns: int = Field(description="Quantidade de colunas na base")
-    columns_types: dict[str, str] = Field(description="Tipos das colunas")
-    null_counts: dict[str, int] = Field(
-        description="Quantidade de nulos por coluna")
-    unique_counts: dict[str, int] = Field(
-        description="Quantidade de valores únicos por coluna")
-    samples: dict[str, list] = Field(description="Amostra de dados por coluna")
-
-
 class State(MessagesState):
     dataset: pd.DataFrame
-    dataset_profile: DatasetProfile | None = None
+    dataset_profile: common_data_structs.DatasetProfile | None = None
 
 
 def get_agent(openai_api_key: str,
@@ -147,20 +123,20 @@ def get_agent(openai_api_key: str,
         response_format=ToolStrategy(AgentResponse),
         state_schema=State,
         tools=[
-            tools.get_columns_names,
-            tools.check_duplicate_rows,
-            tools.check_duplicate_rows_all_cols,
-            tools.check_column_consistency,
-            tools.get_column_value_distribution,
-            tools.analyze_missingness_patterns,
-            tools.detect_outliers,
-            tools.get_n_rows,
-            tools.get_n_cols,
-            tools.get_null_counts,
-            tools.get_unique_counts,
-            tools.get_col_preview,
+            data_evaluation_tools.get_columns_names,
+            data_evaluation_tools.check_duplicate_rows,
+            data_evaluation_tools.check_duplicate_rows_all_cols,
+            data_evaluation_tools.check_column_consistency,
+            data_evaluation_tools.get_column_value_distribution,
+            data_evaluation_tools.analyze_missingness_patterns,
+            data_evaluation_tools.detect_outliers,
+            common_tools.get_n_rows,
+            common_tools.get_n_cols,
+            common_tools.get_null_counts,
+            common_tools.get_unique_counts,
+            common_tools.get_col_preview,
         ],
         middleware=[
-            DebugMiddleware(),
+            common_middleware.DebugMiddleware(),
             IterationLimitMiddleware(max_iterations=qt_maxima_iteracoes_agente)
         ])

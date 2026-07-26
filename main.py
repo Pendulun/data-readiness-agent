@@ -4,6 +4,18 @@ from timeit import default_timer as timer
 
 from data_readyness_agent import agent
 
+
+@st.fragment
+def download_dados_transformados(dados_transformados: pd.DataFrame):
+    st.download_button(
+        label="Download dados transformados em CSV",
+        data=dados_transformados.to_csv().encode("utf-8"),
+        file_name="transformed_data.csv",
+        mime="text/csv",
+        icon=":material/download:",
+    )
+
+
 st.header("Agente de Data Readyness")
 st.text(
     "Informe a base, escolha a coluna alvo e informe a sua OPEN API KEY para avaliar a base!"
@@ -79,12 +91,12 @@ if gerar:
     start_time = timer()
     with st.spinner("Gerando resposta...", show_time=True):
         try:
-            resposta = agent.get_avaliacao(
+            resposta, dados_transformados = agent.get_final_response(
                 data_url,
                 openai_api_key=openai_api_key,
                 qt_maxima_iteracoes_agente=qt_max_iteracoes_agente,
                 target_col=target_col,
-            ).to_markdown()
+            )
         except Exception as e:
             deu_erro = True
             resposta = str(e)
@@ -92,6 +104,7 @@ if gerar:
     end_time = timer()
     if not deu_erro:
         st.success(f"Resposta gerada em {end_time - start_time:.2f} segundos!")
+        download_dados_transformados(dados_transformados)
         st.markdown(resposta)
     else:
         st.error("Um erro aconteceu!")

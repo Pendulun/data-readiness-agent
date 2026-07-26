@@ -82,7 +82,8 @@ if gerar:
             resposta = agent.get_avaliacao(
                 data_url,
                 openai_api_key=openai_api_key,
-                qt_maxima_iteracoes_agente=qt_max_iteracoes_agente
+                qt_maxima_iteracoes_agente=qt_max_iteracoes_agente,
+                target_col=target_col,
             ).to_markdown()
         except Exception as e:
             deu_erro = True

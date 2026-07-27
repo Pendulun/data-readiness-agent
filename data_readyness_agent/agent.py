@@ -1,6 +1,6 @@
 from langchain.messages import HumanMessage
 import pandas as pd
-from typing_extensions import Tuple
+from typing_extensions import Any, Dict, List, Tuple
 
 from data_readyness_agent import common_data_structs, data_evaluation_agent, data_transformation_agent
 
@@ -68,10 +68,10 @@ def get_avaliacao(
     return final_response
 
 
-def get_transformed_df(avaliacao: str,
-                       profile: common_data_structs.DatasetProfile,
-                       dataset: pd.DataFrame,
-                       openai_api_key: str) -> Tuple[str, pd.DataFrame]:
+def get_transformed_df(
+    avaliacao: str, profile: common_data_structs.DatasetProfile,
+    dataset: pd.DataFrame, openai_api_key: str
+) -> Tuple[str, pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
     """
     Aplica transformações sobre o dataset original de acordo com a avalição feita
     """
@@ -96,22 +96,22 @@ def get_transformed_df(avaliacao: str,
                 na base.
                 """),
         ],
-        'original_dataset':
-        dataset,
         # Dataset a ser transformado
         'dataset':
-        dataset.copy(),
-        "dataset_profile":
-        profile,
+        dataset,
+        'tool_history':
+        dict()
     })
-    final_response: data_evaluation_agent.AgentResponse = response[
-        'structured_response']
-    return final_response.to_markdown(), response["dataset"]
+    # final_response: data_evaluation_agent.AgentResponse = response[
+    #     'structured_response'].to_markdown()
+    final_response = ""
+    return final_response, response["dataset"], response['tool_history']
 
 
-def get_final_response(data_url: str, openai_api_key: str,
-                       qt_maxima_iteracoes_agente: int,
-                       target_col: str) -> Tuple[str, pd.DataFrame]:
+def get_final_response(
+    data_url: str, openai_api_key: str, qt_maxima_iteracoes_agente: int,
+    target_col: str
+) -> Tuple[str, pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
     dataset = pd.read_csv(data_url)
     profile = create_dataset_profile(dataset)
 
@@ -121,15 +121,17 @@ def get_final_response(data_url: str, openai_api_key: str,
         openai_api_key=openai_api_key,
         qt_maxima_iteracoes_agente=qt_maxima_iteracoes_agente,
         target_col=target_col,
-    ).to_markdown()
+    )
 
-    transformacoes_aplicadas, dataset_transformado = get_transformed_df(
-        avaliacao,
+    findings_str = avaliacao.get_findings_str()
+    print(findings_str)
+    transformacoes_aplicadas, dataset_transformado, tool_history = get_transformed_df(
+        findings_str,
         profile,
         dataset,
         openai_api_key,
     )
 
-    final_text = avaliacao + "\n" + transformacoes_aplicadas
+    final_text = avaliacao.to_markdown() + "\n" + transformacoes_aplicadas
 
-    return final_text, dataset_transformado
+    return final_text, dataset_transformado, tool_history

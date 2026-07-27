@@ -58,7 +58,7 @@ class Finding(BaseModel):
     severity: str = Field(description="O nível de problema nessa coluna")
     description: str = Field(description="Uma descrição para a coluna")
     recommendation: str = Field(
-        description="Uma recomendação final para a coluna")
+        description="Uma recomendação de ação concisa final para a coluna")
 
 
 class AgentResponse(BaseModel):
@@ -67,8 +67,6 @@ class AgentResponse(BaseModel):
     summary: str = Field(description="Um resumo dos achados sobre a base")
     findings: list[Finding] = Field(
         description="Uma lista de achados por coluna")
-    recommended_actions: list[str] = Field(
-        description="Uma lista de ações a serem tomadas para melhorar a base")
 
     def to_markdown(self) -> str:
         output = [
@@ -76,16 +74,17 @@ class AgentResponse(BaseModel):
             f"### Resumo: \n{self.summary}", "", "### Problemas encontrados:"
         ]
 
+        output.append(self.get_findings_str())
+
+        return "\n".join(output)
+
+    def get_findings_str(self) -> str:
+        output = list()
         for finding in self.findings:
-            output.append(f"- [{finding.severity.upper()}] "
-                          f"{finding.column}: {finding.description}")
-
-        output.append("")
-        output.append("### Ações recomendadas:")
-
-        for i, action in enumerate(self.recommended_actions, 1):
-            output.append(f"{i}. {action}")
-
+            output.append(
+                f"- [{finding.severity.upper()}] "
+                f"{finding.column}: {finding.description} {finding.recommendation}"
+            )
         return "\n".join(output)
 
 
@@ -116,6 +115,10 @@ def get_agent(openai_api_key: str,
 
     Evite repetir chamadas de ferramentas com os mesmos argumentos,
     a menos que exista uma justificativa clara para obter novos dados.
+
+    Responda em português.
+
+    Não solicite mais informações do usuário, apenas preencha a estrutura de dados da resposta
     """
     return create_agent(
         model=model,

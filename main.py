@@ -18,7 +18,7 @@ def download_dados_transformados(dados_transformados: pd.DataFrame):
 
 st.header("Agente de Data Readyness")
 st.text(
-    "Informe a base, escolha a coluna alvo e informe a sua OPEN API KEY para avaliar a base!"
+    "Informe a base, escolha a coluna alvo e informe a sua OPENAI API KEY para avaliar a base!"
 )
 
 st.text(
@@ -66,11 +66,11 @@ with st.sidebar:
                                    disabled=uploaded_file is None)
 
     qt_max_iteracoes_agente = st.number_input(
-        label='Quantidade máxima de iterações do agente',
+        label='Quantidade máxima de iterações do agente de avaliação da base',
         disabled=uploaded_file is None,
+        value=0,
         min_value=0,
         max_value=50,
-        value=None,
         step=1,
         help="Isso não limita, necessariamente, a quantidade de tools chamadas"
     )
@@ -78,9 +78,7 @@ with st.sidebar:
     if len(openai_api_key) == 0:
         openai_api_key = None
 
-    required_values = [
-        uploaded_file, target_col, openai_api_key, qt_max_iteracoes_agente
-    ]
+    required_values = [uploaded_file, target_col, openai_api_key]
     can_generate_response = all([val is not None for val in required_values])
     gerar = st.button("Gerar resposta para variável alvo",
                       disabled=not can_generate_response)
@@ -91,7 +89,7 @@ if gerar:
     start_time = timer()
     with st.spinner("Gerando resposta...", show_time=True):
         try:
-            resposta, dados_transformados = agent.get_final_response(
+            resposta, dados_transformados, tool_history = agent.get_final_response(
                 data_url,
                 openai_api_key=openai_api_key,
                 qt_maxima_iteracoes_agente=qt_max_iteracoes_agente,
@@ -104,12 +102,16 @@ if gerar:
     end_time = timer()
     if not deu_erro:
         st.success(f"Resposta gerada em {end_time - start_time:.2f} segundos!")
-        download_dados_transformados(dados_transformados)
         st.markdown(resposta)
+        st.subheader("Primeiras linhas do arquivo transformado:")
+        st.write(dados_transformados.head(10))
+        download_dados_transformados(dados_transformados)
+        st.subheader("Histórico de uso de tools de transformação")
+        st.write(tool_history)
     else:
         st.error("Um erro aconteceu!")
         st.error(resposta)
 
 if uploaded_file is not None:
-    st.subheader("Primeiras linhas do arquivo:")
+    st.subheader("Primeiras linhas do arquivo original:")
     st.write(dataframe.head(10))

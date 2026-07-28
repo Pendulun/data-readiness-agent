@@ -192,7 +192,7 @@ def display_agents_response(sidebar_inputs: SidebarInputs, translation: dict,
                 seconds=round(timer() - start_time, 2)))
             st.subheader(translation["transformed_data_subheader"])
             st.write(dados_transformados.head(10))
-            download_dados_transformados(dados_transformados)
+            download_dados_transformados(dados_transformados, translation)
             st.subheader(translation["tools_history_subheader"])
             st.write(tool_history)
 

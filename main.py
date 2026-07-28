@@ -20,7 +20,7 @@ class SidebarInputs:
 def download_dados_transformados(dados_transformados: pd.DataFrame):
     st.download_button(
         label="Download dados transformados em CSV",
-        data=dados_transformados.to_csv().encode("utf-8"),
+        data=dados_transformados.to_csv(index=None).encode("utf-8"),
         file_name="transformed_data.csv",
         mime="text/csv",
         icon=":material/download:",

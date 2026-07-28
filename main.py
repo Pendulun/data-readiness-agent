@@ -87,18 +87,18 @@ def display_sidebar() -> SidebarInputs:
 
         qt_max_iteracoes_agente_avaliacao = st.number_input(
             label=
-            'Quantidade máxima de iterações do agente de avaliação da base',
+            'Quantidade máxima de iterações do agente de avaliação',
             disabled=uploaded_file is None,
             value=15,
             min_value=1,
             max_value=1000,
             step=1,
             help=
-            "Isso não limita, necessariamente, a quantidade de tools chamadas")
+            "Isso não limita, necessariamente, a quantidade de tools chamadas." \
+                " Geralmente, pode ser bem menor do que a quantidade de iterações do agente de transformação")
 
         qt_max_iteracoes_agente_transformacao = st.number_input(
-            label=
-            'Quantidade máxima de iterações do agente de transformação da base',
+            label='Quantidade máxima de iterações do agente de transformação',
             disabled=uploaded_file is None,
             value=50,
             min_value=1,
@@ -125,7 +125,8 @@ def display_sidebar() -> SidebarInputs:
                 value='min',
                 step=1,
                 help=
-                "Caso o agente ultrapasse esse número de supersteps, um erro será levantado"
+                "Caso o agente ultrapasse esse número de supersteps, um erro será levantado." \
+                " Aumente esse valor caso o agente esteja parando na etapa de avaliação."
             )
             qt_maxima_supersteps_transformacao = st.number_input(
                 label=
@@ -137,7 +138,8 @@ def display_sidebar() -> SidebarInputs:
                 value='min',
                 step=1,
                 help=
-                "Caso o agente ultrapasse esse número de supersteps, um erro será levantado"
+                "Caso o agente ultrapasse esse número de supersteps, um erro será levantado." \
+                " Aumente esse valor caso o agente esteja parando na etapa de transformação."
             )
 
         rodar_agente = st.button("Gerar resposta para variável alvo",

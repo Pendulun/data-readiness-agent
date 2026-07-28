@@ -5,7 +5,7 @@ import streamlit as st
 from timeit import default_timer as timer
 from typing_extensions import Any, Dict, List, Tuple
 
-from data_readyness_agent import agent, common_data_structs
+from src_data_readyness_agent import agent, common_data_structs
 
 
 @dataclass

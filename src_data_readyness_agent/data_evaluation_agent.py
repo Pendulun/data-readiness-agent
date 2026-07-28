@@ -5,7 +5,7 @@ from langgraph.graph.state import CompiledStateGraph
 from langgraph.graph import MessagesState
 import pandas as pd
 
-from data_readyness_agent import common_data_structs, common_middleware, data_evaluation_tools
+from src_data_readyness_agent import common_data_structs, common_middleware, data_evaluation_tools
 
 
 class State(MessagesState):

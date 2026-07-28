@@ -2,7 +2,7 @@ from langchain.messages import HumanMessage
 import pandas as pd
 from typing_extensions import Any, Dict, List, Tuple
 
-from data_readyness_agent import common_data_structs, data_evaluation_agent, data_transformation_agent
+from src_data_readyness_agent import common_data_structs, data_evaluation_agent, data_transformation_agent
 
 
 def get_avaliacao(

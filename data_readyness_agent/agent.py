@@ -8,7 +8,8 @@ from data_readyness_agent import common_data_structs, data_evaluation_agent, dat
 def get_avaliacao(
         dataset: pd.DataFrame, openai_api_key: str,
         qt_maxima_iteracoes_agente: int, target_col: str,
-        qt_maxima_supersteps: int) -> common_data_structs.EvalAgentResponse:
+        qt_maxima_supersteps: int,
+        prefered_language: str) -> common_data_structs.EvalAgentResponse:
     """
     Gera avaliação da base
     Args:
@@ -30,7 +31,8 @@ def get_avaliacao(
         openai_api_key=openai_api_key,
         qt_maxima_iteracoes_agente=qt_maxima_iteracoes_agente,
         target_col=target_col,
-        qt_maxima_supersteps=qt_maxima_supersteps)
+        qt_maxima_supersteps=qt_maxima_supersteps,
+        prefered_language=prefered_language)
     return avaliacao
 
 
@@ -96,7 +98,8 @@ def create_dataset_profile(
 def generate_avaliacao(
         dataset: pd.DataFrame, profile: common_data_structs.DatasetProfile,
         openai_api_key: str, qt_maxima_iteracoes_agente: int, target_col: str,
-        qt_maxima_supersteps: int) -> common_data_structs.EvalAgentResponse:
+        qt_maxima_supersteps: int,
+        prefered_language: str) -> common_data_structs.EvalAgentResponse:
     """
     Invoca o agente responsável por gerar a avaliação da base
     """
@@ -121,6 +124,8 @@ def generate_avaliacao(
                 Não repita análises que já estão presentes no perfil.
                 Use as ferramentas disponíveis apenas para aprofundar
                 a investigação de possíveis problemas de qualidade.
+
+                Gere a resposta em {prefered_language}
                 """),
             ],
             'dataset':

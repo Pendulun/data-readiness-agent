@@ -1,0 +1,41 @@
+{
+    "initial_info":{
+        "main_header":"Data Readyness Agent", 
+        "info1":"Specify the database, select the target column, and enter your OPENAI API KEY to evaluate the database!",
+        "info2": "If you're hesitant to share your OpenAI key, feel free to check out the code for this project (link below).",
+        "info3": "The model used internally is the gpt-5-nano, which is currently the cheapest of all (July 2026).",
+        "info4": "The cost of evaluating the database depends on the size of the database and the parameters you define.",
+        "contact": "Created by "
+    },
+    "sidebar":{
+        "file_upload_label":"Dataset",
+        "file_upload_help": "CSV file, comma separated up to 10MB",
+        "target_col_label": "Target Column",
+        "target_col_placeholder":"Choose the target column for the ML task",
+        "openai_api_key_label": "OpenAI API key",
+        "eval_agent_max_its_label":"Evaluation agent's max iterations",
+        "eval_agent_max_its_help":"This doesn't limit, necessarily, the amount of called tools. Generally, this may be way lower than the transformation agent's iterations",
+        "transform_agent_max_its_label":"Transformation agent's max iterations",
+        "transform_agent_max_its_help":"This doesn't limit, necessarily, the amount of called tools",
+        "advanced_options_label":"Advanced Options",
+        "advanced_options_info": "Options to avoid an eternal agent loop",
+        "eval_agent_max_supersteps_label":"Evaluation agent's supersteps max amount",
+        "eval_agent_max_supersteps_help":"If the agent's supersteps surpass this number, an exception will be raised. Increase this value if the agent isn't generating the evaluation.",
+        "transform_agent_max_supersteps_label":"Transformation agent's supersteps max amount",
+        "transform_agent_max_supersteps_help":"If the agent's supersteps surpass this number, an exception will be raised. Increase this value if the agent isn't generating the transformation.",
+        "generate_response_label":"Generate response"
+    },
+    "main_content":{
+        "original_df_subheader":"Original data's first rows",
+        "evaluation_subheader":"Dataset evaluation",
+        "evaluation_error_msg":"An error has ocurred when evaluating!",
+        "evaluation_success_msg_fmt":"Evaluation generated in {seconds} seconds!",
+        "transformation_error_msg":"An error has occured when transforming!",
+        "transformation_success_msg_fmt":"Transformations applied in {seconds} seconds!",
+        "transformed_data_subheader":"Transformed data's first rows",
+        "tools_history_subheader":"Tool usage log per column",
+        "evaluation_spinner_label":"[Step 1/2] Evaluating dataset...",
+        "transformation_spinner_label":"[Step 2/2] Transforming dataset...",
+        "download_button_label":"Download transformed data"
+    }
+}

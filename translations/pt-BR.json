@@ -1,0 +1,42 @@
+{
+    "initial_info":{
+        "main_header":"Agente de Data Readyness",
+        "info1":"Informe a base, escolha a coluna alvo e informe a sua OPENAI API KEY para avaliar a base!",
+        "info2": "Se estiver receoso de informar a sua chave da openai, sinta-se livre para verificar o código deste projeto (link abaixo)",
+        "info3": "O modelo usado internamente é o gpt-5-nano que é o mais barato de todos atualmente (Julho/2026).",
+        "info4": "O custo de avaliar a base depende do tamanho da base e dos parâmetros que você definir.",
+        "contact": "Criado por "
+
+    },
+    "sidebar":{
+        "file_upload_label":"Base de dados",
+        "file_upload_help": "Arquivo CSV separado por vírgula de até 10MB",
+        "target_col_label": "Coluna Alvo",
+        "target_col_placeholder":"Escolha a coluna alvo da tarefa de ML",
+        "openai_api_key_label": "Chave da API OpenAI",
+        "eval_agent_max_its_label":"Quantidade máxima de iterações do agente de avaliação",
+        "eval_agent_max_its_help":"Isso não limita, necessariamente, a quantidade de tools chamadas. Geralmente, pode ser bem menor do que a quantidade de iterações do agente de transformação",
+        "transform_agent_max_its_label":"Quantidade máxima de iterações do agente de transformação",
+        "transform_agent_max_its_help":"Isso não limita, necessariamente, a quantidade de tools chamadas",
+        "advanced_options_label":"Opções avançadas",
+        "advanced_options_info": "Opções para evitar que o agente entre em loop eternamente",
+        "eval_agent_max_supersteps_label":"Quantidade máxima de supersteps do agente de avaliação",
+        "eval_agent_max_supersteps_help":"Caso o agente ultrapasse esse número de supersteps, um erro será levantado. Aumente esse valor caso o agente esteja parando na etapa de avaliação.",
+        "transform_agent_max_supersteps_label":"Quantidade máxima de supersteps do agente de transformação",
+        "transform_agent_max_supersteps_help":"Caso o agente ultrapasse esse número de supersteps, um erro será levantado. Aumente esse valor caso o agente esteja parando na etapa de transformação.",
+        "generate_response_label":"Gerar resposta para variável alvo"
+    },
+    "main_content":{
+        "original_df_subheader":"Primeiras linhas do arquivo original:",
+        "evaluation_subheader":"Avaliação da base",
+        "evaluation_error_msg":"Um erro aconteceu ao gerar a avaliação!",
+        "evaluation_success_msg_fmt":"Avaliação gerada em {seconds} segundos!",
+        "transformation_error_msg":"Um erro aconteceu ao tentar transformar a base!",
+        "transformation_success_msg_fmt":"Transformações aplicadas em {seconds} segundos!",
+        "transformed_data_subheader":"Primeiras linhas do arquivo transformado:",
+        "tools_history_subheader":"Histórico de uso de tools de transformação por coluna",
+        "evaluation_spinner_label":"[Passo 1/2] Avaliando base...",
+        "transformation_spinner_label":"[Passo 2/2] Transformando base...",
+        "download_button_label":"Download dados transformados"
+    }
+}

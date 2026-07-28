@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import json
 import pandas as pd
 import streamlit as st
 from timeit import default_timer as timer
@@ -20,9 +21,10 @@ class SidebarInputs:
 
 
 @st.fragment
-def download_dados_transformados(dados_transformados: pd.DataFrame):
+def download_dados_transformados(dados_transformados: pd.DataFrame,
+                                 translation: dict):
     st.download_button(
-        label="Download dados transformados em CSV",
+        label=translation["download_button_label"],
         data=dados_transformados.to_csv(index=None).encode("utf-8"),
         file_name="transformed_data.csv",
         mime="text/csv",
@@ -30,28 +32,21 @@ def download_dados_transformados(dados_transformados: pd.DataFrame):
     )
 
 
-def display_initial_info():
-    st.header("Agente de Data Readyness")
-    st.text(
-        "Informe a base, escolha a coluna alvo e informe a sua OPENAI API KEY para avaliar a base!"
-    )
+def display_initial_info(translations: dict):
+    st.header(translations['main_header'])
+    st.text(translations["info1"])
 
-    st.text(
-        "Se estiver receoso de informar a sua chave da openai, sinta-se livre para verificar o código deste projeto (link abaixo)"
-    )
-    st.text(
-        "O modelo usado internamente é o gpt-5-nano que é o mais barato de todos atualmente (Julho/2026)."
-    )
-    st.text(
-        "O custo de avaliar a base deve ser de apenas alguns centavos de dólar caso a base seja grande."
-    )
+    st.text(translations["info2"])
+    st.text(translations["info3"])
+    st.text(translations["info4"])
 
     st.markdown(
-        "Criado por Daniel Souza de Campos. [Linkedin](https://www.linkedin.com/in/souzacamposdaniel/)  [GitHub](https://github.com/Pendulun)  [Repo](https://github.com/Pendulun/data-readyness-agent)"
+        translations["contact"] +
+        "Daniel Souza de Campos. [Linkedin](https://www.linkedin.com/in/souzacamposdaniel/)  [GitHub](https://github.com/Pendulun)  [Repo](https://github.com/Pendulun/data-readyness-agent)"
     )
 
 
-def display_sidebar() -> SidebarInputs:
+def display_sidebar(translation: dict) -> SidebarInputs:
     """
     Mostra os elementos do sidebar e retorna os seus inputs
     """
@@ -62,50 +57,48 @@ def display_sidebar() -> SidebarInputs:
     rodar_agente = False
 
     with st.sidebar:
-        uploaded_file = st.file_uploader(
-            "Base de dados",
-            max_upload_size=10,
-            type='csv',
-            accept_multiple_files=False,
-            help="Arquivo CSV separado por vírgula de até 10MB")
+        uploaded_file = st.file_uploader(translation["file_upload_label"],
+                                         max_upload_size=10,
+                                         type='csv',
+                                         accept_multiple_files=False,
+                                         help=translation["file_upload_help"])
 
         all_cols = None
         if uploaded_file is not None:
             dataframe = pd.read_csv(uploaded_file)
             all_cols = dataframe.columns.tolist()
 
-        target_col = st.selectbox("Coluna alvo",
-                                  options=all_cols,
-                                  index=None,
-                                  disabled=all_cols is None)
+        target_col = st.selectbox(
+            translation["target_col_label"],
+            options=all_cols,
+            index=None,
+            disabled=all_cols is None,
+            placeholder=translation['target_col_placeholder'])
 
-        openai_api_key = st.text_input(label='OpenAI API key',
-                                       type='password',
-                                       persist_state='session',
-                                       key='openai_api_key',
-                                       disabled=uploaded_file is None)
+        openai_api_key = st.text_input(
+            label=translation["openai_api_key_label"],
+            type='password',
+            persist_state='session',
+            key='openai_api_key',
+            disabled=uploaded_file is None)
 
         qt_max_iteracoes_agente_avaliacao = st.number_input(
-            label=
-            'Quantidade máxima de iterações do agente de avaliação',
+            label=translation["eval_agent_max_its_label"],
             disabled=uploaded_file is None,
             value=15,
             min_value=1,
             max_value=1000,
             step=1,
-            help=
-            "Isso não limita, necessariamente, a quantidade de tools chamadas." \
-                " Geralmente, pode ser bem menor do que a quantidade de iterações do agente de transformação")
+            help=translation["eval_agent_max_its_help"])
 
         qt_max_iteracoes_agente_transformacao = st.number_input(
-            label='Quantidade máxima de iterações do agente de transformação',
+            label=translation["transform_agent_max_its_label"],
             disabled=uploaded_file is None,
             value=50,
             min_value=1,
             max_value=1000,
             step=1,
-            help=
-            "Isso não limita, necessariamente, a quantidade de tools chamadas")
+            help=translation["transform_agent_max_its_help"])
 
         if len(openai_api_key) == 0:
             openai_api_key = None
@@ -114,35 +107,27 @@ def display_sidebar() -> SidebarInputs:
         can_generate_response = all(
             [val is not None for val in required_values])
 
-        with st.expander("Opções avançadas"):
-            st.write(
-                "Opções para evitar que o agente entre em loop eternamente")
+        with st.expander(translation["advanced_options_label"]):
+            st.write(translation["advanced_options_info"])
             qt_maxima_supersteps_avaliacao = st.number_input(
-                label="Quantidade máxima de supersteps do agente de avaliação",
+                label=translation["eval_agent_max_supersteps_label"],
                 disabled=uploaded_file is None,
                 min_value=int(qt_max_iteracoes_agente_avaliacao * 3),
                 max_value=max(int(qt_max_iteracoes_agente_avaliacao * 5), 100),
                 value='min',
                 step=1,
-                help=
-                "Caso o agente ultrapasse esse número de supersteps, um erro será levantado." \
-                " Aumente esse valor caso o agente esteja parando na etapa de avaliação."
-            )
+                help=translation["eval_agent_max_supersteps_help"])
             qt_maxima_supersteps_transformacao = st.number_input(
-                label=
-                "Quantidade máxima de supersteps do agente de transformação",
+                label=translation["transform_agent_max_supersteps_label"],
                 disabled=uploaded_file is None,
                 min_value=int(qt_max_iteracoes_agente_transformacao * 3),
                 max_value=max(int(qt_max_iteracoes_agente_transformacao * 5),
                               100),
                 value='min',
                 step=1,
-                help=
-                "Caso o agente ultrapasse esse número de supersteps, um erro será levantado." \
-                " Aumente esse valor caso o agente esteja parando na etapa de transformação."
-            )
+                help=translation["transform_agent_max_supersteps_help"])
 
-        rodar_agente = st.button("Gerar resposta para variável alvo",
+        rodar_agente = st.button(translation["generate_response_label"],
                                  disabled=not can_generate_response)
 
     return SidebarInputs(
@@ -157,67 +142,70 @@ def display_sidebar() -> SidebarInputs:
         target_col=target_col)
 
 
-def display_main_content(sidebar_inputs: SidebarInputs):
+def display_main_content(sidebar_inputs: SidebarInputs, translation: dict,
+                         prefered_language: str):
     """
     Mostra os elementos principais de acordo com as entradas do sidebar.
     Chama os agentes caso necessário
     """
     if sidebar_inputs.rodar_agente:
-        display_agents_response(sidebar_inputs)
+        display_agents_response(sidebar_inputs, translation, prefered_language)
 
     if sidebar_inputs.dataframe is not None:
-        st.subheader("Primeiras linhas do arquivo original:")
+        st.subheader(translation["original_df_subheader"])
         st.write(sidebar_inputs.dataframe.head(10))
 
 
-def display_agents_response(sidebar_inputs: SidebarInputs):
+def display_agents_response(sidebar_inputs: SidebarInputs, translation: dict,
+                            prefered_language: str):
     """
     Chama os agentes de forma sequencial e mostra as suas respostas
     """
-    st.subheader("Avaliação da base")
+    st.subheader(translation["evaluation_subheader"])
     start_time = timer()
     erro_ao_gerar_avaliacao = False
     try:
-        avaliacao = call_eval_agent(sidebar_inputs)
+        avaliacao = call_eval_agent(sidebar_inputs, translation,
+                                    prefered_language)
     except Exception as e:
         erro_ao_gerar_avaliacao = True
-        st.error("Um erro aconteceu ao gerar a avaliação!")
+        st.error(translation["evaluation_error_msg"])
         st.error(e)
 
     if not erro_ao_gerar_avaliacao:
-        st.success(f"Avaliação gerada em {timer() - start_time:.2f} segundos!")
+        st.success(translation["evaluation_success_msg_fmt"].format(
+            seconds=round(timer() - start_time, 2)))
         st.markdown(avaliacao.to_markdown())
 
         start_time = timer()
         erro_ao_gerar_transformacoes = False
         try:
             dados_transformados, tool_history = call_transformation_agent(
-                sidebar_inputs, avaliacao)
+                sidebar_inputs, avaliacao, translation)
         except Exception as e:
             erro_ao_gerar_transformacoes = True
-            st.error("Um erro aconteceu ao tentar transformar a base!")
+            st.error(translation["transformation_error_msg"])
             st.error(e)
 
         if not erro_ao_gerar_transformacoes:
-            st.success(
-                f"Transformações aplicadas em {timer() - start_time:.2f} segundos!"
-            )
-            st.subheader("Primeiras linhas do arquivo transformado:")
+            st.success(translation["transformation_success_msg_fmt"].format(
+                seconds=round(timer() - start_time, 2)))
+            st.subheader(translation["transformed_data_subheader"])
             st.write(dados_transformados.head(10))
             download_dados_transformados(dados_transformados)
-            st.subheader(
-                "Histórico de uso de tools de transformação por coluna")
+            st.subheader(translation["tools_history_subheader"])
             st.write(tool_history)
 
 
 def call_transformation_agent(
-    sidebar_inputs: SidebarInputs,
-    avaliacao: common_data_structs.EvalAgentResponse
+        sidebar_inputs: SidebarInputs,
+        avaliacao: common_data_structs.EvalAgentResponse, translation: dict
 ) -> Tuple[pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
     """
     Consegue a resposta do agente de transformação da base
     """
-    with st.spinner("[Passo 2/2] Transformando base...", show_time=True):
+    with st.spinner(translation["transformation_spinner_label"],
+                    show_time=True):
         dados_transformados, tool_history = agent.get_base_transformada(
             avaliacao.get_findings_str(),
             sidebar_inputs.dataframe,
@@ -230,23 +218,35 @@ def call_transformation_agent(
 
 
 def call_eval_agent(
-        sidebar_inputs: SidebarInputs
-) -> common_data_structs.EvalAgentResponse:
+        sidebar_inputs: SidebarInputs, translation: str,
+        prefered_language: str) -> common_data_structs.EvalAgentResponse:
     """
     Consegue a resposta do agente de avaliação
     """
-    with st.spinner("[Passo 1/2] Avaliando base...", show_time=True):
+    with st.spinner(translation["evaluation_spinner_label"], show_time=True):
         avaliacao = agent.get_avaliacao(
             sidebar_inputs.dataframe,
             openai_api_key=sidebar_inputs.openai_api_key,
             qt_maxima_iteracoes_agente=sidebar_inputs.
             qt_max_iteracoes_agente_avaliacao,
             target_col=sidebar_inputs.target_col,
-            qt_maxima_supersteps=sidebar_inputs.qt_maxima_supersteps_avaliacao)
+            qt_maxima_supersteps=sidebar_inputs.qt_maxima_supersteps_avaliacao,
+            prefered_language=prefered_language)
     return avaliacao
 
 
 if __name__ == "__main__":
-    display_initial_info()
-    sidebar_inputs = display_sidebar()
-    display_main_content(sidebar_inputs)
+    language = st.sidebar.selectbox("Idioma / Language",
+                                    options=["Português", "English"])
+
+    if language == 'Português':
+        with open("translations/pt-BR.json", "r", encoding="utf-8") as f:
+            translations = json.load(f)
+    else:
+        with open("translations/en.json", "r", encoding="utf-8") as f:
+            translations = json.load(f)
+
+    display_initial_info(translations['initial_info'])
+    sidebar_inputs = display_sidebar(translations['sidebar'])
+    display_main_content(sidebar_inputs, translations['main_content'],
+                         language)

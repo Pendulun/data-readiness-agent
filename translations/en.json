@@ -1,6 +1,6 @@
 {
     "initial_info":{
-        "main_header":"Data Readyness Agent", 
+        "main_header":"Data Readiness Agent", 
         "info1":"Specify the database, select the target column, and enter your OPENAI API KEY to evaluate the database!",
         "info2": "If you're hesitant to share your OpenAI key, feel free to check out the code for this project (link below).",
         "info3": "The model used internally is the gpt-5-nano, which is currently the cheapest of all (July 2026).",

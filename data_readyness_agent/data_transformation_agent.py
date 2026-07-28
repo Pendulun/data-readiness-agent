@@ -1,29 +1,11 @@
 from langchain.agents import create_agent
-from langchain.agents.structured_output import ToolStrategy
 from langchain_openai import ChatOpenAI
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.graph import MessagesState
 import pandas as pd
-from pydantic import BaseModel, Field
 from typing_extensions import Any, Dict, List
 
 from data_readyness_agent import common_middleware, data_transformation_tools
-
-
-class AgentResponse(BaseModel):
-    status: str = Field(
-        description=
-        "Um status representando se as transformações foram aplicadas ou não")
-    # transformations: List[str] = Field(
-    #     description="Uma lista de transformações realizadas na base")
-
-    # def to_markdown(self) -> str:
-    #     output = ["### Transformações realizadas na base:"]
-
-    #     for val in self.transformations:
-    #         output.append(f"- {val} ")
-
-    #     return "\n".join(output)
 
 
 class State(MessagesState):
@@ -57,7 +39,6 @@ def get_agent(openai_api_key: str) -> CompiledStateGraph:
     return create_agent(
         model=model,
         system_prompt=system_prompt,
-        #response_format=ToolStrategy(AgentResponse),
         state_schema=State,
         tools=[
             data_transformation_tools.get_n_cols,
@@ -65,9 +46,11 @@ def get_agent(openai_api_key: str) -> CompiledStateGraph:
             data_transformation_tools.has_nulls,
             data_transformation_tools.get_unique_counts,
             data_transformation_tools.get_column_type,
-            data_transformation_tools.get_col_unique_preview,
+            data_transformation_tools.get_col_unique,
             data_transformation_tools.replace_substring,
             data_transformation_tools.drop_column,
+            data_transformation_tools.map_col_values,
+            data_transformation_tools.copy_column,
             data_transformation_tools.convert_column_to_datetime,
             data_transformation_tools.convert_column_to_float,
             data_transformation_tools.convert_column_to_int,

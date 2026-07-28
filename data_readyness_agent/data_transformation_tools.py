@@ -4,7 +4,7 @@ import pandas as pd
 from langchain.messages import ToolMessage
 from langchain.tools import tool, ToolRuntime
 from langgraph.types import Command
-from typing_extensions import Any, List, Union
+from typing_extensions import Any, Dict, List, Union
 
 
 @tool
@@ -44,12 +44,12 @@ def get_column_type(column: str, runtime: ToolRuntime) -> int:
 
 
 @tool
-def get_col_unique_preview(column: str, runtime: ToolRuntime) -> List[Any]:
-    """Retorna um preview dos valores únicos contidos em uma coluna alvo da base"""
+def get_col_unique(column: str, runtime: ToolRuntime) -> List[Any]:
+    """Retorna todos os valores únicos contidos em uma coluna alvo da base"""
     if column not in runtime.state['dataset'].columns.tolist():
         return {"error": f"Coluna {column} não está presente na base"}
     serie: pd.Series = runtime.state['dataset'][column]
-    return serie.drop_duplicates().head().tolist()
+    return serie.unique().tolist()
 
 
 @tool
@@ -594,3 +594,82 @@ def apply_constant_to_col(
                     )
                 ],
             })
+
+
+@tool
+def map_col_values(column: str, mapping: Dict[Any, Any], runtime: ToolRuntime):
+    """
+    Mapeia valores da coluna
+    Exemplo:
+    - column: classe
+    - mapping: {'classe_a':1, 'classe_b':0}
+    Isso faz: df[column] = df[column].map(mapping)
+    """
+    df: pd.DataFrame = runtime.state["dataset"]
+    if column not in runtime.state['dataset'].columns.tolist():
+        return {"error": f"Coluna {column} não está presente na base"}
+
+    df[column] = df[column].map(
+        mapping,
+        na_action='ignore',
+    )
+    return_msg = f"A coluna '{column}' foi mapeada com sucesso."
+    new_tool_history: dict = copy.deepcopy(runtime.state['tool_history'])
+    new_tool_history.setdefault(column, list()).append({
+        'tool': 'map_col_values',
+        'args': {
+            'mapping': mapping
+        }
+    })
+
+    return Command(
+        update={
+            "dataset":
+            df,
+            'tool_history':
+            new_tool_history,
+            "messages": [
+                ToolMessage(
+                    content=(return_msg),
+                    tool_call_id=runtime.tool_call_id,
+                )
+            ],
+        })
+
+
+@tool
+def copy_column(column: str, new_column: str, runtime: ToolRuntime):
+    """
+    Cria uma cópia de uma coluna na base para uma nova coluna
+    Exemplo: df[new_column] = df[column].values
+    """
+    df: pd.DataFrame = runtime.state["dataset"]
+    if column not in runtime.state['dataset'].columns.tolist():
+        return {"error": f"Coluna {column} não está presente na base"}
+
+    if new_column in runtime.state['dataset'].columns.tolist():
+        return {"error": f"Coluna {column} já está presente na base"}
+
+    df[new_column] = df[column].values
+    return_msg = f"A coluna '{column}' foi copiada para '{new_column}' com sucesso."
+    new_tool_history: dict = copy.deepcopy(runtime.state['tool_history'])
+    new_tool_history.setdefault(column, list()).append({
+        'tool': 'copy_column',
+        'args': {
+            'new_column': new_column
+        }
+    })
+
+    return Command(
+        update={
+            "dataset":
+            df,
+            'tool_history':
+            new_tool_history,
+            "messages": [
+                ToolMessage(
+                    content=(return_msg),
+                    tool_call_id=runtime.tool_call_id,
+                )
+            ],
+        })

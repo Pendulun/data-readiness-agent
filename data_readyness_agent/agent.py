@@ -109,10 +109,9 @@ def get_transformed_df(
 
 
 def get_final_response(
-    data_url: str, openai_api_key: str, qt_maxima_iteracoes_agente: int,
-    target_col: str
+    dataset: pd.DataFrame, openai_api_key: str,
+    qt_maxima_iteracoes_agente: int, target_col: str
 ) -> Tuple[str, pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
-    dataset = pd.read_csv(data_url)
     profile = create_dataset_profile(dataset)
 
     avaliacao = get_avaliacao(

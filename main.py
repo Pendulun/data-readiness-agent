@@ -38,7 +38,6 @@ st.markdown(
 required_values = None
 target_col = None
 openai_api_key = None
-data_url = "user_data/dados_originais.csv"
 
 with st.sidebar:
     uploaded_file = st.file_uploader("Base de dados",
@@ -49,9 +48,6 @@ with st.sidebar:
     all_cols = None
     if uploaded_file is not None:
         dataframe = pd.read_csv(uploaded_file)
-        print("Salvando dados originais...")
-        dataframe.to_csv(data_url, index=None)
-
         all_cols = dataframe.columns.tolist()
 
     target_col = st.selectbox("Coluna alvo",
@@ -90,7 +86,7 @@ if gerar:
     with st.spinner("Gerando resposta...", show_time=True):
         try:
             resposta, dados_transformados, tool_history = agent.get_final_response(
-                data_url,
+                dataframe,
                 openai_api_key=openai_api_key,
                 qt_maxima_iteracoes_agente=qt_max_iteracoes_agente,
                 target_col=target_col,

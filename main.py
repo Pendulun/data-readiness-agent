@@ -59,10 +59,12 @@ def display_sidebar() -> SidebarInputs:
     rodar_agente = False
 
     with st.sidebar:
-        uploaded_file = st.file_uploader("Base de dados",
-                                         max_upload_size=10,
-                                         type='csv',
-                                         accept_multiple_files=False)
+        uploaded_file = st.file_uploader(
+            "Base de dados",
+            max_upload_size=10,
+            type='csv',
+            accept_multiple_files=False,
+            help="Arquivo CSV separado por vírgula de até 10MB")
 
         all_cols = None
         if uploaded_file is not None:

@@ -7,10 +7,13 @@ from langgraph.graph.state import CompiledStateGraph
 from langgraph.graph import MessagesState
 import pandas as pd
 
-from data_readyness_agent import common_data_structs, common_middleware, common_tools, data_evaluation_tools
+from data_readyness_agent import common_data_structs, common_middleware, data_evaluation_tools
 
 
 class IterationLimitMiddleware(AgentMiddleware):
+    """
+    Limita as iterações do agente
+    """
 
     def __init__(self, max_iterations: int):
         self.max_iterations = max_iterations
@@ -51,6 +54,9 @@ class State(MessagesState):
 
 def get_agent(openai_api_key: str,
               qt_maxima_iteracoes_agente: int = 15) -> CompiledStateGraph:
+    """
+    Retorna a instância do agente de avaliação
+    """
     model = ChatOpenAI(model='gpt-5-nano',
                        temperature=0.0,
                        api_key=openai_api_key)
@@ -89,11 +95,11 @@ def get_agent(openai_api_key: str,
             data_evaluation_tools.get_column_value_distribution,
             data_evaluation_tools.analyze_missingness_patterns,
             data_evaluation_tools.detect_outliers,
-            common_tools.get_n_rows,
-            common_tools.get_n_cols,
-            common_tools.get_null_counts,
-            common_tools.get_unique_counts,
-            common_tools.get_col_preview,
+            data_evaluation_tools.get_n_rows,
+            data_evaluation_tools.get_n_cols,
+            data_evaluation_tools.get_null_counts,
+            data_evaluation_tools.get_unique_counts,
+            data_evaluation_tools.get_col_preview,
         ],
         middleware=[
             common_middleware.DebugMiddleware(),

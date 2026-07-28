@@ -5,8 +5,69 @@ from typing_extensions import Any, Dict, List, Tuple
 from data_readyness_agent import common_data_structs, data_evaluation_agent, data_transformation_agent
 
 
+def get_avaliacao(dataset: pd.DataFrame, openai_api_key: str,
+                  qt_maxima_iteracoes_agente: int,
+                  target_col: str) -> common_data_structs.EvalAgentResponse:
+    """
+    Gera avaliação da base
+    Args:
+        dataset (pd.DataFrame):
+            Dataset a ser transformado
+        openai_api_key (str):
+            Chave da OpenAI para fazer requisições
+        qt_maxima_iteracoes_agente (int):
+            Quantidade máxima de iterações de avaliação do agente. Isso restringe o esforço
+            e tempo necessário para que o agente analise a base e evita que ele gaste muito
+            tempo e tokens na análise
+        target_col (str):
+            Coluna alvo da base que será usada como alvo em uma tarefa de modelagem
+    """
+    profile = create_dataset_profile(dataset)
+    avaliacao = generate_avaliacao(
+        dataset,
+        profile,
+        openai_api_key=openai_api_key,
+        qt_maxima_iteracoes_agente=qt_maxima_iteracoes_agente,
+        target_col=target_col,
+    )
+    return avaliacao
+
+
+def get_base_transformada(
+    findings_str: str, dataset: pd.DataFrame, openai_api_key: str
+) -> Tuple[pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
+    """
+    Aplica transformações na base
+
+    Args:
+        findings_str (str):
+            Texto representando os problemas encontrados na base
+        dataset (pd.DataFrame):
+            Dataset a ser transformado
+        openai_api_key (str):
+            Chave da OpenAI para fazer requisições
+
+    Returns:
+        Dataset transformado e o histórico de chamadas com sucesso a tools
+        de transformação
+    """
+    # Conseguir o profile da base é barato então eu posso calcular aqui de novo
+    profile = create_dataset_profile(dataset)
+    dataset_transformado, tool_history = get_transformed_df(
+        findings_str,
+        profile,
+        dataset,
+        openai_api_key,
+    )
+
+    return dataset_transformado, tool_history
+
+
 def create_dataset_profile(
         df: pd.DataFrame) -> common_data_structs.DatasetProfile:
+    """
+    Cria um perfil da base
+    """
 
     return common_data_structs.DatasetProfile(
         n_rows=len(df),
@@ -34,6 +95,9 @@ def generate_avaliacao(
     qt_maxima_iteracoes_agente: int,
     target_col: str,
 ) -> common_data_structs.EvalAgentResponse:
+    """
+    Invoca o agente responsável por gerar a avaliação da base
+    """
 
     agent = data_evaluation_agent.get_agent(
         openai_api_key,
@@ -73,7 +137,12 @@ def get_transformed_df(
     dataset: pd.DataFrame, openai_api_key: str
 ) -> Tuple[pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
     """
-    Aplica transformações sobre o dataset original de acordo com a avalição feita
+    Invoca o agente responsável por aplicar transformações sobre o dataset
+    original de acordo com a avalição feita
+
+    Returns:
+        O dataset transformado e o histórico de uso de sucesso das tools de transformação
+        da base por coluna
     """
     agent = data_transformation_agent.get_agent(openai_api_key)
     profile_text = profile.model_dump_json(indent=2)
@@ -103,32 +172,3 @@ def get_transformed_df(
         dict()
     })
     return response["dataset"], response['tool_history']
-
-
-def get_avaliacao(dataset: pd.DataFrame, openai_api_key: str,
-                  qt_maxima_iteracoes_agente: int,
-                  target_col: str) -> common_data_structs.EvalAgentResponse:
-    profile = create_dataset_profile(dataset)
-    avaliacao = generate_avaliacao(
-        dataset,
-        profile,
-        openai_api_key=openai_api_key,
-        qt_maxima_iteracoes_agente=qt_maxima_iteracoes_agente,
-        target_col=target_col,
-    )
-    return avaliacao
-
-
-def get_base_transformada(
-    findings_str: str, dataset: pd.DataFrame, openai_api_key: str
-) -> Tuple[pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
-    # Conseguir o profile da base é barato então eu posso calcular aqui de novo
-    profile = create_dataset_profile(dataset)
-    dataset_transformado, tool_history = get_transformed_df(
-        findings_str,
-        profile,
-        dataset,
-        openai_api_key,
-    )
-
-    return dataset_transformado, tool_history

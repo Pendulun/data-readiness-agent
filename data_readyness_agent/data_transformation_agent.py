@@ -14,6 +14,9 @@ class State(MessagesState):
 
 
 def get_agent(openai_api_key: str) -> CompiledStateGraph:
+    """
+    Retorna a instância do agente de transformação da base
+    """
     model = ChatOpenAI(model='gpt-5-nano',
                        temperature=0.0,
                        api_key=openai_api_key,

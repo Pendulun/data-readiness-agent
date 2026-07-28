@@ -13,6 +13,9 @@ class SidebarInputs:
     dataframe: pd.DataFrame
     openai_api_key: str
     qt_max_iteracoes_agente_avaliacao: int
+    qt_maxima_supersteps_avaliacao: int
+    qt_max_iteracoes_agente_transformacao: int
+    qt_maxima_supersteps_transformacao: int
     target_col: str
 
 
@@ -55,7 +58,7 @@ def display_sidebar() -> SidebarInputs:
     target_col = None
     openai_api_key = None
     dataframe = None
-    qt_max_iteracoes_agente = None
+    qt_max_iteracoes_agente_avaliacao = None
     rodar_agente = False
 
     with st.sidebar:
@@ -82,13 +85,24 @@ def display_sidebar() -> SidebarInputs:
                                        key='openai_api_key',
                                        disabled=uploaded_file is None)
 
-        qt_max_iteracoes_agente = st.number_input(
+        qt_max_iteracoes_agente_avaliacao = st.number_input(
             label=
             'Quantidade máxima de iterações do agente de avaliação da base',
             disabled=uploaded_file is None,
-            value=0,
-            min_value=0,
-            max_value=50,
+            value=15,
+            min_value=1,
+            max_value=1000,
+            step=1,
+            help=
+            "Isso não limita, necessariamente, a quantidade de tools chamadas")
+
+        qt_max_iteracoes_agente_transformacao = st.number_input(
+            label=
+            'Quantidade máxima de iterações do agente de transformação da base',
+            disabled=uploaded_file is None,
+            value=50,
+            min_value=1,
+            max_value=1000,
             step=1,
             help=
             "Isso não limita, necessariamente, a quantidade de tools chamadas")
@@ -99,6 +113,33 @@ def display_sidebar() -> SidebarInputs:
         required_values = [uploaded_file, target_col, openai_api_key]
         can_generate_response = all(
             [val is not None for val in required_values])
+
+        with st.expander("Opções avançadas"):
+            st.write(
+                "Opções para evitar que o agente entre em loop eternamente")
+            qt_maxima_supersteps_avaliacao = st.number_input(
+                label="Quantidade máxima de supersteps do agente de avaliação",
+                disabled=uploaded_file is None,
+                min_value=int(qt_max_iteracoes_agente_avaliacao * 3),
+                max_value=max(int(qt_max_iteracoes_agente_avaliacao * 5), 100),
+                value='min',
+                step=1,
+                help=
+                "Caso o agente ultrapasse esse número de supersteps, um erro será levantado"
+            )
+            qt_maxima_supersteps_transformacao = st.number_input(
+                label=
+                "Quantidade máxima de supersteps do agente de transformação",
+                disabled=uploaded_file is None,
+                min_value=int(qt_max_iteracoes_agente_transformacao * 3),
+                max_value=max(int(qt_max_iteracoes_agente_transformacao * 5),
+                              100),
+                value='min',
+                step=1,
+                help=
+                "Caso o agente ultrapasse esse número de supersteps, um erro será levantado"
+            )
+
         rodar_agente = st.button("Gerar resposta para variável alvo",
                                  disabled=not can_generate_response)
 
@@ -106,7 +147,11 @@ def display_sidebar() -> SidebarInputs:
         rodar_agente=rodar_agente,
         dataframe=dataframe,
         openai_api_key=openai_api_key,
-        qt_max_iteracoes_agente_avaliacao=qt_max_iteracoes_agente,
+        qt_max_iteracoes_agente_avaliacao=qt_max_iteracoes_agente_avaliacao,
+        qt_max_iteracoes_agente_transformacao=
+        qt_max_iteracoes_agente_transformacao,
+        qt_maxima_supersteps_avaliacao=qt_maxima_supersteps_avaliacao,
+        qt_maxima_supersteps_transformacao=qt_maxima_supersteps_transformacao,
         target_col=target_col)
 
 
@@ -175,7 +220,10 @@ def call_transformation_agent(
             avaliacao.get_findings_str(),
             sidebar_inputs.dataframe,
             openai_api_key=sidebar_inputs.openai_api_key,
-        )
+            qt_max_iteracoes_agente=sidebar_inputs.
+            qt_max_iteracoes_agente_transformacao,
+            qt_maxima_supersteps=sidebar_inputs.
+            qt_maxima_supersteps_transformacao)
     return dados_transformados, tool_history
 
 
@@ -192,7 +240,7 @@ def call_eval_agent(
             qt_maxima_iteracoes_agente=sidebar_inputs.
             qt_max_iteracoes_agente_avaliacao,
             target_col=sidebar_inputs.target_col,
-        )
+            qt_maxima_supersteps=sidebar_inputs.qt_maxima_supersteps_avaliacao)
     return avaliacao
 
 

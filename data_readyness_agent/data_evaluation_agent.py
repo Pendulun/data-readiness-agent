@@ -1,7 +1,5 @@
 from langchain.agents import create_agent
 from langchain.agents.structured_output import ToolStrategy
-from langchain.agents.middleware import AgentMiddleware
-from langchain.messages import SystemMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.graph import MessagesState
@@ -10,50 +8,13 @@ import pandas as pd
 from data_readyness_agent import common_data_structs, common_middleware, data_evaluation_tools
 
 
-class IterationLimitMiddleware(AgentMiddleware):
-    """
-    Limita as iterações do agente
-    """
-
-    def __init__(self, max_iterations: int):
-        self.max_iterations = max_iterations
-
-    def wrap_model_call(self, request, handler):
-        iteration = self.count_model_calls(request.state["messages"])
-
-        print(f"Iteração do agente: "
-              f"{iteration}/{self.max_iterations}")
-
-        # A última iteração é reservada para gerar a resposta final
-        if iteration >= self.max_iterations - 1:
-            print("Limite de iterações atingido.")
-
-            request = request.override(
-                tools=[],
-                messages=[
-                    *request.messages,
-                    SystemMessage(
-                        content=("O limite de investigação foi atingido. "
-                                 "Não execute mais ferramentas. "
-                                 "Gere agora a resposta final estruturada "
-                                 "com base nas informações coletadas."))
-                ])
-
-        return handler(request)
-
-    def count_model_calls(self, messages) -> int:
-        # Conta quantas respostas da LLM já existem
-        return sum(1 for message in messages
-                   if message.__class__.__name__ == "AIMessage")
-
-
 class State(MessagesState):
     dataset: pd.DataFrame
     dataset_profile: common_data_structs.DatasetProfile | None = None
 
 
 def get_agent(openai_api_key: str,
-              qt_maxima_iteracoes_agente: int = 15) -> CompiledStateGraph:
+              qt_maxima_iteracoes_agente: int) -> CompiledStateGraph:
     """
     Retorna a instância do agente de avaliação
     """
@@ -103,5 +64,6 @@ def get_agent(openai_api_key: str,
         ],
         middleware=[
             common_middleware.DebugMiddleware(),
-            IterationLimitMiddleware(max_iterations=qt_maxima_iteracoes_agente)
+            common_middleware.IterationLimitMiddleware(
+                max_iterations=qt_maxima_iteracoes_agente)
         ])

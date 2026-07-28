@@ -4,7 +4,7 @@ import pandas as pd
 from langchain.messages import ToolMessage
 from langchain.tools import tool, ToolRuntime
 from langgraph.types import Command
-from typing_extensions import Any, List
+from typing_extensions import Any, List, Union
 
 
 @tool
@@ -50,6 +50,44 @@ def get_col_unique_preview(column: str, runtime: ToolRuntime) -> List[Any]:
         return {"error": f"Coluna {column} não está presente na base"}
     serie: pd.Series = runtime.state['dataset'][column]
     return serie.drop_duplicates().head().tolist()
+
+
+@tool
+def rename_column(column: str, new_column: str, runtime: ToolRuntime):
+    """
+    Renomeia uma coluna na base.
+    """
+    df: pd.DataFrame = runtime.state["dataset"]
+    if column not in runtime.state['dataset'].columns.tolist():
+        return {"error": f"Coluna {column} não está presente na base"}
+
+    if new_column in runtime.state['dataset'].columns.tolist():
+        return {"error": f"Coluna {column} já está presente na base"}
+
+    df.rename(columns={column: new_column}, inplace=True)
+    new_tool_history: dict = copy.deepcopy(runtime.state['tool_history'])
+    new_tool_history.setdefault(column, list()).append({
+        'tool': 'rename_column',
+        'args': {
+            'new_column': new_column
+        }
+    })
+
+    return_msg = f"Coluna {column} renomeada com sucesso para {new_column}"
+
+    return Command(
+        update={
+            "dataset":
+            df,
+            'tool_history':
+            new_tool_history,
+            "messages": [
+                ToolMessage(
+                    content=(return_msg),
+                    tool_call_id=runtime.tool_call_id,
+                )
+            ],
+        })
 
 
 @tool
@@ -170,11 +208,7 @@ def convert_column_to_datetime(
     runtime: ToolRuntime,
 ):
     """Converte uma coluna para o tipo datetime"""
-    df: pd.DataFrame = runtime.state["dataset"]
-    if column not in runtime.state['dataset'].columns.tolist():
-        return {"error": f"Coluna {column} não está presente na base"}
-    return get_command_with_converted_column_type(df, column, 'datetime',
-                                                  runtime)
+    return get_command_with_converted_column_type(column, 'datetime', runtime)
 
 
 @tool
@@ -183,10 +217,7 @@ def convert_column_to_int(
     runtime: ToolRuntime,
 ):
     """Converte uma coluna para o tipo inteiro"""
-    df: pd.DataFrame = runtime.state["dataset"]
-    if column not in runtime.state['dataset'].columns.tolist():
-        return {"error": f"Coluna {column} não está presente na base"}
-    return get_command_with_converted_column_type(df, column, 'int', runtime)
+    return get_command_with_converted_column_type(column, 'int', runtime)
 
 
 @tool
@@ -195,14 +226,10 @@ def convert_column_to_float(
     runtime: ToolRuntime,
 ):
     """Converte uma coluna para o tipo float"""
-    df: pd.DataFrame = runtime.state["dataset"]
-    if column not in runtime.state['dataset'].columns.tolist():
-        return {"error": f"Coluna {column} não está presente na base"}
-    return get_command_with_converted_column_type(df, column, 'float', runtime)
+    return get_command_with_converted_column_type(column, 'float', runtime)
 
 
 def get_command_with_converted_column_type(
-    df: pd.DataFrame,
     column: str,
     target_type: str,
     runtime: ToolRuntime,
@@ -211,6 +238,18 @@ def get_command_with_converted_column_type(
     Retorna um comando para atualizar o dataset com a coluna transformada. Se falhar, a conversão 
     não é realizada
     """
+    df: pd.DataFrame = runtime.state["dataset"]
+    if column not in df.columns.tolist():
+        return Command(
+            update={
+                "messages": [
+                    ToolMessage(
+                        content=(f"Coluna {column} não está presente na base"),
+                        tool_call_id=runtime.tool_call_id,
+                    )
+                ],
+            })
+
     return_msg = None
 
     transform_func = lambda x, _type: x.astype(_type)
@@ -226,6 +265,321 @@ def get_command_with_converted_column_type(
     else:
         new_tool_history.setdefault(column, list()).append(
             {'tool': f'convert_column_to_{target_type}'})
+    finally:
+        return Command(
+            update={
+                "dataset":
+                df,
+                'tool_history':
+                new_tool_history,
+                "messages": [
+                    ToolMessage(
+                        content=(return_msg),
+                        tool_call_id=runtime.tool_call_id,
+                    )
+                ],
+            })
+
+
+@tool
+def subtract_cols(
+    first_col: str,
+    second_col: str,
+    new_col_name: str,
+    runtime: ToolRuntime,
+):
+    """
+    Subtrai duas colunas da base criando uma nova.
+    Exemplo:
+    - first_col = 'faturamento_antes'
+    - second_col = 'faturamento_depois'
+    - new_col_name = 'diff_faturamento'
+
+    Isso faz df[new_col_name] = df[first_col] - df[second_col]
+    """
+    return create_new_col_using_two_others(first_col, second_col, new_col_name,
+                                           'subtraction', runtime)
+
+
+@tool
+def sum_cols(
+    first_col: str,
+    second_col: str,
+    new_col_name: str,
+    runtime: ToolRuntime,
+):
+    """
+    Soma duas colunas da base criando uma nova.
+    Exemplo:
+    - first_col = 'faturamento_mes_1'
+    - second_col = 'faturamento_mes_2'
+    - new_col_name = 'faturamento_final'
+
+    Isso faz df[new_col_name] = df[first_col] + df[second_col]
+    """
+    return create_new_col_using_two_others(first_col, second_col, new_col_name,
+                                           'sum', runtime)
+
+
+@tool
+def divide_cols(
+    first_col: str,
+    second_col: str,
+    new_col_name: str,
+    runtime: ToolRuntime,
+):
+    """
+    Divide duas colunas da base criando uma nova de forma segura
+    Exemplo:
+    - first_col = 'faturamento'
+    - second_col = 'metragem'
+    - new_col_name = 'faturamento_por_metro'
+
+    Isso faz df[new_col_name] = df[first_col] / df[second_col].fillna(1)
+    """
+    return create_new_col_using_two_others(first_col, second_col, new_col_name,
+                                           'div', runtime)
+
+
+@tool
+def multiply_cols(
+    first_col: str,
+    second_col: str,
+    new_col_name: str,
+    runtime: ToolRuntime,
+):
+    """
+    Multiplica duas colunas da base criando uma nova de forma segura
+    Exemplo:
+    - first_col = 'comprimento'
+    - second_col = 'altura'
+    - new_col_name = 'area'
+
+    Isso faz df[new_col_name] = df[first_col] * df[second_col]
+    """
+    return create_new_col_using_two_others(first_col, second_col, new_col_name,
+                                           'prod', runtime)
+
+
+@tool
+def power_cols(
+    first_col: str,
+    second_col: str,
+    new_col_name: str,
+    runtime: ToolRuntime,
+):
+    """
+    Eleva os valores da primeira coluna pelos valores da segunda coluna criando uma nova
+    Isso faz df[new_col_name] = df[first_col] ** df[second_col]
+    """
+    return create_new_col_using_two_others(first_col, second_col, new_col_name,
+                                           'prod', runtime)
+
+
+def create_new_col_using_two_others(
+    first_col: str,
+    second_col: str,
+    new_col_name: str,
+    op_type: str,
+    runtime: ToolRuntime,
+) -> Command:
+    """
+    Retorna um comando para atualizar o dataset com a coluna transformada. Se falhar, a conversão 
+    não é realizada
+    """
+    df: pd.DataFrame = runtime.state["dataset"]
+    error_msg = None
+    for col in [first_col, second_col]:
+        if col not in df.columns.tolist():
+            error_msg = f"Coluna {col} não está presente na base"
+            break
+
+    if error_msg is None and new_col_name in df.columns.tolist():
+        error_msg = f"Coluna {new_col_name} já está presente na base"
+
+    if error_msg is not None:
+        return Command(
+            update={
+                "messages": [
+                    ToolMessage(
+                        content=(error_msg),
+                        tool_call_id=runtime.tool_call_id,
+                    )
+                ],
+            })
+
+    return_msg = None
+
+    op_to_func = {
+        'subtraction': (lambda x: x[first_col] - x[second_col]),
+        'sum': (lambda x: x[first_col] + x[second_col]),
+        'div': (lambda x: x[first_col] / np.maximum(x[second_col], 1)),
+        'prod': (lambda x: x[first_col] * x[second_col]),
+        'pow': (lambda x: x[first_col]**x[second_col])
+    }
+    new_tool_history: dict = copy.deepcopy(runtime.state['tool_history'])
+
+    try:
+        df[new_col_name] = op_to_func[op_type](df)
+        return_msg = f"Os valores das colunas '{first_col}' e '{second_col}' foram usados para criar {new_col_name} com sucesso."
+    except Exception as e:
+        return_msg = f"Não foi possível realizar a operação {op_type} usando valores das coluna '{first_col}' e {second_col}! Erro: {str(e)}"
+    else:
+        new_tool_history.setdefault(new_col_name, list()).append({
+            'tool': f'{op_type}_cols',
+            'args': {
+                'first_col': first_col,
+                'second_col': second_col
+            }
+        })
+    finally:
+        return Command(
+            update={
+                "dataset":
+                df,
+                'tool_history':
+                new_tool_history,
+                "messages": [
+                    ToolMessage(
+                        content=(return_msg),
+                        tool_call_id=runtime.tool_call_id,
+                    )
+                ],
+            })
+
+
+@tool
+def subtract_value(
+    column: str,
+    value: Union[int, float],
+    runtime: ToolRuntime,
+):
+    """
+    Subtrai um valor fixo de uma coluna da base
+    Exemplo:
+    - column = 'idade'
+    - value = 2
+
+    Isso faz df[column] = df[column] - value
+    """
+    return apply_constant_to_col(column, value, 'subtraction', runtime)
+
+
+@tool
+def sum_value(
+    column: str,
+    value: Union[int, float],
+    runtime: ToolRuntime,
+):
+    """
+    Soma um valor fixo de uma coluna da base
+    Exemplo:
+    - column = 'idade'
+    - value = 2
+
+    Isso faz df[column] = df[column] + value
+    """
+    return apply_constant_to_col(column, value, 'sum', runtime)
+
+
+@tool
+def divide_value(
+    column: str,
+    value: Union[int, float],
+    runtime: ToolRuntime,
+):
+    """
+    Divide uma coluna da base por um valor fixo
+    Exemplo:
+    - column = 'idade'
+    - value = 2
+
+    Isso faz df[column] = df[column] / value
+    """
+    return apply_constant_to_col(column, value, 'div', runtime)
+
+
+@tool
+def multiply_value(
+    column: str,
+    value: Union[int, float],
+    runtime: ToolRuntime,
+):
+    """
+    Multiplica uma coluna da base por um valor fixo
+    Exemplo:
+    - column = 'idade'
+    - value = 2
+
+    Isso faz df[column] = df[column] * value
+    """
+    return apply_constant_to_col(column, value, 'prod', runtime)
+
+
+@tool
+def power_value(
+    column: str,
+    value: Union[int, float],
+    runtime: ToolRuntime,
+):
+    """
+    Eleva os valores de uma coluna da base por um valor fixo
+    Exemplo:
+    - column = 'idade'
+    - value = 2
+
+    Isso faz df[column] = df[column] ** value
+    """
+    return apply_constant_to_col(column, value, 'pow', runtime)
+
+
+def apply_constant_to_col(
+    column: str,
+    value: Union[int, float],
+    op_type: str,
+    runtime: ToolRuntime,
+) -> Command:
+    """
+    Retorna um comando para atualizar o dataset com a coluna transformada. Se falhar, a conversão 
+    não é realizada
+    """
+    df: pd.DataFrame = runtime.state["dataset"]
+    error_msg = None
+    if column not in df.columns.tolist():
+        error_msg = f"Coluna {column} não está presente na base"
+        return Command(
+            update={
+                "messages": [
+                    ToolMessage(
+                        content=(error_msg),
+                        tool_call_id=runtime.tool_call_id,
+                    )
+                ],
+            })
+
+    return_msg = None
+
+    op_to_func = {
+        'subtraction': (lambda x: x[column] - value),
+        'sum': (lambda x: x[column] + value),
+        'div': (lambda x: x[column] / value),
+        'prod': (lambda x: x[column] * value),
+        'pow': (lambda x: x[column]**value)
+    }
+    new_tool_history: dict = copy.deepcopy(runtime.state['tool_history'])
+
+    try:
+        df[column] = op_to_func[op_type](df)
+        return_msg = f"Foi aplicado a operação de {op_type} na coluna {column} com o valor {value} com sucesso."
+    except Exception as e:
+        return_msg = f"Não foi possível realizar a operação {op_type} usando o valor {value} na coluna '{column}'! Erro: {str(e)}"
+    else:
+        new_tool_history.setdefault(column, list()).append({
+            'tool': f'{op_type}_value',
+            'args': {
+                'value': value,
+            }
+        })
     finally:
         return Command(
             update={

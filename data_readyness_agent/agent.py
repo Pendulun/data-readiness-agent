@@ -27,13 +27,13 @@ def create_dataset_profile(
                  for col in df.columns})
 
 
-def get_avaliacao(
+def generate_avaliacao(
     dataset: pd.DataFrame,
     profile: common_data_structs.DatasetProfile,
     openai_api_key: str,
     qt_maxima_iteracoes_agente: int,
     target_col: str,
-) -> data_evaluation_agent.AgentResponse:
+) -> common_data_structs.EvalAgentResponse:
 
     agent = data_evaluation_agent.get_agent(
         openai_api_key,
@@ -63,7 +63,7 @@ def get_avaliacao(
         "dataset_profile":
         profile,
     })
-    final_response: data_evaluation_agent.AgentResponse = response[
+    final_response: data_evaluation_agent.EvalAgentResponse = response[
         'structured_response']
     return final_response
 
@@ -71,7 +71,7 @@ def get_avaliacao(
 def get_transformed_df(
     avaliacao: str, profile: common_data_structs.DatasetProfile,
     dataset: pd.DataFrame, openai_api_key: str
-) -> Tuple[str, pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
+) -> Tuple[pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
     """
     Aplica transformações sobre o dataset original de acordo com a avalição feita
     """
@@ -102,35 +102,33 @@ def get_transformed_df(
         'tool_history':
         dict()
     })
-    # final_response: data_evaluation_agent.AgentResponse = response[
-    #     'structured_response'].to_markdown()
-    final_response = ""
-    return final_response, response["dataset"], response['tool_history']
+    return response["dataset"], response['tool_history']
 
 
-def get_final_response(
-    dataset: pd.DataFrame, openai_api_key: str,
-    qt_maxima_iteracoes_agente: int, target_col: str
-) -> Tuple[str, pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
+def get_avaliacao(dataset: pd.DataFrame, openai_api_key: str,
+                  qt_maxima_iteracoes_agente: int,
+                  target_col: str) -> common_data_structs.EvalAgentResponse:
     profile = create_dataset_profile(dataset)
-
-    avaliacao = get_avaliacao(
+    avaliacao = generate_avaliacao(
         dataset,
         profile,
         openai_api_key=openai_api_key,
         qt_maxima_iteracoes_agente=qt_maxima_iteracoes_agente,
         target_col=target_col,
     )
+    return avaliacao
 
-    findings_str = avaliacao.get_findings_str()
-    print(findings_str)
-    transformacoes_aplicadas, dataset_transformado, tool_history = get_transformed_df(
+
+def get_base_transformada(
+    findings_str: str, dataset: pd.DataFrame, openai_api_key: str
+) -> Tuple[pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
+    # Conseguir o profile da base é barato então eu posso calcular aqui de novo
+    profile = create_dataset_profile(dataset)
+    dataset_transformado, tool_history = get_transformed_df(
         findings_str,
         profile,
         dataset,
         openai_api_key,
     )
 
-    final_text = avaliacao.to_markdown() + "\n" + transformacoes_aplicadas
-
-    return final_text, dataset_transformado, tool_history
+    return dataset_transformado, tool_history

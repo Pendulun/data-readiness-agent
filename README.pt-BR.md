@@ -1,4 +1,4 @@
-# data-readyness-agent
+# data-readiness-agent
 
 🇺🇸 [Read in English](README.md)
 

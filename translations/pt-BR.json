@@ -34,7 +34,12 @@
         "transformation_error_msg":"Um erro aconteceu ao tentar transformar a base!",
         "transformation_success_msg_fmt":"Transformações aplicadas em {seconds} segundos!",
         "transformed_data_subheader":"Primeiras linhas do arquivo transformado:",
-        "tools_history_subheader":"Histórico de uso de tools de transformação por coluna",
+        "tools_history_subheader":"Histórico de uso de tools",
+        "tools_per_col_history_subheader":"Histórico de uso de tools transformadoras por coluna",
+        "tools_usage_info_subheader": "Estatísticas de uso de tools",
+        "basic_tool_stats_text_fmt":"A quantidade de tools únicas usadas foi de {n_tools_called} com {n_all_calls} chamadas no total!",
+        "n_calls_per_tool":"Quantidade de chamadas por tool:",
+        "tools_sucess_rate":"Taxa de sucesso das chamadas por tool",
         "evaluation_spinner_label":"[Passo 1/2] Avaliando base...",
         "transformation_spinner_label":"[Passo 2/2] Transformando base...",
         "download_button_label":"Download dados transformados"

@@ -33,7 +33,12 @@
         "transformation_error_msg":"An error has occured when transforming!",
         "transformation_success_msg_fmt":"Transformations applied in {seconds} seconds!",
         "transformed_data_subheader":"Transformed data's first rows",
-        "tools_history_subheader":"Tool usage log per column",
+        "tools_history_subheader":"Tool usage log",
+        "tools_per_col_history_subheader":"Columns transformations log",
+        "tools_usage_info_subheader": "Tools usage statistics",
+        "basic_tool_stats_text_fmt":"The amount of unique tools called is {n_tools_called} with a total of {n_all_calls} calls!",
+        "n_calls_per_tool":"Amount of calls per tool:",
+        "tools_sucess_rate":"Sucess rate of calls per tool",
         "evaluation_spinner_label":"[Step 1/2] Evaluating dataset...",
         "transformation_spinner_label":"[Step 2/2] Transforming dataset...",
         "download_button_label":"Download transformed data"

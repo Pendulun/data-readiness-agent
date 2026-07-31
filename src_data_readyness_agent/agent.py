@@ -1,15 +1,17 @@
 from langchain.messages import HumanMessage
 import pandas as pd
-from typing_extensions import Any, Dict, List, Tuple
+from typing_extensions import Tuple
 
-from src_data_readyness_agent import common_data_structs, data_evaluation_agent, data_transformation_agent
+from src_data_readyness_agent.common import data_structs
+from src_data_readyness_agent.data_evaluation_agent import data_evaluation_agent
+from src_data_readyness_agent.data_transformation_agent import data_transformation_agent
+from src_data_readyness_agent.data_transformation_agent.data_structs import ToolHistory
 
 
-def get_avaliacao(
-        dataset: pd.DataFrame, openai_api_key: str,
-        qt_maxima_iteracoes_agente: int, target_col: str,
-        qt_maxima_supersteps: int,
-        prefered_language: str) -> common_data_structs.EvalAgentResponse:
+def get_avaliacao(dataset: pd.DataFrame, openai_api_key: str,
+                  qt_maxima_iteracoes_agente: int, target_col: str,
+                  qt_maxima_supersteps: int,
+                  prefered_language: str) -> data_structs.EvalAgentResponse:
     """
     Gera avaliação da base
     Args:
@@ -37,9 +39,9 @@ def get_avaliacao(
 
 
 def get_base_transformada(
-    findings_str: str, dataset: pd.DataFrame, openai_api_key: str,
-    qt_max_iteracoes_agente: int, qt_maxima_supersteps: int
-) -> Tuple[pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
+        findings_str: str, dataset: pd.DataFrame, openai_api_key: str,
+        qt_max_iteracoes_agente: int,
+        qt_maxima_supersteps: int) -> Tuple[pd.DataFrame, ToolHistory]:
     """
     Aplica transformações na base
 
@@ -70,13 +72,12 @@ def get_base_transformada(
     return dataset_transformado, tool_history
 
 
-def create_dataset_profile(
-        df: pd.DataFrame) -> common_data_structs.DatasetProfile:
+def create_dataset_profile(df: pd.DataFrame) -> data_structs.DatasetProfile:
     """
     Cria um perfil da base
     """
 
-    return common_data_structs.DatasetProfile(
+    return data_structs.DatasetProfile(
         n_rows=len(df),
         n_columns=len(df.columns),
         columns_types={
@@ -96,10 +97,10 @@ def create_dataset_profile(
 
 
 def generate_avaliacao(
-        dataset: pd.DataFrame, profile: common_data_structs.DatasetProfile,
+        dataset: pd.DataFrame, profile: data_structs.DatasetProfile,
         openai_api_key: str, qt_maxima_iteracoes_agente: int, target_col: str,
         qt_maxima_supersteps: int,
-        prefered_language: str) -> common_data_structs.EvalAgentResponse:
+        prefered_language: str) -> data_structs.EvalAgentResponse:
     """
     Invoca o agente responsável por gerar a avaliação da base
     """
@@ -134,16 +135,16 @@ def generate_avaliacao(
             profile,
         },
         config={"recursion_limit": qt_maxima_supersteps})
-    final_response: common_data_structs.EvalAgentResponse = response[
+    final_response: data_structs.EvalAgentResponse = response[
         'structured_response']
     return final_response
 
 
 def get_transformed_df(
-    avaliacao: str, profile: common_data_structs.DatasetProfile,
-    dataset: pd.DataFrame, openai_api_key: str, qt_max_iteracoes_agente: int,
-    qt_maxima_supersteps: int
-) -> Tuple[pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
+        avaliacao: str, profile: data_structs.DatasetProfile,
+        dataset: pd.DataFrame, openai_api_key: str,
+        qt_max_iteracoes_agente: int,
+        qt_maxima_supersteps: int) -> Tuple[pd.DataFrame, ToolHistory]:
     """
     Invoca o agente responsável por aplicar transformações sobre o dataset
     original de acordo com a avalição feita
@@ -179,7 +180,7 @@ def get_transformed_df(
             'dataset':
             dataset,
             'tool_history':
-            dict()
+            ToolHistory()
         },
         config={"recursion_limit": qt_maxima_supersteps})
     return response["dataset"], response['tool_history']

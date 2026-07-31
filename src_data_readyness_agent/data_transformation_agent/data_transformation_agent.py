@@ -3,14 +3,15 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.graph import MessagesState
 import pandas as pd
-from typing_extensions import Any, Dict, List
 
-from src_data_readyness_agent import common_middleware, common_tools, data_transformation_tools
+from src_data_readyness_agent.common.tools import dummy_tool
+from src_data_readyness_agent.common import middleware as common_middleware
+from src_data_readyness_agent.data_transformation_agent import data_structs, middleware, tools
 
 
 class State(MessagesState):
     dataset: pd.DataFrame
-    tool_history: Dict[str, List[Dict[str, Any]]]
+    tool_history: data_structs.ToolHistory
 
 
 def get_agent(openai_api_key: str,
@@ -45,35 +46,38 @@ def get_agent(openai_api_key: str,
         system_prompt=system_prompt,
         state_schema=State,
         tools=[
-            common_tools.dummy_tool,
-            data_transformation_tools.get_n_cols,
-            data_transformation_tools.get_cols_names,
-            data_transformation_tools.has_nulls,
-            data_transformation_tools.get_unique_counts,
-            data_transformation_tools.get_column_type,
-            data_transformation_tools.get_col_unique,
-            data_transformation_tools.replace_substring,
-            data_transformation_tools.drop_column,
-            data_transformation_tools.map_col_values,
-            data_transformation_tools.copy_column,
-            data_transformation_tools.convert_column_to_datetime,
-            data_transformation_tools.convert_column_to_float,
-            data_transformation_tools.convert_column_to_int,
-            data_transformation_tools.fill_col_na,
-            data_transformation_tools.rename_column,
-            data_transformation_tools.subtract_value,
-            data_transformation_tools.sum_value,
-            data_transformation_tools.divide_value,
-            data_transformation_tools.multiply_value,
-            data_transformation_tools.power_value,
-            data_transformation_tools.subtract_cols,
-            data_transformation_tools.sum_cols,
-            data_transformation_tools.divide_cols,
-            data_transformation_tools.multiply_cols,
-            data_transformation_tools.power_cols,
+            dummy_tool,
+            tools.get_n_cols,
+            tools.get_cols_names,
+            tools.has_nulls,
+            tools.get_unique_counts,
+            tools.get_column_type,
+            tools.get_col_unique,
+            tools.replace_substring,
+            tools.drop_column,
+            tools.map_col_values,
+            tools.copy_column,
+            tools.convert_column_to_datetime,
+            tools.convert_column_to_float,
+            tools.convert_column_to_int,
+            tools.fill_col_na,
+            tools.rename_column,
+            tools.subtract_value,
+            tools.sum_value,
+            tools.divide_value,
+            tools.multiply_value,
+            tools.power_value,
+            tools.subtract_cols,
+            tools.sum_cols,
+            tools.divide_cols,
+            tools.multiply_cols,
+            tools.power_cols,
         ],
         middleware=[
             common_middleware.DebugMiddleware(),
             common_middleware.IterationLimitMiddleware(
-                max_iterations=qt_max_iteracoes_agente, dummy_tool=True)
+                max_iterations=qt_max_iteracoes_agente, dummy_tool=True),
+            # A ordem desses dois middlewares importa já que ambos são wrap_tool_call
+            middleware.handle_tool_errors,
+            middleware.add_to_tool_history,
         ])

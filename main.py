@@ -3,9 +3,11 @@ import json
 import pandas as pd
 import streamlit as st
 from timeit import default_timer as timer
-from typing_extensions import Any, Dict, List, Tuple
+from typing_extensions import Tuple
 
-from src_data_readyness_agent import agent, common_data_structs
+from src_data_readyness_agent import agent
+from src_data_readyness_agent.common.data_structs import EvalAgentResponse
+from src_data_readyness_agent.data_transformation_agent.data_structs import ToolHistory
 
 
 @dataclass
@@ -194,13 +196,27 @@ def display_agents_response(sidebar_inputs: SidebarInputs, translation: dict,
             st.write(dados_transformados.head(10))
             download_dados_transformados(dados_transformados, translation)
             st.subheader(translation["tools_history_subheader"])
-            st.write(tool_history)
+            st.write(tool_history.history_as_dict())
+            st.subheader(translation["tools_per_col_history_subheader"])
+            st.write(tool_history.col_transformation_history_as_dict())
+            st.subheader(translation["tools_usage_info_subheader"])
+            st.write(translation['basic_tool_stats_text_fmt'].format(
+                n_tools_called=tool_history.n_tools_called(),
+                n_all_calls=tool_history.n_all_tool_calls()))
+            st.text(translation['n_calls_per_tool'])
+            st.write(tool_history.n_calls_per_tool())
+            st.write(translation['tools_sucess_rate'])
+            sucess_rate = tool_history.sucess_rate_per_tool()
+            sucess_rate_as_txt = {
+                tool: f"{suc_rate*100:.2f} %"
+                for tool, suc_rate in sucess_rate.items()
+            }
+            st.write(sucess_rate_as_txt)
 
 
 def call_transformation_agent(
-        sidebar_inputs: SidebarInputs,
-        avaliacao: common_data_structs.EvalAgentResponse, translation: dict
-) -> Tuple[pd.DataFrame, Dict[str, List[Dict[str, Any]]]]:
+        sidebar_inputs: SidebarInputs, avaliacao: EvalAgentResponse,
+        translation: dict) -> Tuple[pd.DataFrame, ToolHistory]:
     """
     Consegue a resposta do agente de transformação da base
     """
@@ -217,9 +233,8 @@ def call_transformation_agent(
     return dados_transformados, tool_history
 
 
-def call_eval_agent(
-        sidebar_inputs: SidebarInputs, translation: str,
-        prefered_language: str) -> common_data_structs.EvalAgentResponse:
+def call_eval_agent(sidebar_inputs: SidebarInputs, translation: str,
+                    prefered_language: str) -> EvalAgentResponse:
     """
     Consegue a resposta do agente de avaliação
     """

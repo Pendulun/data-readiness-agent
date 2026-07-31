@@ -1,7 +1,7 @@
 from langchain.agents.middleware import AgentMiddleware
 from langchain.messages import AIMessage, SystemMessage
 
-from src_data_readyness_agent import common_tools
+from src_data_readyness_agent.common import tools
 
 
 class DebugMiddleware(AgentMiddleware):
@@ -38,7 +38,7 @@ class IterationLimitMiddleware(AgentMiddleware):
 
             request = request.override(
                 # Isso requer que o dummy_tool seja indicado durante a instanciação do agente
-                tools=[common_tools.dummy_tool] if self.dummy_tool else [],
+                tools=[tools.dummy_tool] if self.dummy_tool else [],
                 messages=[
                     *request.messages,
                     SystemMessage(

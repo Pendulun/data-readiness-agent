@@ -11,6 +11,7 @@
     "sidebar":{
         "file_upload_label":"Base de dados",
         "file_upload_help": "Arquivo CSV separado por vírgula de até 10MB",
+        "csv_file_sep_label":"Separador do arquivo CSV",
         "target_col_label": "Coluna Alvo",
         "target_col_placeholder":"Escolha a coluna alvo da tarefa de ML",
         "openai_api_key_label": "Chave da API OpenAI",

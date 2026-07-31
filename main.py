@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import json
 import pandas as pd
+from pathlib import Path
 import streamlit as st
 from timeit import default_timer as timer
 from typing_extensions import Tuple
@@ -67,7 +68,12 @@ def display_sidebar(translation: dict) -> SidebarInputs:
 
         all_cols = None
         if uploaded_file is not None:
-            dataframe = pd.read_csv(uploaded_file)
+            ext = Path(uploaded_file.name).suffix.lower()
+            if ext == ".csv":
+                sep = st.text_input(label=translation["csv_file_sep_label"],
+                                    value=",")
+                dataframe = pd.read_csv(uploaded_file, delimiter=sep)
+
             all_cols = dataframe.columns.tolist()
 
         target_col = st.selectbox(

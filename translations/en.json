@@ -10,6 +10,7 @@
     "sidebar":{
         "file_upload_label":"Dataset",
         "file_upload_help": "CSV file, comma separated up to 10MB",
+        "csv_file_sep_label":"File separator",
         "target_col_label": "Target Column",
         "target_col_placeholder":"Choose the target column for the ML task",
         "openai_api_key_label": "OpenAI API key",

@@ -182,7 +182,7 @@ def get_transformed_df(
             'tool_history':
             ToolHistory(),
             'frozen_columns':
-            list()
+            set()
         },
         config={"recursion_limit": qt_maxima_supersteps})
     return response["dataset"], response['tool_history']

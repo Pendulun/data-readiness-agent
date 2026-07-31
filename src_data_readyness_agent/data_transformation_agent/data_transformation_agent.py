@@ -3,7 +3,6 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph.state import CompiledStateGraph
 from langgraph.graph import MessagesState
 import pandas as pd
-from typing_extensions import List
 
 from src_data_readyness_agent.common.tools import dummy_tool
 from src_data_readyness_agent.common import middleware as common_middleware
@@ -13,7 +12,7 @@ from src_data_readyness_agent.data_transformation_agent import data_structs, mid
 class State(MessagesState):
     dataset: pd.DataFrame
     tool_history: data_structs.ToolHistory
-    frozen_columns: List[str]  # Lista de colunas que não podem ser alteradas
+    frozen_columns: set[str]  # Lista de colunas que não podem ser alteradas
 
 
 def get_agent(openai_api_key: str,

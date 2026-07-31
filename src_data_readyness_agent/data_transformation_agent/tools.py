@@ -19,7 +19,7 @@ def raise_if_column_in_dataset(dataset: pd.DataFrame, column: str):
         raise ValueError(f"A coluna '{column}' já existe na base.")
 
 
-def raise_if_column_should_be_frozen(column: str, frozen_columns: List[str]):
+def raise_if_column_should_be_frozen(column: str, frozen_columns: set[str]):
     if column in frozen_columns:
         raise ValueError(f"A coluna {column} nunca pode ser modificada!")
 
@@ -174,8 +174,8 @@ def fill_col_na(column: str, fill_value: Any, runtime: ToolRuntime):
         df[column] = df[column].fillna(value=fill_value)
         new_col_name = f'imputed_{column}'
         df[new_col_name] = np.where(is_na_mask, True, False)
-        frozen_columns = runtime.state['frozen_columns'].copy()
-        frozen_columns.append(new_col_name)
+        frozen_columns: set = runtime.state['frozen_columns'].copy()
+        frozen_columns.add(new_col_name)
         return_msg = f"Os valores nulos da coluna '{column}' foram imputados com {fill_value} com sucesso."
     except Exception as e:
         raise ValueError(

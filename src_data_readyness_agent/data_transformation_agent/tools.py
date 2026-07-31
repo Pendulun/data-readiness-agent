@@ -19,6 +19,11 @@ def raise_if_column_in_dataset(dataset: pd.DataFrame, column: str):
         raise ValueError(f"A coluna '{column}' já existe na base.")
 
 
+def raise_if_column_should_be_frozen(column: str, frozen_columns: List[str]):
+    if column in frozen_columns:
+        raise ValueError(f"A coluna {column} nunca pode ser modificada!")
+
+
 # Tools
 @tool()
 @track_history(tool_type=ToolType.QUERY)
@@ -76,6 +81,7 @@ def rename_column(column: str, new_column: str, runtime: ToolRuntime):
     df: pd.DataFrame = runtime.state["dataset"]
 
     raise_if_column_not_in_dataset(df, column)
+    raise_if_column_should_be_frozen(column, runtime.state['frozen_columns'])
     raise_if_column_in_dataset(df, new_column)
 
     df.rename(columns={column: new_column}, inplace=True)
@@ -106,6 +112,7 @@ def replace_substring(column: str, old_substring: str, new_substring: str,
     """
     df: pd.DataFrame = runtime.state["dataset"]
     raise_if_column_not_in_dataset(df, column)
+    raise_if_column_should_be_frozen(column, runtime.state['frozen_columns'])
     try:
         df[column] = df[column].astype(str).str.replace(old_substring,
                                                         new_substring,
@@ -135,6 +142,7 @@ def drop_column(column: str, runtime: ToolRuntime):
     """Remove uma coluna alvo da base"""
     df: pd.DataFrame = runtime.state["dataset"]
     raise_if_column_not_in_dataset(df, column)
+    raise_if_column_should_be_frozen(column, runtime.state['frozen_columns'])
     df = df.drop(columns=[column])
     return_msg = f"A coluna '{column}' foi removida com sucesso."
 
@@ -159,11 +167,15 @@ def fill_col_na(column: str, fill_value: Any, runtime: ToolRuntime):
     com o prefixo 'imputed_' indicando que o valor da coluna original naquela linha foi imputado"""
     df: pd.DataFrame = runtime.state["dataset"]
     raise_if_column_not_in_dataset(df, column)
+    raise_if_column_should_be_frozen(column, runtime.state['frozen_columns'])
     return_msg = None
     try:
         is_na_mask = df[column].isna()
         df[column] = df[column].fillna(value=fill_value)
-        df[f'imputed_{column}'] = np.where(is_na_mask, True, False)
+        new_col_name = f'imputed_{column}'
+        df[new_col_name] = np.where(is_na_mask, True, False)
+        frozen_columns = runtime.state['frozen_columns'].copy()
+        frozen_columns.append(new_col_name)
         return_msg = f"Os valores nulos da coluna '{column}' foram imputados com {fill_value} com sucesso."
     except Exception as e:
         raise ValueError(
@@ -174,6 +186,8 @@ def fill_col_na(column: str, fill_value: Any, runtime: ToolRuntime):
             update={
                 "dataset":
                 df,
+                "frozen_columns":
+                frozen_columns,
                 "messages": [
                     ToolMessage(
                         content=(return_msg),
@@ -224,6 +238,7 @@ def get_command_with_converted_column_type(
     """
     df: pd.DataFrame = runtime.state["dataset"]
     raise_if_column_not_in_dataset(df, column)
+    raise_if_column_should_be_frozen(column, runtime.state['frozen_columns'])
 
     return_msg = None
 
@@ -502,6 +517,7 @@ def apply_constant_to_col(
     """
     df: pd.DataFrame = runtime.state["dataset"]
     raise_if_column_not_in_dataset(df, column)
+    raise_if_column_should_be_frozen(column, runtime.state['frozen_columns'])
 
     return_msg = None
 
@@ -546,6 +562,7 @@ def map_col_values(column: str, mapping: Dict[Any, Any], runtime: ToolRuntime):
     """
     df: pd.DataFrame = runtime.state["dataset"]
     raise_if_column_not_in_dataset(df, column)
+    raise_if_column_should_be_frozen(column, runtime.state['frozen_columns'])
 
     df[column] = df[column].map(
         mapping,

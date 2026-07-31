@@ -31,13 +31,14 @@ def add_to_tool_history(request: ToolCallRequest,
 
         return result
 
-    except Exception:
+    except Exception as e:
         request.state["tool_history"].add_usage(tool_name=tool_name,
                                                 args_dict=args,
                                                 sucess=False)
         # Isso deixa o langchain resolver a exceção dependendo se a tool está indicada
         # com handle_tool_errors=Tool na sua definição
-        raise
+        print(str(e))
+        raise e
 
 
 @wrap_tool_call

@@ -238,15 +238,16 @@ def display_agents_response(sidebar_inputs: SidebarInputs, translation: dict,
             st.write(translation['basic_tool_stats_text_fmt'].format(
                 n_tools_called=tool_history.n_tools_called(),
                 n_all_calls=tool_history.n_all_tool_calls()))
-            st.text(translation['n_calls_per_tool'])
-            st.write(tool_history.n_calls_per_tool())
-            st.write(translation['tools_sucess_rate'])
-            sucess_rate = tool_history.sucess_rate_per_tool()
-            sucess_rate_as_txt = {
-                tool: f"{suc_rate*100:.2f} %"
-                for tool, suc_rate in sucess_rate.items()
-            }
-            st.write(sucess_rate_as_txt)
+            tool_stats_df = pd.DataFrame({
+                translation['n_calls_per_tool']:
+                tool_history.n_calls_per_tool(),
+                translation['tools_sucess_rate']: {
+                    tool: round(suc_rate * 100, 2)
+                    for tool, suc_rate in
+                    tool_history.sucess_rate_per_tool().items()
+                }
+            })
+            st.dataframe(tool_stats_df)
 
 
 def call_transformation_agent(

@@ -41,8 +41,8 @@
         "tools_per_col_history_subheader":"Columns transformations log",
         "tools_usage_info_subheader": "Tools usage statistics",
         "basic_tool_stats_text_fmt":"The amount of unique tools called is {n_tools_called} with a total of {n_all_calls} calls!",
-        "n_calls_per_tool":"Amount of calls per tool:",
-        "tools_sucess_rate":"Sucess rate of calls per tool",
+        "n_calls_per_tool":"Number of calls",
+        "tools_sucess_rate":"Sucess rate (%)",
         "evaluation_spinner_label":"[Step 1/2] Evaluating dataset...",
         "transformation_spinner_label":"[Step 2/2] Transforming dataset...",
         "download_button_label":"Download transformed data"

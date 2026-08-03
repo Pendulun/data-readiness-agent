@@ -16,13 +16,12 @@ class State(MessagesState):
 
 
 def get_agent(openai_api_key: str,
-              qt_maxima_iteracoes_agente: int) -> CompiledStateGraph:
+              qt_maxima_iteracoes_agente: int,
+              model: str = 'gpt-5-nano') -> CompiledStateGraph:
     """
     Retorna a instância do agente de avaliação
     """
-    model = ChatOpenAI(model='gpt-5-nano',
-                       temperature=0.0,
-                       api_key=openai_api_key)
+    model = ChatOpenAI(model=model, temperature=0.0, api_key=openai_api_key)
     system_prompt = """
     Você é responsável por avaliar a prontidão de uma base de dados
     para um projeto de Data Science.

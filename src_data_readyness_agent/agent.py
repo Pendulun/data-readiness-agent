@@ -2,6 +2,7 @@ from langchain.messages import HumanMessage
 import pandas as pd
 from typing_extensions import Tuple
 
+from src_data_readyness_agent import config
 from src_data_readyness_agent.common import data_structs
 from src_data_readyness_agent.data_evaluation_agent import data_evaluation_agent
 from src_data_readyness_agent.data_transformation_agent import data_transformation_agent
@@ -10,8 +11,8 @@ from src_data_readyness_agent.data_transformation_agent.data_structs import Tool
 
 def get_avaliacao(dataset: pd.DataFrame, openai_api_key: str,
                   qt_maxima_iteracoes_agente: int, target_col: str,
-                  qt_maxima_supersteps: int,
-                  prefered_language: str) -> data_structs.EvalAgentResponse:
+                  qt_maxima_supersteps: int, prefered_language: str,
+                  model: str) -> data_structs.EvalAgentResponse:
     """
     Gera avaliação da base
     Args:
@@ -34,14 +35,15 @@ def get_avaliacao(dataset: pd.DataFrame, openai_api_key: str,
         qt_maxima_iteracoes_agente=qt_maxima_iteracoes_agente,
         target_col=target_col,
         qt_maxima_supersteps=qt_maxima_supersteps,
-        prefered_language=prefered_language)
+        prefered_language=prefered_language,
+        model=model)
     return avaliacao
 
 
-def get_base_transformada(
-        findings_str: str, dataset: pd.DataFrame, openai_api_key: str,
-        qt_max_iteracoes_agente: int,
-        qt_maxima_supersteps: int) -> Tuple[pd.DataFrame, ToolHistory]:
+def get_base_transformada(findings_str: str, dataset: pd.DataFrame,
+                          openai_api_key: str, qt_max_iteracoes_agente: int,
+                          qt_maxima_supersteps: int,
+                          model: str) -> Tuple[pd.DataFrame, ToolHistory]:
     """
     Aplica transformações na base
 
@@ -54,6 +56,10 @@ def get_base_transformada(
             Chave da OpenAI para fazer requisições
         qt_max_iteracoes_agente (int):
             Quantidade máxima de iterações do agente
+        qt_maxima_supersteps (int):
+            Quantidade máxima de supersteps que o agente pode executar antes de levantar um erro
+        model (str):
+            O nome do modelo a ser usado internamente
 
     Returns:
         Dataset transformado e o histórico de chamadas com sucesso a tools
@@ -67,7 +73,8 @@ def get_base_transformada(
         dataset,
         openai_api_key,
         qt_max_iteracoes_agente=qt_max_iteracoes_agente,
-        qt_maxima_supersteps=qt_maxima_supersteps)
+        qt_maxima_supersteps=qt_maxima_supersteps,
+        model=model)
 
     return dataset_transformado, tool_history
 
@@ -96,17 +103,20 @@ def create_dataset_profile(df: pd.DataFrame) -> data_structs.DatasetProfile:
                  for col in df.columns})
 
 
-def generate_avaliacao(
-        dataset: pd.DataFrame, profile: data_structs.DatasetProfile,
-        openai_api_key: str, qt_maxima_iteracoes_agente: int, target_col: str,
-        qt_maxima_supersteps: int,
-        prefered_language: str) -> data_structs.EvalAgentResponse:
+def generate_avaliacao(dataset: pd.DataFrame,
+                       profile: data_structs.DatasetProfile,
+                       openai_api_key: str, qt_maxima_iteracoes_agente: int,
+                       target_col: str, qt_maxima_supersteps: int,
+                       prefered_language: str,
+                       model: str) -> data_structs.EvalAgentResponse:
     """
     Invoca o agente responsável por gerar a avaliação da base
     """
+    if model not in config.ALLOWED_MODELS:
+        raise ValueError(f"Model {model} is not allowed for evaluation agent!")
 
     agent = data_evaluation_agent.get_agent(openai_api_key,
-                                            qt_maxima_iteracoes_agente)
+                                            qt_maxima_iteracoes_agente, model)
     profile_text = profile.model_dump_json(indent=2)
 
     response = agent.invoke(
@@ -140,11 +150,10 @@ def generate_avaliacao(
     return final_response
 
 
-def get_transformed_df(
-        avaliacao: str, profile: data_structs.DatasetProfile,
-        dataset: pd.DataFrame, openai_api_key: str,
-        qt_max_iteracoes_agente: int,
-        qt_maxima_supersteps: int) -> Tuple[pd.DataFrame, ToolHistory]:
+def get_transformed_df(avaliacao: str, profile: data_structs.DatasetProfile,
+                       dataset: pd.DataFrame, openai_api_key: str,
+                       qt_max_iteracoes_agente: int, qt_maxima_supersteps: int,
+                       model: str) -> Tuple[pd.DataFrame, ToolHistory]:
     """
     Invoca o agente responsável por aplicar transformações sobre o dataset
     original de acordo com a avalição feita
@@ -153,8 +162,11 @@ def get_transformed_df(
         O dataset transformado e o histórico de uso de sucesso das tools de transformação
         da base por coluna
     """
+    if model not in config.ALLOWED_MODELS:
+        raise ValueError(
+            f"Model {model} is not allowed for transformation agent!")
     agent = data_transformation_agent.get_agent(openai_api_key,
-                                                qt_max_iteracoes_agente)
+                                                qt_max_iteracoes_agente, model)
     profile_text = profile.model_dump_json(indent=2)
 
     response = agent.invoke(

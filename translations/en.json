@@ -3,7 +3,7 @@
         "main_header":"Data Readiness Agent", 
         "info1":"Specify the database, select the target column, and enter your OPENAI API KEY to evaluate the database!",
         "info2": "If you're hesitant to share your OpenAI key, feel free to check out the code for this project (link below).",
-        "info3": "The model used internally is the gpt-5-nano, which is currently the cheapest of all (July 2026).",
+        "info3": "The model used internally on both stages is the gpt-5-nano by default. It is currently the cheapest of all (July 2026).",
         "info4": "The cost of evaluating the database depends on the size of the database and the parameters you define.",
         "contact": "Created by "
     },
@@ -24,6 +24,9 @@
         "eval_agent_max_supersteps_help":"If the agent's supersteps surpass this number, an exception will be raised. Increase this value if the agent isn't generating the evaluation.",
         "transform_agent_max_supersteps_label":"Transformation agent's supersteps max amount",
         "transform_agent_max_supersteps_help":"If the agent's supersteps surpass this number, an exception will be raised. Increase this value if the agent isn't generating the transformation.",
+        "advcd_opts_models_info":"Choose the model for each stage. See the prices at the [OpenAI's official pricing website](https://developers.openai.com/api/docs/pricing)",
+        "eval_model_selectbox_label":"Evaluation agent's base model",
+        "transform_model_selectbox_label":"Transformation agent's base model",
         "generate_response_label":"Generate response"
     },
     "main_content":{

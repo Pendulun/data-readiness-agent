@@ -6,7 +6,7 @@ import streamlit as st
 from timeit import default_timer as timer
 from typing_extensions import Tuple
 
-from src_data_readyness_agent import agent
+from src_data_readyness_agent import agent, config
 from src_data_readyness_agent.common.data_structs import EvalAgentResponse
 from src_data_readyness_agent.data_transformation_agent.data_structs import ToolHistory
 
@@ -16,6 +16,8 @@ class SidebarInputs:
     rodar_agente: bool
     dataframe: pd.DataFrame
     openai_api_key: str
+    eval_agent_model: str
+    transform_agent_model: str
     qt_max_iteracoes_agente_avaliacao: int
     qt_maxima_supersteps_avaliacao: int
     qt_max_iteracoes_agente_transformacao: int
@@ -97,6 +99,8 @@ def display_sidebar(translation: dict) -> SidebarInputs:
             min_value=1,
             max_value=1000,
             step=1,
+            persist_state='session',
+            key="eval_agent_max_its",
             help=translation["eval_agent_max_its_help"])
 
         qt_max_iteracoes_agente_transformacao = st.number_input(
@@ -106,6 +110,8 @@ def display_sidebar(translation: dict) -> SidebarInputs:
             min_value=1,
             max_value=1000,
             step=1,
+            persist_state='session',
+            key="transform_agent_max_its",
             help=translation["transform_agent_max_its_help"])
 
         if len(openai_api_key) == 0:
@@ -124,6 +130,8 @@ def display_sidebar(translation: dict) -> SidebarInputs:
                 max_value=max(int(qt_max_iteracoes_agente_avaliacao * 5), 100),
                 value='min',
                 step=1,
+                persist_state='session',
+                key="eval_agent_max_supersteps",
                 help=translation["eval_agent_max_supersteps_help"])
             qt_maxima_supersteps_transformacao = st.number_input(
                 label=translation["transform_agent_max_supersteps_label"],
@@ -133,7 +141,26 @@ def display_sidebar(translation: dict) -> SidebarInputs:
                               100),
                 value='min',
                 step=1,
+                persist_state='session',
+                key="transform_agent_max_supersteps",
                 help=translation["transform_agent_max_supersteps_help"])
+            st.markdown(translation['advcd_opts_models_info'])
+            eval_model = st.selectbox(
+                label=translation['eval_model_selectbox_label'],
+                options=config.ALLOWED_MODELS,
+                index=0,
+                persist_state='session',
+                key="base_eval_model",
+                disabled=uploaded_file is None,
+            )
+            transform_model = st.selectbox(
+                label=translation['transform_model_selectbox_label'],
+                options=config.ALLOWED_MODELS,
+                index=0,
+                persist_state='session',
+                key="base_transform_model",
+                disabled=uploaded_file is None,
+            )
 
         rodar_agente = st.button(translation["generate_response_label"],
                                  disabled=not can_generate_response)
@@ -141,6 +168,8 @@ def display_sidebar(translation: dict) -> SidebarInputs:
     return SidebarInputs(
         rodar_agente=rodar_agente,
         dataframe=dataframe,
+        eval_agent_model=eval_model,
+        transform_agent_model=transform_model,
         openai_api_key=openai_api_key,
         qt_max_iteracoes_agente_avaliacao=qt_max_iteracoes_agente_avaliacao,
         qt_max_iteracoes_agente_transformacao=
@@ -235,7 +264,8 @@ def call_transformation_agent(
             qt_max_iteracoes_agente=sidebar_inputs.
             qt_max_iteracoes_agente_transformacao,
             qt_maxima_supersteps=sidebar_inputs.
-            qt_maxima_supersteps_transformacao)
+            qt_maxima_supersteps_transformacao,
+            model=sidebar_inputs.transform_agent_model)
     return dados_transformados, tool_history
 
 
@@ -252,7 +282,8 @@ def call_eval_agent(sidebar_inputs: SidebarInputs, translation: str,
             qt_max_iteracoes_agente_avaliacao,
             target_col=sidebar_inputs.target_col,
             qt_maxima_supersteps=sidebar_inputs.qt_maxima_supersteps_avaliacao,
-            prefered_language=prefered_language)
+            prefered_language=prefered_language,
+            model=sidebar_inputs.eval_agent_model)
     return avaliacao
 
 

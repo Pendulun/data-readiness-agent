@@ -2,7 +2,7 @@ from langchain.messages import HumanMessage
 import pandas as pd
 from typing_extensions import Tuple
 
-from src_data_readyness_agent import config
+from src_data_readyness_agent import config, security
 from src_data_readyness_agent.common import data_structs
 from src_data_readyness_agent.data_evaluation_agent import data_evaluation_agent
 from src_data_readyness_agent.data_transformation_agent import data_transformation_agent
@@ -117,7 +117,21 @@ def generate_avaliacao(dataset: pd.DataFrame,
     Invoca o agente responsável por gerar a avaliação da base
     """
     if model not in config.ALLOWED_MODELS:
-        raise ValueError(f"Model {model} is not allowed for evaluation agent!")
+        if prefered_language == 'English':
+            raise ValueError(
+                f"Model {model} is not allowed for evaluation agent!")
+        elif prefered_language == 'Português':
+            raise ValueError(
+                f"O modelo {model} não é permitido no agente de avaliação!")
+
+    if prefered_language == 'English':
+        if security.PromptInjectionFilterEnglish().detect_injection(
+                user_entry):
+            raise ValueError("Prompt injection attempt detected!")
+    elif prefered_language == 'Português':
+        if security.PromptInjectionFilterPortuguese().detect_injection(
+                user_entry):
+            raise ValueError("Tentativa de prompt injection detectada!")
 
     agent = data_evaluation_agent.get_agent(openai_api_key,
                                             qt_maxima_iteracoes_agente, model)

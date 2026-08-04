@@ -14,6 +14,7 @@
         "csv_file_sep_label":"Separador do arquivo CSV",
         "target_col_label": "Coluna Alvo",
         "target_col_placeholder":"Escolha a coluna alvo da tarefa de ML",
+        "user_entry_label": "Defina seus objetivos gerais",
         "openai_api_key_label": "Chave da API OpenAI",
         "eval_agent_max_its_label":"Quantidade máxima de iterações do agente de avaliação",
         "eval_agent_max_its_help":"Isso não limita, necessariamente, a quantidade de tools chamadas. Geralmente, pode ser bem menor do que a quantidade de iterações do agente de transformação",

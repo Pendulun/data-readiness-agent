@@ -28,20 +28,19 @@ def get_agent(openai_api_key: str,
     system_prompt = """
     Você é responsável por preprocessar uma base de dados para um projeto de Data Science.
 
-    Comece utilizando o DatasetProfile dos dados originais fornecido. 
-    Depois, planeje as transformações que você vai fazer seguindo a mensagem do usuário. 
-    Uma vez planejado, siga o planejamento usando as ferramentas existentes para transformar os dados.
-    Só faça as transformações indicadas pelo usuário.
+    ORDEM DE EXECUÇÃO:
+    1. Comece utilizando o DatasetProfile dos dados originais fornecido. 
+    2. Depois, planeje as transformações que você vai fazer seguindo a mensagem do usuário. 
+    3. Uma vez planejado, siga o planejamento usando as ferramentas existentes para transformar os dados.
+    4. Só faça as transformações indicadas pelo usuário.
 
-    Evite repetir chamadas de ferramentas com os mesmos argumentos,
+    ORIENTAÇÕES GERAIS:
+    1. Evite repetir chamadas de ferramentas com os mesmos argumentos,
     a menos que exista uma justificativa clara para obter novos dados.
-
-    Dadas as recomendações de transformações, só tente realizar aquelas possíveis de acordo
+    2. Dadas as recomendações de transformações, só tente realizar aquelas possíveis de acordo
     com as ferramentas disponíveis.
-
-    Execute apenas uma transformação por vez.
-
-    Uma vez satisfeito, pare e não pergunte mais nada para o usuário.
+    3. Execute apenas uma transformação por vez.
+    4. Uma vez satisfeito, pare e não peça mais nenhuma informação para o usuário.
     """
     return create_agent(
         model=model,

@@ -11,7 +11,8 @@ from src_data_readyness_agent.data_transformation_agent.data_structs import Tool
 
 def get_avaliacao(dataset: pd.DataFrame, openai_api_key: str,
                   qt_maxima_iteracoes_agente: int, target_col: str,
-                  qt_maxima_supersteps: int, prefered_language: str,
+                  user_entry: str, qt_maxima_supersteps: int,
+                  prefered_language: str,
                   model: str) -> data_structs.EvalAgentResponse:
     """
     Gera avaliação da base
@@ -26,6 +27,8 @@ def get_avaliacao(dataset: pd.DataFrame, openai_api_key: str,
             tempo e tokens na análise
         target_col (str):
             Coluna alvo da base que será usada como alvo em uma tarefa de modelagem
+        user_entry (str):
+            Entrada manual do usuário contendo os seus objetivos
     """
     profile = create_dataset_profile(dataset)
     avaliacao = generate_avaliacao(
@@ -34,6 +37,7 @@ def get_avaliacao(dataset: pd.DataFrame, openai_api_key: str,
         openai_api_key=openai_api_key,
         qt_maxima_iteracoes_agente=qt_maxima_iteracoes_agente,
         target_col=target_col,
+        user_entry=user_entry,
         qt_maxima_supersteps=qt_maxima_supersteps,
         prefered_language=prefered_language,
         model=model)
@@ -106,8 +110,8 @@ def create_dataset_profile(df: pd.DataFrame) -> data_structs.DatasetProfile:
 def generate_avaliacao(dataset: pd.DataFrame,
                        profile: data_structs.DatasetProfile,
                        openai_api_key: str, qt_maxima_iteracoes_agente: int,
-                       target_col: str, qt_maxima_supersteps: int,
-                       prefered_language: str,
+                       target_col: str, user_entry: str,
+                       qt_maxima_supersteps: int, prefered_language: str,
                        model: str) -> data_structs.EvalAgentResponse:
     """
     Invoca o agente responsável por gerar a avaliação da base
@@ -119,24 +123,30 @@ def generate_avaliacao(dataset: pd.DataFrame,
                                             qt_maxima_iteracoes_agente, model)
     profile_text = profile.model_dump_json(indent=2)
 
+    if len(user_entry) == 0:
+        user_entry = "Nenhuma indicação do usuário"
+
     response = agent.invoke(
         {
             'messages': [
                 HumanMessage(content=f"""
-                Avalie essa base de dados.
+                Avalie a base de dados. Leve em consideração as informações recebidas.
 
-                Você já possui o seguinte perfil inicial da base:
-
+                PERFIL DA BASE:
                 {profile_text}
-
-                A coluna alvo do modelo é {target_col}.
                 
-                Use essas informações como ponto de partida.
-                Não repita análises que já estão presentes no perfil.
-                Use as ferramentas disponíveis apenas para aprofundar
-                a investigação de possíveis problemas de qualidade.
+                COLUNA_ALVO_DO_MODELO:
+                {target_col}
 
-                Gere a resposta em {prefered_language}
+                INDICAÇÃO DO USUÁRIO:
+                {user_entry}
+                
+                DIRECIONAMENTOS:
+                1. Use essas informações como ponto de partida.
+                2. Não repita análises que já estão presentes no perfil.
+                3. Use as ferramentas disponíveis apenas para aprofundar
+                a investigação de possíveis problemas de qualidade.
+                4. Gere a resposta em {prefered_language}
                 """),
             ],
             'dataset':

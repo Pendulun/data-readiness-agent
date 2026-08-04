@@ -23,6 +23,7 @@ class SidebarInputs:
     qt_max_iteracoes_agente_transformacao: int
     qt_maxima_supersteps_transformacao: int
     target_col: str
+    user_entry: str
 
 
 @st.fragment
@@ -84,6 +85,13 @@ def display_sidebar(translation: dict) -> SidebarInputs:
             index=None,
             disabled=all_cols is None,
             placeholder=translation['target_col_placeholder'])
+
+        user_entry = st.text_area(translation['user_entry_label'],
+                                  value="",
+                                  max_chars=1000,
+                                  key='user_entry',
+                                  disabled=uploaded_file is None,
+                                  persist_state='session')
 
         openai_api_key = st.text_input(
             label=translation["openai_api_key_label"],
@@ -176,7 +184,8 @@ def display_sidebar(translation: dict) -> SidebarInputs:
         qt_max_iteracoes_agente_transformacao,
         qt_maxima_supersteps_avaliacao=qt_maxima_supersteps_avaliacao,
         qt_maxima_supersteps_transformacao=qt_maxima_supersteps_transformacao,
-        target_col=target_col)
+        target_col=target_col,
+        user_entry=user_entry)
 
 
 def display_main_content(sidebar_inputs: SidebarInputs, translation: dict,
@@ -282,6 +291,7 @@ def call_eval_agent(sidebar_inputs: SidebarInputs, translation: str,
             qt_maxima_iteracoes_agente=sidebar_inputs.
             qt_max_iteracoes_agente_avaliacao,
             target_col=sidebar_inputs.target_col,
+            user_entry=sidebar_inputs.user_entry,
             qt_maxima_supersteps=sidebar_inputs.qt_maxima_supersteps_avaliacao,
             prefered_language=prefered_language,
             model=sidebar_inputs.eval_agent_model)

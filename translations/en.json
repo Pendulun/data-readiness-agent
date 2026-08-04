@@ -13,6 +13,7 @@
         "csv_file_sep_label":"File separator",
         "target_col_label": "Target Column",
         "target_col_placeholder":"Choose the target column for the ML task",
+        "user_entry_label": "Inform your goals",
         "openai_api_key_label": "OpenAI API key",
         "eval_agent_max_its_label":"Evaluation agent's max iterations",
         "eval_agent_max_its_help":"This doesn't limit, necessarily, the amount of called tools. Generally, this may be way lower than the transformation agent's iterations",

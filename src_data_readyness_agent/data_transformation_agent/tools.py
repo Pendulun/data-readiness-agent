@@ -113,6 +113,11 @@ def replace_substring(column: str, old_substring: str, new_substring: str,
     df: pd.DataFrame = runtime.state["dataset"]
     raise_if_column_not_in_dataset(df, column)
     raise_if_column_should_be_frozen(column, runtime.state['frozen_columns'])
+    if old_substring == "":
+        raise ValueError(
+            "old_substring não pode ser uma string vazia! Se precisar substituir uma string vazia, use a tool de mapeamento de valores!"
+        )
+
     try:
         df[column] = df[column].astype(str).str.replace(old_substring,
                                                         new_substring,

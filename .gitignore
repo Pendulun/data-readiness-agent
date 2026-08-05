@@ -4,3 +4,4 @@
 __pycache__
 user_data/*.csv
 .vscode
+.ipynb_checkpoints

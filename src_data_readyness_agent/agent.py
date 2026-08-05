@@ -163,7 +163,7 @@ def generate_avaliacao(
                          enabled=eval_inputs.has_langsmith_configured(),
                          client=langsmith_client,
                          project_name=eval_inputs.langsmith_project,
-                         tags=['evaluation_agent']):
+                         tags=['evaluation_agent', eval_inputs.model]):
         response = agent.invoke(
             {
                 'messages': [
@@ -231,7 +231,8 @@ def get_transformed_df(
                          enabled=transform_inputs.has_langsmith_configured(),
                          client=langsmith_client,
                          project_name=transform_inputs.langsmith_project,
-                         tags=['transformation_agent']):
+                         tags=['transformation_agent',
+                               transform_inputs.model]):
         response = agent.invoke(
             {
                 'messages': [

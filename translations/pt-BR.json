@@ -29,6 +29,9 @@
         "advcd_opts_models_info":"Escolha os modelos a serem usados em cada etapa. Veja os preços no [site oficial da OpenAI](https://developers.openai.com/api/docs/pricing)",
         "eval_model_selectbox_label":"Modelo para o agente de avaliação da base",
         "transform_model_selectbox_label":"Modelo para o agente de transformação da base",
+        "langsmith_info_label":"Configurações opcionais do langsmith",
+        "langsmith_api_key_label":"Chave do langsmith",
+        "langsmith_project_label":"Projeto do langsmith",
         "generate_response_label":"Gerar resposta para variável alvo"
     },
     "main_content":{

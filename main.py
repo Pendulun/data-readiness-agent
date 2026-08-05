@@ -16,6 +16,8 @@ class SidebarInputs:
     rodar_agente: bool
     dataframe: pd.DataFrame
     openai_api_key: str
+    langsmith_api_key: str
+    langsmith_project: str
     eval_agent_model: str
     transform_agent_model: str
     qt_max_iteracoes_agente_avaliacao: int
@@ -152,6 +154,7 @@ def display_sidebar(translation: dict) -> SidebarInputs:
                 persist_state='session',
                 key="transform_agent_max_supersteps",
                 help=translation["transform_agent_max_supersteps_help"])
+
             st.markdown(translation['advcd_opts_models_info'])
             eval_model = st.selectbox(
                 label=translation['eval_model_selectbox_label'],
@@ -169,16 +172,31 @@ def display_sidebar(translation: dict) -> SidebarInputs:
                 key="base_transform_model",
                 disabled=uploaded_file is None,
             )
+            st.write(translation['langsmith_info_label'])
+            langsmith_api_key = st.text_input(
+                label=translation["langsmith_api_key_label"],
+                value="",
+                type='password',
+                persist_state='session',
+                key='langsmith_api_key',
+                disabled=uploaded_file is None)
+            langsmith_project = st.text_input(
+                label=translation["langsmith_project_label"],
+                value="",
+                persist_state='session',
+                key='langsmith_project',
+                disabled=uploaded_file is None)
 
         rodar_agente = st.button(translation["generate_response_label"],
                                  disabled=not can_generate_response)
-
     return SidebarInputs(
         rodar_agente=rodar_agente,
         dataframe=dataframe,
         eval_agent_model=eval_model,
         transform_agent_model=transform_model,
         openai_api_key=openai_api_key,
+        langsmith_api_key=langsmith_api_key,
+        langsmith_project=langsmith_project,
         qt_max_iteracoes_agente_avaliacao=qt_max_iteracoes_agente_avaliacao,
         qt_max_iteracoes_agente_transformacao=
         qt_max_iteracoes_agente_transformacao,
@@ -267,15 +285,19 @@ def call_transformation_agent(
     """
     with st.spinner(translation["transformation_spinner_label"],
                     show_time=True):
-        dados_transformados, tool_history = agent.get_base_transformada(
-            avaliacao.get_findings_str(),
-            sidebar_inputs.dataframe,
+        transform_inputs = agent.TransformAgentInputs(
+            findings_str=avaliacao.get_findings_str(),
+            dataset=sidebar_inputs.dataframe,
             openai_api_key=sidebar_inputs.openai_api_key,
+            langsmith_api_key=sidebar_inputs.langsmith_api_key,
+            langsmith_project=sidebar_inputs.langsmith_project,
             qt_max_iteracoes_agente=sidebar_inputs.
             qt_max_iteracoes_agente_transformacao,
             qt_maxima_supersteps=sidebar_inputs.
             qt_maxima_supersteps_transformacao,
             model=sidebar_inputs.transform_agent_model)
+        dados_transformados, tool_history = agent.get_base_transformada(
+            transform_inputs)
     return dados_transformados, tool_history
 
 
@@ -285,9 +307,11 @@ def call_eval_agent(sidebar_inputs: SidebarInputs, translation: str,
     Consegue a resposta do agente de avaliação
     """
     with st.spinner(translation["evaluation_spinner_label"], show_time=True):
-        avaliacao = agent.get_avaliacao(
-            sidebar_inputs.dataframe,
+        eval_inputs = agent.EvalAgentInputs(
+            dataset=sidebar_inputs.dataframe,
             openai_api_key=sidebar_inputs.openai_api_key,
+            langsmith_api_key=sidebar_inputs.langsmith_api_key,
+            langsmith_project=sidebar_inputs.langsmith_project,
             qt_maxima_iteracoes_agente=sidebar_inputs.
             qt_max_iteracoes_agente_avaliacao,
             target_col=sidebar_inputs.target_col,
@@ -295,6 +319,7 @@ def call_eval_agent(sidebar_inputs: SidebarInputs, translation: str,
             qt_maxima_supersteps=sidebar_inputs.qt_maxima_supersteps_avaliacao,
             prefered_language=prefered_language,
             model=sidebar_inputs.eval_agent_model)
+        avaliacao = agent.get_avaliacao(eval_inputs)
     return avaliacao
 
 

@@ -28,6 +28,9 @@
         "advcd_opts_models_info":"Choose the model for each stage. See the prices at the [OpenAI's official pricing website](https://developers.openai.com/api/docs/pricing)",
         "eval_model_selectbox_label":"Evaluation agent's base model",
         "transform_model_selectbox_label":"Transformation agent's base model",
+        "langsmith_info_label":"Optional Langsmith configuration",
+        "langsmith_api_key_label":"Langsmith API key",
+        "langsmith_project_label":"Langsmith project",
         "generate_response_label":"Generate response"
     },
     "main_content":{

@@ -159,7 +159,8 @@ def generate_avaliacao(
     if eval_inputs.has_langsmith_configured():
         langsmith_client = Client(api_key=eval_inputs.langsmith_api_key)
 
-    with tracing_context(enabled=eval_inputs.has_langsmith_configured(),
+    with tracing_context(name="Evaluation Agent",
+                         enabled=eval_inputs.has_langsmith_configured(),
                          client=langsmith_client,
                          project_name=eval_inputs.langsmith_project,
                          tags=['evaluation_agent']):
@@ -191,7 +192,10 @@ def generate_avaliacao(
                 "dataset_profile":
                 profile,
             },
-            config={"recursion_limit": eval_inputs.qt_maxima_supersteps})
+            config={
+                "recursion_limit": eval_inputs.qt_maxima_supersteps,
+                "run_name": "Evaluation Agent"
+            })
         final_response: data_structs.EvalAgentResponse = response[
             'structured_response']
     return final_response
@@ -223,7 +227,8 @@ def get_transformed_df(
         langsmith_client = Client(api_key=transform_inputs.langsmith_api_key)
 
     response = None
-    with tracing_context(enabled=transform_inputs.has_langsmith_configured(),
+    with tracing_context(name="Transformation agent",
+                         enabled=transform_inputs.has_langsmith_configured(),
                          client=langsmith_client,
                          project_name=transform_inputs.langsmith_project,
                          tags=['transformation_agent']):
@@ -254,5 +259,8 @@ def get_transformed_df(
                 'frozen_columns':
                 set()
             },
-            config={"recursion_limit": transform_inputs.qt_maxima_supersteps})
+            config={
+                "recursion_limit": transform_inputs.qt_maxima_supersteps,
+                "run_name": "Transformation Agent"
+            })
     return response["dataset"], response['tool_history']

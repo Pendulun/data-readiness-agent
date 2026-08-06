@@ -49,6 +49,7 @@ class ToolHistory(BaseModel):
     sucess_history_per_col: Dict[str, ToolUsagePerCol] = Field(
         default_factory=dict,
         description="Histórico de uso de sucesso de tools por colunas")
+    current_column_names: dict[str, str] = Field(default_factory=dict)
 
     def add_usage(self, tool_name: str, args_dict: Dict[str, Any],
                   sucess: bool):
@@ -59,6 +60,19 @@ class ToolHistory(BaseModel):
         usage_info = ToolUsageInfo(args=args, sucess=sucess)
         self.history.setdefault(
             tool_name, ToolHistoryUsage(tool_name=tool_name)).add(usage_info)
+
+        # Como as colunas podem ser renomeadas, mantém guardado o novo valor de cada coluna original
+        # Isso é útil ao fazer o benchmarking do sistema
+        if tool_name == 'rename_column':
+            original = args['column']
+
+            # Se a coluna já foi renomeada antes, preserve a origem
+            for orig, current in self.current_column_names.items():
+                if current == original:
+                    original = orig
+                    break
+
+            self.current_column_names[original] = args['new_column']
 
     def add_col_usage(self,
                       column: str,

@@ -3,3 +3,6 @@ install:
 
 run:
 	uv run python -m streamlit run main.py
+
+test_dummy_dataset:
+	uv run python src_data_readyness_agent/testing/test_dummy_data.py

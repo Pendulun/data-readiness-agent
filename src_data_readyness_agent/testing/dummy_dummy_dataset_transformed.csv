@@ -1,0 +1,8 @@
+Loja,data_abertura,classe,nova_metragem,faturamento,qt_mesas,especial,especial_imputed,metragem_imputed
+'Loja A','20/01/2023',0,50,1000000,-0.42,'Sim',False,False
+'Loja B','07/04/2020',1,62,1500000,1.58,'Sim',False,False
+'Loja C','01/01/2023',2,43,1200000,0.58,'Não',False,False
+'Loja D','01/01/2024',3,45,900000,-1.58,'Não',False,False
+'Loja E','07/05/2024',2,45,1000000,-1.58,'Sim',True,False
+'Loja F','18/04/2024',2,50,1050000,-1.58,'Não',True,False
+'Loja G','10/04/2024',1,45,1150000,-1.58,'Sim',False,True

@@ -586,30 +586,3 @@ def map_col_values(column: str, mapping: Dict[Any, Any], runtime: ToolRuntime):
                 )
             ],
         })
-
-
-@tool
-@track_history(tool_type=ToolType.CREATE_COL, modified_col='new_column')
-def copy_column(column: str, new_column: str, runtime: ToolRuntime):
-    """
-    Cria uma cópia de uma coluna na base para uma nova coluna
-    Exemplo: df[new_column] = df[column].values
-    """
-    df: pd.DataFrame = runtime.state["dataset"]
-    raise_if_column_not_in_dataset(df, column)
-    raise_if_column_in_dataset(df, new_column)
-
-    df[new_column] = df[column].values
-    return_msg = f"A coluna '{column}' foi copiada para '{new_column}' com sucesso."
-
-    return Command(
-        update={
-            "dataset":
-            df,
-            "messages": [
-                ToolMessage(
-                    content=(return_msg),
-                    tool_call_id=runtime.tool_call_id,
-                )
-            ],
-        })

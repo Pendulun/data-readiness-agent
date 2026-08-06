@@ -286,7 +286,7 @@ def call_transformation_agent(
     with st.spinner(translation["transformation_spinner_label"],
                     show_time=True):
         transform_inputs = agent.TransformAgentInputs(
-            findings_str=avaliacao.get_findings_str(),
+            findings_str=avaliacao.get_suggested_actions_str(),
             dataset=sidebar_inputs.dataframe,
             openai_api_key=sidebar_inputs.openai_api_key,
             langsmith_api_key=sidebar_inputs.langsmith_api_key,

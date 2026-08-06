@@ -159,11 +159,12 @@ def generate_avaliacao(
     if eval_inputs.has_langsmith_configured():
         langsmith_client = Client(api_key=eval_inputs.langsmith_api_key)
 
-    with tracing_context(name="Evaluation Agent",
-                         enabled=eval_inputs.has_langsmith_configured(),
-                         client=langsmith_client,
-                         project_name=eval_inputs.langsmith_project,
-                         tags=['evaluation_agent', eval_inputs.model]):
+    with tracing_context(
+            name="Evaluation Agent",
+            enabled=eval_inputs.has_langsmith_configured(),
+            client=langsmith_client,
+            project_name=eval_inputs.langsmith_project,
+            tags=[config.EVAL_AGENT_LANGSMITH_TAG, eval_inputs.model]):
         response = agent.invoke(
             {
                 'messages': [
@@ -231,8 +232,10 @@ def get_transformed_df(
                          enabled=transform_inputs.has_langsmith_configured(),
                          client=langsmith_client,
                          project_name=transform_inputs.langsmith_project,
-                         tags=['transformation_agent',
-                               transform_inputs.model]):
+                         tags=[
+                             config.TRANSFORM_AGENT_LANGSMITH_TAG,
+                             transform_inputs.model
+                         ]):
         response = agent.invoke(
             {
                 'messages': [

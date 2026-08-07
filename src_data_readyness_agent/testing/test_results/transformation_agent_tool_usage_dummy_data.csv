@@ -1,27 +1,247 @@
 tool_id,tool_name,sucess,args,run_id
+2,get_n_cols,True,{},1
 3,get_cols_names,True,{},1
-15,fill_col_na,True,"{'column': 'especial', 'fill_value': ""'Não'""}",1
-15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 45.0}",1
-12,convert_column_to_datetime,True,{'column': 'data_abertura'},1
 6,get_column_type,True,{'column': 'metragem'},1
-5,get_unique_counts,True,{'column': 'metragem'},1
-8,replace_substring,False,"{'column': 'metragem', 'old_substring': '', 'new_substring': ''}",1
-7,get_col_unique,True,{'column': 'metragem'},1
-2,get_n_cols,True,{},2
+6,get_column_type,True,{'column': 'especial'},1
+4,has_nulls,True,{'column': 'metragem'},1
+4,has_nulls,True,{'column': 'especial'},1
+5,get_unique_counts,True,{'column': 'especial'},1
+5,get_unique_counts,True,{'column': 'classe'},1
+7,get_col_unique,True,{'column': 'especial'},1
+7,get_col_unique,True,{'column': 'classe'},1
+8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'Sim'"", 'new_substring': 'Sim'}",1
+8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'Não'"", 'new_substring': 'Não'}",1
+15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 45.0}",1
+15,fill_col_na,True,"{'column': 'especial', 'fill_value': 'Não'}",1
 3,get_cols_names,True,{},2
-4,has_nulls,True,{'column': 'metragem'},2
-15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 45.0}",2
+15,fill_col_na,True,"{'column': 'especial', 'fill_value': 'Não'}",2
+8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'Sim'"", 'new_substring': 'Sim'}",2
+8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'Não'"", 'new_substring': 'Não'}",2
+5,get_unique_counts,True,{'column': 'especial'},2
+5,get_unique_counts,True,{'column': 'especial'},2
+10,map_col_values,True,"{'column': 'especial', 'mapping': {""'Não'"": 'Nao', ""'Sim'"": 'Sim'}}",2
+13,convert_column_to_float,True,{'column': 'metragem'},2
 3,get_cols_names,True,{},3
-12,convert_column_to_datetime,True,{'column': 'data_abertura'},3
-6,get_column_type,True,{'column': 'classe'},3
+8,replace_substring,True,"{'column': 'Loja', 'old_substring': ""'"", 'new_substring': ''}",3
+8,replace_substring,True,"{'column': 'data_abertura', 'old_substring': ""'"", 'new_substring': ''}",3
+8,replace_substring,True,"{'column': 'classe', 'old_substring': ""'"", 'new_substring': ''}",3
+8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'"", 'new_substring': ''}",3
 6,get_column_type,True,{'column': 'especial'},3
-10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 1, 'Premium': 2, 'Mista': 3, 'Genérica': 4}}",3
-10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': 1, 'Não': 0}}",3
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': True, 'Não': False}}",3
+13,convert_column_to_float,True,{'column': 'metragem'},3
 3,get_cols_names,True,{},4
-13,convert_column_to_float,True,{'column': 'faturamento'},4
-14,convert_column_to_int,True,{'column': 'qt_mesas'},4
-8,replace_substring,True,"{'column': 'Loja', 'old_substring': ""'"", 'new_substring': ''}",4
-8,replace_substring,True,"{'column': 'classe', 'old_substring': ""'"", 'new_substring': ''}",4
+8,replace_substring,True,"{'column': 'data_abertura', 'old_substring': ""'"", 'new_substring': ''}",4
 8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'"", 'new_substring': ''}",4
-15,fill_col_na,True,"{'column': 'faturamento', 'fill_value': 1250000}",4
-15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 50}",4
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': True, 'Não': False}}",4
+15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 50.0}",4
+3,get_cols_names,True,{},5
+8,replace_substring,True,"{'column': 'classe', 'old_substring': ""'"", 'new_substring': ''}",5
+8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'"", 'new_substring': ''}",5
+15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 45.0}",5
+15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 45}",6
+8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'"", 'new_substring': ''}",6
+7,get_col_unique,True,{'column': 'especial'},6
+8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'"", 'new_substring': ''}",7
+3,get_cols_names,True,{},7
+6,get_column_type,True,{'column': 'faturamento'},7
+5,get_unique_counts,True,{'column': 'faturamento'},7
+5,get_unique_counts,True,{'column': 'especial'},7
+7,get_col_unique,True,{'column': 'faturamento'},7
+7,get_col_unique,True,{'column': 'especial'},7
+3,get_cols_names,True,{},8
+6,get_column_type,True,{'column': 'faturamento'},8
+8,replace_substring,False,"{'column': 'faturamento', 'old_substring': '', 'new_substring': ''}",8
+13,convert_column_to_float,True,{'column': 'faturamento'},8
+5,get_unique_counts,True,{'column': 'faturamento'},8
+7,get_col_unique,True,{'column': 'faturamento'},8
+19,divide_value,True,"{'column': 'faturamento', 'value': 1000000}",8
+8,replace_substring,False,"{'column': 'faturamento', 'old_substring': '', 'new_substring': ''}",9
+7,get_col_unique,True,{'column': 'faturamento'},9
+5,get_unique_counts,True,{'column': 'faturamento'},9
+2,get_n_cols,True,{},9
+3,get_cols_names,True,{},9
+6,get_column_type,True,{'column': 'faturamento'},9
+21,power_value,True,"{'column': 'faturamento', 'value': 0.5}",9
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 0, 'Premium': 1, 'Mista': 2, 'Genérica': 3}}",9
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': 1, 'Não': 0}}",9
+8,replace_substring,True,"{'column': 'data_abertura', 'old_substring': '/', 'new_substring': '-'}",10
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},10
+5,get_unique_counts,True,{'column': 'faturamento'},10
+5,get_unique_counts,True,{'column': 'classe'},10
+5,get_unique_counts,True,{'column': 'especial'},10
+2,get_n_cols,True,{},10
+3,get_cols_names,True,{},10
+4,has_nulls,True,{'column': 'faturamento'},10
+4,has_nulls,True,{'column': 'metragem'},10
+6,get_column_type,True,{'column': 'faturamento'},10
+7,get_col_unique,True,{'column': 'faturamento'},10
+15,fill_col_na,True,"{'column': 'faturamento', 'fill_value': 1000}",10
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 0, 'Premium': 1, 'Mista': 2, 'Genérica': 3}}",10
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': 1, 'Não': 0}}",10
+3,get_cols_names,True,{},11
+5,get_unique_counts,True,{'column': 'faturamento'},11
+5,get_unique_counts,True,{'column': 'classe'},11
+5,get_unique_counts,True,{'column': 'especial'},11
+7,get_col_unique,True,{'column': 'faturamento'},11
+8,replace_substring,False,"{'column': 'faturamento', 'old_substring': '', 'new_substring': 'NaN'}",11
+10,map_col_values,True,"{'column': 'faturamento', 'mapping': {'1224.744871391589': 'NaN'}}",11
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 0, 'Premium': 1, 'Mista': 2, 'Genérica': 3}}",11
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': 1, 'Não': 0}}",11
+15,fill_col_na,True,"{'column': 'faturamento', 'fill_value': 0}",12
+9,drop_column,True,{'column': 'faturamento'},13
+9,drop_column,True,{'column': 'Loja'},13
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},13
+13,convert_column_to_float,True,{'column': 'metragem'},13
+15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'especial', 'fill_value': 'Não'}",13
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 1, 'Premium': 2, 'Mista': 3, 'Genérica': 4}}",13
+14,convert_column_to_int,True,{'column': 'qt_mesas'},13
+14,convert_column_to_int,False,{'column': 'imputed_especial'},13
+14,convert_column_to_int,False,{'column': 'imputed_metragem'},13
+14,convert_column_to_int,True,{'column': 'imputed_faturamento'},13
+15,fill_col_na,True,"{'column': 'faturamento', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'especial', 'fill_value': 'Não'}",14
+13,convert_column_to_float,True,{'column': 'faturamento'},14
+13,convert_column_to_float,False,{'column': 'imputed_especial'},14
+13,convert_column_to_float,True,{'column': 'imputed_metragem'},14
+13,convert_column_to_float,False,{'column': 'imputed_faturamento'},14
+13,convert_column_to_float,True,{'column': 'qt_mesas'},14
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},14
+16,rename_column,False,"{'column': 'data_abertura', 'new_column': 'data_abertura'}",14
+9,drop_column,True,{'column': 'Loja'},14
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 0, 'Premium': 1, 'Mista': 2, 'Genérica': 3}}",14
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': 1, 'Não': 0}}",14
+8,replace_substring,True,"{'column': 'faturamento', 'old_substring': 'R$', 'new_substring': ''}",15
+8,replace_substring,True,"{'column': 'faturamento', 'old_substring': ',', 'new_substring': ''}",15
+8,replace_substring,True,"{'column': 'faturamento', 'old_substring': ' ', 'new_substring': ''}",15
+15,fill_col_na,True,"{'column': 'faturamento', 'fill_value': 'NaN'}",15
+15,fill_col_na,True,"{'column': 'especial', 'fill_value': 'Não'}",15
+13,convert_column_to_float,True,{'column': 'faturamento'},15
+13,convert_column_to_float,False,{'column': 'imputed_especial'},15
+13,convert_column_to_float,True,{'column': 'imputed_metragem'},15
+13,convert_column_to_float,False,{'column': 'imputed_faturamento'},15
+13,convert_column_to_float,True,{'column': 'metragem'},15
+9,drop_column,True,{'column': 'Loja'},15
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},15
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': 1, 'Não': 0}}",15
+14,convert_column_to_int,True,{'column': 'qt_mesas'},15
+13,convert_column_to_float,True,{'column': 'faturamento'},16
+4,has_nulls,True,{'column': 'faturamento'},16
+5,get_unique_counts,True,{'column': 'faturamento'},16
+9,drop_column,True,{'column': 'faturamento'},16
+9,drop_column,True,{'column': 'data_abertura'},16
+9,drop_column,True,{'column': 'Loja'},16
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},16
+17,subtract_value,False,"{'column': 'data_abertura', 'value': 2023}",16
+17,subtract_value,False,"{'column': 'data_abertura_dt', 'value': 2023}",16
+21,power_value,False,"{'column': 'data_abertura', 'value': 0}",16
+16,rename_column,True,"{'column': 'data_abertura', 'new_column': 'data_abertura_dt'}",16
+16,rename_column,True,"{'column': 'data_abertura_dt', 'new_column': 'data_abertura'}",16
+3,get_cols_names,True,{},16
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': 1, 'Não': 0}}",16
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': True, 'Não': False}}",17
+9,drop_column,True,{'column': 'faturamento'},18
+9,drop_column,True,{'column': 'Loja'},18
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},18
+2,get_n_cols,True,{},18
+3,get_cols_names,True,{},18
+3,get_cols_names,True,{},18
+14,convert_column_to_int,True,{'column': 'especial'},18
+14,convert_column_to_int,True,{'column': 'imputed_especial'},18
+14,convert_column_to_int,True,{'column': 'imputed_metragem'},18
+14,convert_column_to_int,True,{'column': 'imputed_faturamento'},18
+6,get_column_type,True,{'column': 'especial'},18
+6,get_column_type,True,{'column': 'data_abertura'},18
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 0, 'Premium': 1, 'Mista': 2, 'Genérica': 3}}",18
+7,get_col_unique,True,{'column': 'classe'},18
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},19
+6,get_column_type,True,{'column': 'data_abertura'},19
+9,drop_column,True,{'column': 'faturamento'},19
+9,drop_column,True,{'column': 'Loja'},19
+3,get_cols_names,True,{},19
+3,get_cols_names,True,{},19
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'true': 1, 'false': 0}}",19
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 1, 'Mista': 2, 'Genérica': 3, 'Premium': 4}}",19
+24,divide_cols,True,"{'first_col': 'qt_mesas', 'second_col': 'metragem', 'new_col_name': 'mesas_por_m2'}",19
+7,get_col_unique,True,{'column': 'classe'},19
+9,drop_column,True,{'column': 'faturamento'},20
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'true': 1, 'false': 0}}",21
+10,map_col_values,True,"{'column': 'imputed_metragem', 'mapping': {'true': 1, 'false': 0}}",21
+10,map_col_values,True,"{'column': 'imputed_faturamento', 'mapping': {'true': 1, 'false': 0}}",21
+9,drop_column,True,{'column': 'imputed_especial'},21
+3,get_cols_names,True,{},21
+24,divide_cols,True,"{'first_col': 'qt_mesas', 'second_col': 'metragem', 'new_col_name': 'mesas_por_metro'}",21
+15,fill_col_na,True,"{'column': 'especial', 'fill_value': 0}",22
+4,has_nulls,True,{'column': 'especial'},22
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 0, 'Premium': 1, 'Mista': 2, 'Genérica': 3}}",22
+21,power_value,True,"{'column': 'metragem', 'value': 0.5}",22
+7,get_col_unique,True,{'column': 'faturamento'},22
+14,convert_column_to_int,True,{'column': 'imputed_especial'},23
+14,convert_column_to_int,True,{'column': 'imputed_metragem'},23
+14,convert_column_to_int,True,{'column': 'imputed_faturamento'},23
+7,get_col_unique,True,{'column': 'Loja'},23
+23,sum_cols,True,"{'first_col': 'faturamento', 'second_col': 'especial', 'new_col_name': 'faturamento_binario'}",23
+7,get_col_unique,True,{'column': 'metragem'},24
+10,map_col_values,True,"{'column': 'metragem', 'mapping': {'62.0': 57.5}}",24
+24,divide_cols,True,"{'first_col': 'metragem', 'second_col': 'qt_mesas', 'new_col_name': 'metragem_por_mesa'}",24
+9,drop_column,True,{'column': 'metragem'},25
+9,drop_column,True,{'column': 'faturamento'},25
+9,drop_column,True,{'column': 'especial'},25
+9,drop_column,True,{'column': 'imputed_especial'},25
+9,drop_column,True,{'column': 'imputed_metragem'},25
+9,drop_column,True,{'column': 'imputed_faturamento'},25
+9,drop_column,True,{'column': 'data_abertura'},25
+16,rename_column,True,"{'column': 'Loja', 'new_column': 'loja_id'}",25
+9,drop_column,True,{'column': 'metragem'},26
+9,drop_column,True,{'column': 'faturamento'},26
+7,get_col_unique,True,{'column': 'Loja'},26
+7,get_col_unique,True,{'column': 'classe'},26
+7,get_col_unique,True,{'column': 'data_abertura'},26
+5,get_unique_counts,True,{'column': 'Loja'},26
+5,get_unique_counts,True,{'column': 'data_abertura'},26
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},26
+16,rename_column,True,"{'column': 'Loja', 'new_column': 'store'}",26
+3,get_cols_names,True,{'}': ''},26
+3,get_cols_names,True,{'}': ''},26
+14,convert_column_to_int,True,{'column': 'qt_mesas'},26
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 1, 'Premium': 2, 'Mista': 3, 'Genérica': 4}}",26
+2,get_n_cols,True,{},26
+9,drop_column,True,{'column': 'metragem'},27
+9,drop_column,True,{'column': 'imputed_metragem'},27
+9,drop_column,True,{'column': 'target_faturamento'},27
+9,drop_column,True,{'column': 'especial'},27
+9,drop_column,True,{'column': 'imputed_especial'},27
+9,drop_column,True,{'column': 'imputed_faturamento'},27
+9,drop_column,False,{'column': 'imputed_faturamento'},27
+16,rename_column,True,"{'column': 'faturamento', 'new_column': 'target_faturamento'}",27
+16,rename_column,True,"{'column': 'qt_mesas', 'new_column': 'quartos'}",27
+16,rename_column,True,"{'column': 'data_abertura', 'new_column': 'data_abertura_registro'}",27
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 0, 'Premium': 1, 'Mista': 2, 'Genérica': 3}}",27
+9,drop_column,True,{'column': 'metragem'},28
+9,drop_column,True,{'column': 'faturamento'},28
+9,drop_column,True,{'column': 'especial'},28
+9,drop_column,True,{'column': 'imputed_especial'},28
+9,drop_column,True,{'column': 'imputed_metragem'},28
+9,drop_column,True,{'column': 'imputed_faturamento'},28
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 0, 'Premium': 1, 'Mista': 2, 'Genérica': 3}}",28
+10,map_col_values,True,"{'column': 'Loja', 'mapping': {'Loja A': 0, 'Loja B': 1, 'Loja C': 2, 'Loja D': 3, 'Loja E': 4, 'Loja F': 5, 'Loja G': 6}}",28
+16,rename_column,True,"{'column': 'data_abertura', 'new_column': 'data_abertura_datetime'}",28
+12,convert_column_to_datetime,True,{'column': 'data_abertura_datetime'},28
+19,divide_value,True,"{'column': 'qt_mesas', 'value': 1}",28
+15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 0}",29
+4,has_nulls,True,{'column': 'imputed_metragem'},29
+10,map_col_values,False,"{'column': 'imputed_metragem', 'mapping': {'False': True, 'true': True}}",29
+9,drop_column,True,{'column': 'metragem'},30
+9,drop_column,True,{'column': 'faturamento'},30
+2,get_n_cols,True,{},30
+3,get_cols_names,True,{},30
+9,drop_column,True,{'column': 'metragem'},31
+9,drop_column,True,{'column': 'faturamento'},31
+9,drop_column,True,{'column': 'imputed_metragem'},31
+25,multiply_cols,True,"{'first_col': 'qt_mesas', 'second_col': 'imputed_metragem', 'new_col_name': 'mesas_ponderado'}",31
+16,rename_column,True,"{'column': 'qt_mesas', 'new_column': 'qt_mesas_raw'}",31
+16,rename_column,True,"{'column': 'qt_mesas_raw', 'new_column': 'qt_mesas'}",31
+19,divide_value,True,"{'column': 'qt_mesas_raw', 'value': 1}",31
+18,sum_value,True,"{'column': 'metragem', 'value': 0.0001}",32
+18,sum_value,True,"{'column': 'faturamento', 'value': 1}",32
+9,drop_column,True,{'column': 'metragem'},32

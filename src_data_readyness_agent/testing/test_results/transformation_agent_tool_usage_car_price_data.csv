@@ -1,0 +1,420 @@
+tool_id,tool_name,sucess,args,run_id
+13,convert_column_to_float,False,{'column': 'car_prices_in_rupee'},1
+13,convert_column_to_float,False,{'column': 'car_prices_in_rupee'},1
+13,convert_column_to_float,False,{'column': 'car_prices_in_rupee'},1
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},1
+13,convert_column_to_float,False,{'column': 'kms_driven'},1
+13,convert_column_to_float,True,{'column': 'kms_driven'},1
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': 'Lakh', 'new_substring': ''}",1
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': 'Crore', 'new_substring': ''}",1
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': ',', 'new_substring': ''}",1
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ' kms', 'new_substring': ''}",1
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ',', 'new_substring': ''}",1
+13,convert_column_to_float,False,{'column': 'car_prices_in_rupee'},2
+13,convert_column_to_float,False,{'column': 'car_prices_in_rupee'},2
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},2
+13,convert_column_to_float,False,{'column': 'kms_driven'},2
+13,convert_column_to_float,True,{'column': 'kms_driven'},2
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': ' ', 'new_substring': ''}",2
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': 'Crore', 'new_substring': ''}",2
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': 'Lakh', 'new_substring': ''}",2
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': ',', 'new_substring': ''}",2
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ' kms', 'new_substring': ''}",2
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ',', 'new_substring': ''}",2
+9,drop_column,True,{'column': 'car_name'},2
+14,convert_column_to_int,True,{'column': 'manufacture'},2
+3,get_cols_names,True,{},2
+7,get_col_unique,True,{'column': 'Seats'},2
+7,get_col_unique,True,{'column': 'fuel_type'},2
+7,get_col_unique,True,{'column': 'transmission'},2
+7,get_col_unique,True,{'column': 'ownership'},2
+10,map_col_values,True,"{'column': 'Seats', 'mapping': {'5 Seats': 5, '6 Seats': 6, '7 Seats': 7, '4 Seats': 4, '8 Seats': 8, '2 Seats': 2}}",2
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Diesel': 1, 'Petrol': 2, 'Cng': 3, 'Electric': 4, 'Lpg': 5}}",2
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 1, 'Automatic': 2}}",2
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 1, '2nd Owner': 2, '3rd Owner': 3, '4th Owner': 4, '5th Owner': 5, '0th Owner': 0}}",2
+3,get_cols_names,True,{},3
+3,get_cols_names,True,{},3
+13,convert_column_to_float,False,{'column': 'car_prices_in_rupee'},3
+13,convert_column_to_float,False,{'column': 'car_prices_in_rupee'},3
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},3
+13,convert_column_to_float,False,{'column': 'kms_driven'},3
+13,convert_column_to_float,True,{'column': 'kms_driven'},3
+13,convert_column_to_float,False,{'column': 'engine'},3
+13,convert_column_to_float,True,{'column': 'engine'},3
+13,convert_column_to_float,False,{'column': 'Seats'},3
+13,convert_column_to_float,True,{'column': 'Seats'},3
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': 'Crore', 'new_substring': ''}",3
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': ',', 'new_substring': ''}",3
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ' kms', 'new_substring': ''}",3
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ',', 'new_substring': ''}",3
+8,replace_substring,True,"{'column': 'engine', 'old_substring': ' cc', 'new_substring': ''}",3
+8,replace_substring,True,"{'column': 'Seats', 'old_substring': ' Seats', 'new_substring': ''}",3
+5,get_unique_counts,True,{'column': 'car_name'},3
+5,get_unique_counts,True,{'column': 'car_prices_in_rupee'},3
+5,get_unique_counts,True,{'column': 'kms_driven'},3
+5,get_unique_counts,True,{'column': 'fuel_type'},3
+5,get_unique_counts,True,{'column': 'transmission'},3
+5,get_unique_counts,True,{'column': 'ownership'},3
+5,get_unique_counts,True,{'column': 'manufacture'},3
+5,get_unique_counts,True,{'column': 'engine'},3
+5,get_unique_counts,True,{'column': 'Seats'},3
+13,convert_column_to_float,False,{'column': 'car_prices_in_rupee'},4
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},4
+8,replace_substring,True,"{'column': 'car_prices_in_rupee', 'old_substring': ',', 'new_substring': ''}",4
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ',', 'new_substring': ''}",4
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ' kms', 'new_substring': ''}",4
+14,convert_column_to_int,False,{'column': 'kms_driven'},4
+14,convert_column_to_int,True,{'column': 'kms_driven'},4
+9,drop_column,True,{'column': 'car_name'},4
+9,drop_column,True,{'column': 'Unnamed: 0'},4
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},5
+14,convert_column_to_int,True,{'column': 'manufacture'},5
+14,convert_column_to_int,False,{'column': 'Seats'},5
+14,convert_column_to_int,False,{'column': 'kms_driven'},5
+14,convert_column_to_int,True,{'column': 'kms_driven'},5
+7,get_col_unique,True,{'column': 'Seats'},5
+10,map_col_values,True,"{'column': 'Seats', 'mapping': {'5 Seats': 5, '6 Seats': 6, '7 Seats': 7, '4 Seats': 4, '8 Seats': 8, '2 Seats': 2}}",5
+8,replace_substring,False,"{'column': 'car_prices_in_rupee', 'old_substring': '', 'new_substring': ''}",5
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ' kms', 'new_substring': ''}",5
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ',', 'new_substring': ''}",5
+8,replace_substring,False,"{'column': 'car_prices_in_rupee', 'old_substring': '', 'new_substring': ''}",5
+14,convert_column_to_int,False,{'column': 'kms_driven'},6
+14,convert_column_to_int,True,{'column': 'kms_driven'},6
+14,convert_column_to_int,False,{'column': 'engine'},6
+14,convert_column_to_int,True,{'column': 'engine'},6
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ',', 'new_substring': ''}",6
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ' kms', 'new_substring': ''}",6
+8,replace_substring,True,"{'column': 'engine', 'old_substring': ' cc', 'new_substring': ''}",6
+7,get_col_unique,True,{'column': 'car_prices_in_rupee'},6
+5,get_unique_counts,True,{'column': 'car_prices_in_rupee'},6
+19,divide_value,True,"{'column': 'car_prices_in_rupee', 'value': 100000}",6
+13,convert_column_to_float,False,{'column': 'kms_driven'},7
+13,convert_column_to_float,True,{'column': 'kms_driven'},7
+13,convert_column_to_float,False,{'column': 'engine'},7
+13,convert_column_to_float,True,{'column': 'engine'},7
+8,replace_substring,True,"{'column': 'kms_driven', 'old_substring': ' kms', 'new_substring': ''}",7
+8,replace_substring,True,"{'column': 'engine', 'old_substring': ' cc', 'new_substring': ''}",7
+14,convert_column_to_int,True,{'column': 'kms_driven'},8
+13,convert_column_to_float,False,{'column': 'engine'},8
+13,convert_column_to_float,True,{'column': 'engine'},8
+7,get_col_unique,True,{'column': 'engine'},8
+7,get_col_unique,True,{'column': 'Seats'},8
+8,replace_substring,True,"{'column': 'engine', 'old_substring': ' cc', 'new_substring': ''}",8
+8,replace_substring,False,"{'column': 'car_prices_in_rupee', 'old_substring': '', 'new_substring': ''}",8
+10,map_col_values,True,"{'column': 'Seats', 'mapping': {'5 Seats': 5, '6 Seats': 6, '7 Seats': 7, '4 Seats': 4, '8 Seats': 8, '2 Seats': 2}}",8
+5,get_unique_counts,True,{'column': 'car_prices_in_rupee'},8
+13,convert_column_to_float,False,{'column': 'engine'},9
+13,convert_column_to_float,True,{'column': 'engine'},9
+8,replace_substring,True,"{'column': 'engine', 'old_substring': ' cc', 'new_substring': ''}",9
+8,replace_substring,False,"{'column': 'car_prices_in_rupee', 'old_substring': '', 'new_substring': ''}",9
+5,get_unique_counts,True,{'column': 'car_prices_in_rupee'},9
+5,get_unique_counts,True,{'column': 'engine'},9
+2,get_n_cols,True,{},9
+3,get_cols_names,True,{},9
+9,drop_column,True,{'column': 'Unnamed: 0'},9
+9,drop_column,True,{'column': 'Unnamed: 0'},10
+9,drop_column,True,{'column': 'car_name'},10
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},10
+13,convert_column_to_float,True,{'column': 'engine'},10
+14,convert_column_to_int,True,{'column': 'manufacture'},10
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Diesel': 1, 'Petrol': 0}}",10
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 0, 'Automatic': 1}}",10
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 0, '2nd Owner': 1, '3rd Owner': 2, '4th Owner': 3, '5th Owner': 4, '6th Owner': 5}}",10
+10,map_col_values,True,"{'column': 'Seats', 'mapping': {'5 Seats': 5, '4 Seats': 4, '6 Seats': 6}}",10
+15,fill_col_na,True,"{'column': 'engine', 'fill_value': 'Unknown'}",10
+9,drop_column,True,{'column': 'car_name'},11
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Diesel': 1, 'Petrol': 0}}",11
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 1, 'Automatic': 0}}",11
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 1, '2nd Owner': 2, '3rd Owner': 3, '4th Owner': 4, '5th Owner': 5, '6th & Above': 6}}",11
+8,replace_substring,True,"{'column': 'engine', 'old_substring': 'cc', 'new_substring': ''}",11
+13,convert_column_to_float,True,{'column': 'engine'},11
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},11
+14,convert_column_to_int,True,{'column': 'kms_driven'},11
+9,drop_column,True,{'column': 'car_prices_in_rupee'},12
+9,drop_column,True,{'column': 'Seats'},12
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Petrol': 1, 'Diesel': 0}}",12
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 1, 'Automatic': 0}}",12
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 1, '2nd Owner': 2, '3rd Owner': 3, '4th Owner': 4, '5th Owner': 5, '6th & Above': 6}}",12
+10,map_col_values,True,"{'column': 'engine', 'mapping': {'1956': 1, '1330': 2, '2494': 3, '1199': 4}}",12
+16,rename_column,True,"{'column': 'manufacture', 'new_column': 'manufacture_year'}",12
+17,subtract_value,True,"{'column': 'manufacture_year', 'value': 2023}",12
+9,drop_column,True,{'column': 'Unnamed: 0'},13
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': '0th Owner', 'new_substring': 'unknown'}",13
+8,replace_substring,True,"{'column': 'Seats', 'old_substring': ' Seats', 'new_substring': ''}",13
+14,convert_column_to_int,False,{'column': 'Seats'},13
+14,convert_column_to_int,True,{'column': 'Seats'},13
+13,convert_column_to_float,True,{'column': 'engine'},13
+17,subtract_value,True,"{'column': 'manufacture', 'value': 2023}",13
+20,multiply_value,True,"{'column': 'engine', 'value': 0.001}",13
+21,power_value,True,"{'column': 'engine', 'value': 1}",13
+15,fill_col_na,True,"{'column': 'car_prices_in_rupee', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'kms_driven', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'fuel_type', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'transmission', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'ownership', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'manufacture', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'Seats', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'engine', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'car_name', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'car_prices_in_rupee', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'kms_driven', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'fuel_type', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'transmission', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'ownership', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'manufacture', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'Seats', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'engine', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'car_name', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'car_prices_in_rupee', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'kms_driven', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'fuel_type', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'transmission', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'ownership', 'fill_value': 'unknown'}",13
+15,fill_col_na,True,"{'column': 'manufacture', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'Seats', 'fill_value': 0}",13
+9,drop_column,True,{'column': 'Unnamed: 0'},14
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': '0th Owner', 'new_substring': '0th Owner (Invalid)'}",14
+8,replace_substring,True,"{'column': 'engine', 'old_substring': 'cc', 'new_substring': ''}",14
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 1, '2nd Owner': 2, '3rd Owner': 3, '4th Owner': 4, '5th Owner': 5, '0th Owner (Invalid)': 0}}",14
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Petrol': 'Petrol', 'Diesel': 'Diesel', 'Cng': 'Other', 'Lpg': 'Other', 'Electric': 'Other'}}",14
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 0, 'Automatic': 1}}",14
+10,map_col_values,True,"{'column': 'Seats', 'mapping': {'2 Seats': '2', '4 Seats': '4', '5 Seats': '5', '6 Seats': '6', '7 Seats': '7', '8 Seats': '8'}}",14
+14,convert_column_to_int,True,{'column': 'ownership'},14
+14,convert_column_to_int,True,{'column': 'Seats'},14
+7,get_col_unique,True,{'column': 'car_name'},14
+13,convert_column_to_float,True,{'column': 'engine'},14
+5,get_unique_counts,True,{'column': 'Seats'},14
+5,get_unique_counts,True,{'column': 'kms_driven'},14
+17,subtract_value,True,"{'column': 'manufacture', 'value': 2023}",14
+16,rename_column,True,"{'column': 'manufacture', 'new_column': 'age'}",14
+19,divide_value,True,"{'column': 'kms_driven', 'value': 1000}",14
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.1}",14
+9,drop_column,True,{'column': 'Unnamed: 0'},15
+8,replace_substring,True,"{'column': 'fuel_type', 'old_substring': 'Cng', 'new_substring': 'Other'}",15
+8,replace_substring,True,"{'column': 'fuel_type', 'old_substring': 'Lpg', 'new_substring': 'Other'}",15
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': '1st Owner', 'new_substring': '1'}",15
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': '2nd Owner', 'new_substring': '2'}",15
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': '3rd Owner', 'new_substring': '3'}",15
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': '4th Owner', 'new_substring': '4'}",15
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': '5th Owner', 'new_substring': '5'}",15
+8,replace_substring,True,"{'column': 'Seats', 'old_substring': ' Seats', 'new_substring': ''}",15
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': '0th Owner', 'new_substring': '0'}",15
+14,convert_column_to_int,True,{'column': 'Seats'},15
+14,convert_column_to_int,False,{'column': 'ownership'},15
+14,convert_column_to_int,True,{'column': 'ownership'},15
+13,convert_column_to_float,True,{'column': 'engine'},15
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},15
+13,convert_column_to_float,True,{'column': 'kms_per_year'},15
+13,convert_column_to_float,True,{'column': 'kms_driven'},15
+13,convert_column_to_float,True,{'column': 'age'},15
+13,convert_column_to_float,True,{'column': 'engine'},15
+13,convert_column_to_float,True,{'column': 'Seats'},15
+17,subtract_value,True,"{'column': 'manufacture', 'value': 2023}",15
+16,rename_column,True,"{'column': 'manufacture', 'new_column': 'age'}",15
+24,divide_cols,True,"{'first_col': 'kms_driven', 'second_col': 'age', 'new_col_name': 'kms_per_year'}",15
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",15
+9,drop_column,True,{'column': 'Unnamed: 0'},16
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': ' Owner', 'new_substring': ''}",16
+8,replace_substring,True,"{'column': 'engine', 'old_substring': ' cc', 'new_substring': ''}",16
+8,replace_substring,True,"{'column': 'Seats', 'old_substring': ' Seats', 'new_substring': ''}",16
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st': 1, '2nd': 2, '3rd': 3, '4th': 4, '5th': 5, '6th': 6}}",16
+13,convert_column_to_float,True,{'column': 'engine'},16
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},16
+13,convert_column_to_float,True,{'column': 'kms_driven'},16
+14,convert_column_to_int,True,{'column': 'Seats'},16
+17,subtract_value,True,"{'column': 'manufacture', 'value': 2023}",16
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",16
+9,drop_column,True,{'column': 'Unnamed: 0'},17
+7,get_col_unique,True,{'column': 'ownership'},17
+7,get_col_unique,True,{'column': 'fuel_type'},17
+7,get_col_unique,True,{'column': 'engine'},17
+7,get_col_unique,True,{'column': 'transmission'},17
+7,get_col_unique,True,{'column': 'car_name'},17
+8,replace_substring,True,"{'column': 'Seats', 'old_substring': ' Seats', 'new_substring': ''}",17
+8,replace_substring,True,"{'column': 'engine', 'old_substring': 'cc', 'new_substring': ''}",17
+14,convert_column_to_int,True,{'column': 'Seats'},17
+14,convert_column_to_int,True,{'column': 'engine'},17
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 0, 'Automatic': 1}}",17
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 1, '2nd Owner': 2, '3rd Owner': 3, '4th Owner': 4, '5th Owner': 5, '0th Owner': 0}}",17
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Diesel': 0, 'Petrol': 1, 'Cng': 2, 'Electric': 3, 'Lpg': 4}}",17
+6,get_column_type,True,{'column': 'ownership'},17
+6,get_column_type,True,{'column': 'manufacture'},17
+17,subtract_value,True,"{'column': 'manufacture', 'value': 2026}",17
+16,rename_column,True,"{'column': 'manufacture', 'new_column': 'age'}",17
+20,multiply_value,True,"{'column': 'age', 'value': -1}",17
+2,get_n_cols,True,{},17
+9,drop_column,True,{'column': 'Unnamed: 0'},18
+7,get_col_unique,True,{'column': 'car_name'},18
+7,get_col_unique,True,{'column': 'fuel_type'},18
+8,replace_substring,True,"{'column': 'car_name', 'old_substring': 'BSIV', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': ' Owner', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': 'th', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': 'st', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': 'nd', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'ownership', 'old_substring': 'rd', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'engine', 'old_substring': 'CC', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'engine', 'old_substring': 'cc', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'engine', 'old_substring': ' ', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'Seats', 'old_substring': ' Seats', 'new_substring': ''}",18
+8,replace_substring,True,"{'column': 'Seats', 'old_substring': 'Seats', 'new_substring': ''}",18
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Cng': 'Other', 'Electric': 'Other', 'Lpg': 'Other', 'Diesel': 'Diesel', 'Petrol': 'Petrol'}}",18
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 0, 'Automatic': 1}}",18
+14,convert_column_to_int,True,{'column': 'ownership'},18
+14,convert_column_to_int,True,{'column': 'engine'},18
+14,convert_column_to_int,True,{'column': 'Seats'},18
+17,subtract_value,True,"{'column': 'manufacture', 'value': 2026}",18
+7,get_col_unique,True,{'column': 'ownership'},19
+7,get_col_unique,True,{'column': 'fuel_type'},19
+9,drop_column,True,{'column': 'Unnamed: 0'},19
+8,replace_substring,True,"{'column': 'Seats', 'old_substring': ' Seats', 'new_substring': ''}",19
+14,convert_column_to_int,True,{'column': 'Seats'},19
+14,convert_column_to_int,True,{'column': 'engine'},19
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Cng': 'Other', 'Lpg': 'Other', 'Electric': 'Other'}}",19
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 1, '2nd Owner': 2, '3rd Owner': 3, '4th Owner': 4, '5th Owner': 5, '0th Owner': 0}}",19
+9,drop_column,True,{'column': 'Unnamed: 0'},20
+8,replace_substring,True,"{'column': 'Seats', 'old_substring': ' Seats', 'new_substring': ''}",21
+14,convert_column_to_int,True,{'column': 'Seats'},21
+14,convert_column_to_int,True,{'column': 'engine'},21
+16,rename_column,True,"{'column': 'engine', 'new_column': 'engine_displacement_num'}",21
+9,drop_column,True,{'column': 'Unnamed: 0'},22
+9,drop_column,True,{'column': 'car_name'},22
+14,convert_column_to_int,True,{'column': 'engine'},22
+14,convert_column_to_int,True,{'column': 'Seats'},22
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",22
+21,power_value,True,"{'column': 'kms_driven', 'value': 0.5}",22
+7,get_col_unique,True,{'column': 'fuel_type'},23
+7,get_col_unique,True,{'column': 'transmission'},23
+7,get_col_unique,True,{'column': 'ownership'},23
+7,get_col_unique,True,{'column': 'car_name'},23
+9,drop_column,True,{'column': 'Unnamed: 0'},23
+14,convert_column_to_int,True,{'column': 'engine'},23
+14,convert_column_to_int,True,{'column': 'Seats'},23
+3,get_cols_names,True,{},23
+3,get_cols_names,True,{},23
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 0, 'Automatic': 1}}",23
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Diesel': 0, 'Petrol': 1, 'Cng': 2, 'Lpg': 3, 'Electric': 4}}",23
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'0th Owner': 0, '1st Owner': 1, '2nd Owner': 2, '3rd Owner': 3, '4th Owner': 4, '5th Owner': 5}}",23
+16,rename_column,True,"{'column': 'manufacture', 'new_column': 'manufacture_year'}",23
+16,rename_column,True,"{'column': 'manufacture_year', 'new_column': 'age_in_years'}",23
+6,get_column_type,True,{'column': 'manufacture_year'},23
+2,get_n_cols,True,{},23
+18,sum_value,True,"{'column': 'manufacture_year', 'value': 0}",23
+18,sum_value,True,"{'column': 'manufacture_year', 'value': 2026}",23
+20,multiply_value,True,"{'column': 'manufacture_year', 'value': -1}",23
+5,get_unique_counts,True,{'column': 'car_prices_in_rupee'},23
+5,get_unique_counts,True,{'column': 'kms_driven'},23
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",23
+9,drop_column,True,{'column': 'Unnamed: 0'},24
+7,get_col_unique,True,{'column': 'car_name'},24
+7,get_col_unique,True,{'column': 'engine'},24
+7,get_col_unique,True,{'column': 'Seats'},24
+20,multiply_value,True,"{'column': 'car_prices_in_rupee', 'value': 100000}",24
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},24
+6,get_column_type,True,{'column': 'kms_driven'},24
+6,get_column_type,True,{'column': 'engine'},24
+6,get_column_type,True,{'column': 'Seats'},24
+6,get_column_type,True,{'column': 'car_name'},24
+14,convert_column_to_int,True,{'column': 'engine'},24
+14,convert_column_to_int,True,{'column': 'Seats'},24
+10,map_col_values,True,"{'column': 'car_name', 'mapping': {'Jeep Compass 2.0 Longitude Option BSIV': 1, 'Renault Duster RXZ Turbo CVT': 2, 'Toyota Camry 2.5 G': 3, 'Honda Jazz VX CVT': 4, 'Volkswagen Polo 1.2 MPI Highline': 5}}",24
+9,drop_column,True,{'column': 'Unnamed: 0'},25
+9,drop_column,True,{'column': 'engine'},25
+14,convert_column_to_int,True,{'column': 'engine'},25
+14,convert_column_to_int,True,{'column': 'manufacture'},25
+13,convert_column_to_float,True,{'column': 'Seats'},25
+7,get_col_unique,True,{'column': 'fuel_type'},25
+7,get_col_unique,True,{'column': 'transmission'},25
+7,get_col_unique,True,{'column': 'ownership'},25
+7,get_col_unique,True,{'column': 'car_name'},25
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Diesel': 1, 'Petrol': 2, 'Cng': 3, 'Electric': 4, 'Lpg': 5}}",25
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 0, 'Automatic': 1}}",25
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 1, '2nd Owner': 2, '3rd Owner': 3, '4th Owner': 4, '5th Owner': 5, '0th Owner': 0}}",25
+19,divide_value,True,"{'column': 'car_prices_in_rupee', 'value': 1000}",25
+19,divide_value,True,"{'column': 'kms_driven', 'value': 1000}",25
+17,subtract_value,True,"{'column': 'car_prices_in_rupee', 'value': 10}",25
+16,rename_column,True,"{'column': 'Seats', 'new_column': 'Seats_numeric'}",25
+2,get_n_cols,True,{},25
+3,get_cols_names,True,{'}': ''},25
+9,drop_column,True,{'column': 'Unnamed: 0'},26
+9,drop_column,True,{'column': 'engine'},26
+14,convert_column_to_int,True,{'column': 'engine'},26
+14,convert_column_to_int,True,{'column': 'Seats'},26
+13,convert_column_to_float,True,{'column': 'Seats'},26
+7,get_col_unique,True,{'column': 'car_prices_in_rupee'},26
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",26
+19,divide_value,True,"{'column': 'car_prices_in_rupee', 'value': 2}",26
+2,get_n_cols,True,{'}': ''},26
+3,get_cols_names,True,{},26
+6,get_column_type,True,{'column': 'car_name'},26
+6,get_column_type,True,{'column': 'car_prices_in_rupee'},26
+6,get_column_type,True,{'column': 'kms_driven'},26
+6,get_column_type,True,{'column': 'fuel_type'},26
+6,get_column_type,True,{'column': 'transmission'},26
+6,get_column_type,True,{'column': 'ownership'},26
+6,get_column_type,True,{'column': 'manufacture'},26
+6,get_column_type,True,{'column': 'Seats'},26
+9,drop_column,True,{'column': 'Unnamed: 0'},27
+7,get_col_unique,True,{'column': 'fuel_type'},27
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",27
+21,power_value,True,"{'column': 'kms_driven', 'value': 0.5}",27
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Diesel': 0, 'Petrol': 1, 'Cng': 2, 'Electric': 3, 'Lpg': 4}}",27
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 0, 'Automatic': 1}}",27
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 0, '2nd Owner': 1, '3rd Owner': 2, '4th+ Owner': 3, 'Unknown': 4, 'Test Drive Car': 5}}",27
+10,map_col_values,True,"{'column': 'engine', 'mapping': {'1956': 1956, '1330': 1330, '2494': 2494, '1199': 1199}}",27
+13,convert_column_to_float,True,{'column': 'engine'},27
+13,convert_column_to_float,True,{'column': 'Seats'},27
+16,rename_column,True,"{'column': 'manufacture', 'new_column': 'manufacture_year'}",27
+16,rename_column,True,"{'column': 'manufacture_year', 'new_column': 'car_age'}",27
+16,rename_column,True,"{'column': 'engine', 'new_column': 'engine_cc'}",27
+17,subtract_value,True,"{'column': 'manufacture_year', 'value': 2000}",27
+19,divide_value,True,"{'column': 'car_age', 'value': 12}",27
+19,divide_value,True,"{'column': 'engine_cc', 'value': 1000}",27
+14,convert_column_to_int,True,{'column': 'Seats'},27
+3,get_cols_names,True,{'}': ''},27
+24,divide_cols,True,"{'first_col': 'car_prices_in_rupee', 'second_col': 'kms_driven', 'new_col_name': 'price_per_km'}",27
+9,drop_column,True,{'column': 'Unnamed: 0'},28
+9,drop_column,True,{'column': 'manufacture'},28
+9,drop_column,True,{'column': 'engine'},28
+9,drop_column,True,{'column': 'Seats'},28
+9,drop_column,True,{'column': 'car_name_encoded'},28
+14,convert_column_to_int,True,{'column': 'engine'},28
+14,convert_column_to_int,True,{'column': 'car_prices_in_rupee'},28
+13,convert_column_to_float,True,{'column': 'Seats'},28
+13,convert_column_to_float,True,{'column': 'car_prices_in_rupee'},28
+7,get_col_unique,True,{'column': 'fuel_type'},28
+7,get_col_unique,True,{'column': 'car_name_encoded'},28
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",28
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.25}",28
+2,get_n_cols,True,{'}': ''},28
+2,get_n_cols,True,{'}': ''},28
+2,get_n_cols,True,{},28
+2,get_n_cols,True,{},28
+10,map_col_values,True,"{'column': 'fuel_type', 'mapping': {'Diesel': 0, 'Petrol': 1, 'Cng': 2, 'Electric': 3, 'Lpg': 4}}",28
+10,map_col_values,True,"{'column': 'transmission', 'mapping': {'Manual': 0, 'Automatic': 1}}",28
+10,map_col_values,True,"{'column': 'ownership', 'mapping': {'1st Owner': 0, '2nd Owner': 1, '3rd Owner': 2, '4th Owner': 3, '5th Owner': 4, '6th Owner': 5}}",28
+16,rename_column,False,"{'column': 'car_names', 'new_column': 'car_name'}",28
+16,rename_column,True,"{'column': 'car_name', 'new_column': 'car_name_encoded'}",28
+3,get_cols_names,True,{},28
+3,get_cols_names,True,{},28
+3,get_cols_names,True,{},28
+3,get_cols_names,True,{},28
+3,get_cols_names,True,{},28
+19,divide_value,True,"{'column': 'kms_driven', 'value': 1000}",28
+24,divide_cols,True,"{'first_col': 'car_prices_in_rupee', 'second_col': 'kms_driven', 'new_col_name': 'price_per_km'}",28
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",29
+21,power_value,True,"{'column': 'kms_driven', 'value': 0.5}",29
+21,power_value,True,"{'column': 'price_per_km_ratio', 'value': 0.5}",29
+24,divide_cols,True,"{'first_col': 'car_prices_in_rupee', 'second_col': 'kms_driven', 'new_col_name': 'price_per_km'}",29
+16,rename_column,True,"{'column': 'price_per_km', 'new_column': 'price_per_km_ratio'}",29
+16,rename_column,True,"{'column': 'kms_driven', 'new_column': 'kms_driven_inverse'}",29
+16,rename_column,True,"{'column': 'car_prices_in_rupee', 'new_column': 'price_inr'}",29
+16,rename_column,True,"{'column': 'kms_driven_inverse', 'new_column': 'kms_driven_miles'}",29
+16,rename_column,True,"{'column': 'engine', 'new_column': 'engine_cc'}",29
+19,divide_value,True,"{'column': 'kms_driven_inverse', 'value': 1000}",29
+19,divide_value,True,"{'column': 'kms_driven_miles', 'value': 0.000621371}",29
+13,convert_column_to_float,True,{'column': 'engine_cc'},29
+14,convert_column_to_int,True,{'column': 'manufacture'},29
+9,drop_column,True,{'column': 'Unnamed: 0'},29
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",30
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",31
+21,power_value,True,"{'column': 'car_prices_in_rupee', 'value': 0.5}",32

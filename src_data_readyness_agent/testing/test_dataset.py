@@ -17,6 +17,12 @@ class DatasetConfig():
     user_entry: str
 
 
+@dataclass
+class BenchmarkResults():
+    eval_agent_results: pd.DataFrame
+    transform_agent_results: pd.DataFrame
+
+
 def get_model_configs() -> Tuple[Dict[str, str]]:
     """
     Retorna a ordem das configurações de modelos a serem utilizados nos testes de um dataset
@@ -41,7 +47,7 @@ def main(dataset: pd.DataFrame,
          transform_expectations: expectations_structs.
          TransformAgentExpectations,
          dataset_config: DatasetConfig,
-         runs_per_config: int = 1) -> Tuple[pd.DataFrame]:
+         runs_per_config: int = 1) -> BenchmarkResults:
     """
     Avalia o sistema retornando os resultados
     """
@@ -84,7 +90,8 @@ def main(dataset: pd.DataFrame,
     eval_results = pd.concat(all_eval_results, ignore_index=True)
     transform_results = pd.concat(all_transform_results, ignore_index=True)
 
-    return eval_results, transform_results
+    return BenchmarkResults(eval_agent_results=eval_results,
+                            transform_agent_results=transform_results)
 
 
 def _eval_transformation_agent(

@@ -83,9 +83,8 @@ if __name__ == "__main__":
 
     dataset_config = get_dataset_config()
     #TODO: COLETAR AS ESTATÍSTICAS DE USO DE TOOLS
-    #TODO: CRIAR UM DATACLASS COM O RESULTADO DO TESTE ENGLOBANDO TUDO QUE É RETORNADO
     #TODO: COMPLETAR AS CONFIGURAÇÕES DE MODELOS A SEREM ANALISADAS
-    eval_results, transform_results = test_dataset.main(
+    results: test_dataset.BenchmarkResults = test_dataset.main(
         dataset,
         OPENAI_API_KEY,
         LANGSMITH_API_KEY,
@@ -96,9 +95,9 @@ if __name__ == "__main__":
         runs_per_config=4,
     )
 
-    eval_results.to_csv(
+    results.eval_agent_results.to_csv(
         "src_data_readyness_agent/testing/test_results/eval_agent_dummy_data.csv",
         index=None)
-    transform_results.to_csv(
+    results.transform_agent_results.to_csv(
         "src_data_readyness_agent/testing/test_results/transformation_agent_dummy_data.csv",
         index=None)

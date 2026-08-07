@@ -34,7 +34,7 @@ def get_model_configs() -> Tuple[Dict[str, str]]:
             'transform_model': 'gpt-4.1-nano'
         },
         {
-            'eval_model': 'gpt-4.o-mini',
+            'eval_model': 'gpt-4o-mini',
             'transform_model': 'gpt-4.1-nano'
         },
         {

@@ -1,0 +1,27 @@
+tool_id,tool_name,sucess,args,run_id
+3,get_cols_names,True,{},1
+15,fill_col_na,True,"{'column': 'especial', 'fill_value': ""'Não'""}",1
+15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 45.0}",1
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},1
+6,get_column_type,True,{'column': 'metragem'},1
+5,get_unique_counts,True,{'column': 'metragem'},1
+8,replace_substring,False,"{'column': 'metragem', 'old_substring': '', 'new_substring': ''}",1
+7,get_col_unique,True,{'column': 'metragem'},1
+2,get_n_cols,True,{},2
+3,get_cols_names,True,{},2
+4,has_nulls,True,{'column': 'metragem'},2
+15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 45.0}",2
+3,get_cols_names,True,{},3
+12,convert_column_to_datetime,True,{'column': 'data_abertura'},3
+6,get_column_type,True,{'column': 'classe'},3
+6,get_column_type,True,{'column': 'especial'},3
+10,map_col_values,True,"{'column': 'classe', 'mapping': {'Popular': 1, 'Premium': 2, 'Mista': 3, 'Genérica': 4}}",3
+10,map_col_values,True,"{'column': 'especial', 'mapping': {'Sim': 1, 'Não': 0}}",3
+3,get_cols_names,True,{},4
+13,convert_column_to_float,True,{'column': 'faturamento'},4
+14,convert_column_to_int,True,{'column': 'qt_mesas'},4
+8,replace_substring,True,"{'column': 'Loja', 'old_substring': ""'"", 'new_substring': ''}",4
+8,replace_substring,True,"{'column': 'classe', 'old_substring': ""'"", 'new_substring': ''}",4
+8,replace_substring,True,"{'column': 'especial', 'old_substring': ""'"", 'new_substring': ''}",4
+15,fill_col_na,True,"{'column': 'faturamento', 'fill_value': 1250000}",4
+15,fill_col_na,True,"{'column': 'metragem', 'fill_value': 50}",4

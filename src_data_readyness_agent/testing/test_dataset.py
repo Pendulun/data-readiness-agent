@@ -3,7 +3,7 @@ import pandas as pd
 from typing_extensions import Dict, Tuple
 
 from src_data_readyness_agent import agent
-from src_data_readyness_agent.testing import expectations_verifier, langsmith_trace_info, expectations_structs
+from src_data_readyness_agent.testing import expectations_structs, expectations_verifier, langsmith_trace_info, tools_info_extractor
 
 
 @dataclass
@@ -21,6 +21,7 @@ class DatasetConfig():
 class BenchmarkResults():
     eval_agent_results: pd.DataFrame
     transform_agent_results: pd.DataFrame
+    transform_agent_tool_usage_results: pd.DataFrame
 
 
 def get_model_configs() -> Tuple[Dict[str, str]]:
@@ -33,8 +34,32 @@ def get_model_configs() -> Tuple[Dict[str, str]]:
             'transform_model': 'gpt-4.1-nano'
         },
         {
-            'eval_model': 'gpt-5-mini',
+            'eval_model': 'gpt-4.o-mini',
             'transform_model': 'gpt-4.1-nano'
+        },
+        {
+            'eval_model': 'gpt-4o-mini',
+            'transform_model': 'gpt-4o-mini'
+        },
+        {
+            'eval_model': 'gpt-5-mini',
+            'transform_model': 'gpt-4o-mini'
+        },
+        {
+            'eval_model': 'gpt-5-mini',
+            'transform_model': 'gpt-5-mini'
+        },
+        {
+            'eval_model': 'gpt-5-nano',
+            'transform_model': 'gpt-5-mini'
+        },
+        {
+            'eval_model': 'gpt-5-nano',
+            'transform_model': 'gpt-5-nano'
+        },
+        {
+            'eval_model': 'gpt-4.1-nano',
+            'transform_model': 'gpt-5-nano'
         },
     )
 
@@ -58,7 +83,7 @@ def main(dataset: pd.DataFrame,
         'langsmith_api_key': langsmith_api_key,
         'langsmith_project': langsmith_project
     }
-    for name, val in important_values_check:
+    for name, val in important_values_check.items():
         assert val is not None and len(
             val.strip()) > 0, f'{name} não pode estar vazio!'
 
@@ -66,6 +91,7 @@ def main(dataset: pd.DataFrame,
 
     all_eval_results = list()
     all_transform_results = list()
+    all_transform_agent_tool_usage_results = list()
 
     run_id = 1
     for config_id, config in enumerate(configs):
@@ -80,18 +106,25 @@ def main(dataset: pd.DataFrame,
 
             all_eval_results.append(final_eval_df)
 
-            final_transform_df = _eval_transformation_agent(
+            final_transform_df, transform_tools_usage_info = _eval_transformation_agent(
                 dataset, openai_api_key, langsmith_api_key, langsmith_project,
                 transform_expectations, dataset_config, run_id,
                 config['transform_model'], avaliacao)
             all_transform_results.append(final_transform_df)
+            all_transform_agent_tool_usage_results.append(
+                transform_tools_usage_info)
             run_id += 1
 
     eval_results = pd.concat(all_eval_results, ignore_index=True)
     transform_results = pd.concat(all_transform_results, ignore_index=True)
+    transform_agent_tool_usage_results = pd.concat(
+        all_transform_agent_tool_usage_results, ignore_index=True)
 
-    return BenchmarkResults(eval_agent_results=eval_results,
-                            transform_agent_results=transform_results)
+    return BenchmarkResults(
+        eval_agent_results=eval_results,
+        transform_agent_results=transform_results,
+        transform_agent_tool_usage_results=transform_agent_tool_usage_results,
+    )
 
 
 def _eval_transformation_agent(
@@ -104,7 +137,7 @@ def _eval_transformation_agent(
     run_id: str,
     model: str,
     avaliacao: str,
-):
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Avalia o agente de transformação retornando seus resultados
     """
@@ -128,11 +161,15 @@ def _eval_transformation_agent(
         langsmith_api_key=langsmith_api_key,
         langsmith_project=langsmith_project,
     )
+    tools_info = tools_info_extractor.main(tool_history)
+
     final_transform_df = pd.concat(
         [transform_verifications_result_df, transform_trace_info], axis=1)
     final_transform_df['model'] = model
     final_transform_df['run_id'] = run_id
-    return final_transform_df
+
+    tools_info['run_id'] = run_id
+    return final_transform_df, tools_info
 
 
 def _eval_evaluation_agent(

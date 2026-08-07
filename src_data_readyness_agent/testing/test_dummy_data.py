@@ -1,7 +1,7 @@
 import pandas as pd
 
 from src_data_readyness_agent.common.data_structs import ActionType, Severity
-from src_data_readyness_agent.testing import expectations_structs, test_dataset
+from src_data_readyness_agent.testing import expectations_structs, config, test_dataset
 
 
 def get_dataset_config() -> test_dataset.DatasetConfig:
@@ -70,7 +70,7 @@ def get_eval_expectations() -> expectations_structs.EvalAgentExpectations:
 
 
 if __name__ == "__main__":
-    dataset = pd.read_csv("data/test_data.csv")
+    dataset = pd.read_csv(config.TEST_DATA_1_PATH)
     OPENAI_API_KEY = ""
     LANGSMITH_API_KEY = ""
     LANGSMITH_PROJECT = "data_readiness_agent"
@@ -82,8 +82,6 @@ if __name__ == "__main__":
     transform_expectations = get_transform_expectations()
 
     dataset_config = get_dataset_config()
-    #TODO: COLETAR AS ESTATÍSTICAS DE USO DE TOOLS
-    #TODO: COMPLETAR AS CONFIGURAÇÕES DE MODELOS A SEREM ANALISADAS
     results: test_dataset.BenchmarkResults = test_dataset.main(
         dataset,
         OPENAI_API_KEY,
@@ -100,4 +98,7 @@ if __name__ == "__main__":
         index=None)
     results.transform_agent_results.to_csv(
         "src_data_readyness_agent/testing/test_results/transformation_agent_dummy_data.csv",
+        index=None)
+    results.transform_agent_tool_usage_results.to_csv(
+        "src_data_readyness_agent/testing/test_results/transformation_agent_tool_usage_dummy_data.csv",
         index=None)

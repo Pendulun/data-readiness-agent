@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import pandas as pd
-from typing_extensions import Dict, Tuple
+from typing_extensions import Dict, Optional, Tuple
 
 from src_data_readyness_agent import agent
 from src_data_readyness_agent.testing import expectations_structs, expectations_verifier, langsmith_trace_info, tools_info_extractor
@@ -104,12 +104,19 @@ def main(dataset: pd.DataFrame,
                 eval_expectations, dataset_config, run_id,
                 config['eval_model'])
 
+            if avaliacao is None:
+                continue
+
             all_eval_results.append(final_eval_df)
 
             final_transform_df, transform_tools_usage_info = _eval_transformation_agent(
                 dataset, openai_api_key, langsmith_api_key, langsmith_project,
                 transform_expectations, dataset_config, run_id,
                 config['transform_model'], avaliacao)
+
+            if final_transform_df is None:
+                continue
+
             all_transform_results.append(final_transform_df)
             all_transform_agent_tool_usage_results.append(
                 transform_tools_usage_info)
@@ -137,7 +144,8 @@ def _eval_transformation_agent(
     run_id: str,
     model: str,
     avaliacao: str,
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    max_tries: int = 3
+) -> Tuple[Optional[pd.DataFrame], Optional[pd.DataFrame]]:
     """
     Avalia o agente de transformação retornando seus resultados
     """
@@ -151,8 +159,24 @@ def _eval_transformation_agent(
         qt_maxima_supersteps=dataset_config.transform_agent_max_supersteps,
         model=model)
 
-    dados_transformados, tool_history = agent.get_base_transformada(
-        transform_agent_inputs)
+    tries = 0
+    dados_transformados = None
+    tool_history = None
+    while tries < max_tries:
+        try:
+
+            dados_transformados, tool_history = agent.get_base_transformada(
+                transform_agent_inputs)
+            break
+        except Exception as e:
+            print(
+                f"[WARNING] Erro ao gerar transformação! Tentando mais uma vez..."
+            )
+            tries += 1
+
+    if dados_transformados is None and tool_history is None:
+        print("[WARNING] Avaliação continua nula! Pulando iteração!")
+        return None, None
 
     transform_verifications_result_df = expectations_verifier.get_transform_agent_verification_results(
         dados_transformados, tool_history.current_column_names,
@@ -173,15 +197,15 @@ def _eval_transformation_agent(
 
 
 def _eval_evaluation_agent(
-    dataset: pd.DataFrame,
-    openai_api_key: str,
-    langsmith_api_key: str,
-    langsmith_project: str,
-    eval_expectations: expectations_structs.EvalAgentExpectations,
-    dataset_config: DatasetConfig,
-    run_id: str,
-    model: str,
-) -> Tuple[str, pd.DataFrame]:
+        dataset: pd.DataFrame,
+        openai_api_key: str,
+        langsmith_api_key: str,
+        langsmith_project: str,
+        eval_expectations: expectations_structs.EvalAgentExpectations,
+        dataset_config: DatasetConfig,
+        run_id: str,
+        model: str,
+        max_tries: int = 3) -> Tuple[Optional[str], Optional[pd.DataFrame]]:
     """
     Avalia o agente de avaliação retornando os resultados
     """
@@ -197,7 +221,21 @@ def _eval_evaluation_agent(
         qt_maxima_supersteps=dataset_config.eval_agent_max_supersteps,
         prefered_language=dataset_config.prefered_language,
         model=model)
-    avaliacao = agent.get_avaliacao(eval_inputs)
+
+    tries = 0
+    avaliacao = None
+    while tries < max_tries:
+        try:
+            avaliacao = agent.get_avaliacao(eval_inputs)
+            break
+        except Exception as e:
+            print(
+                f"[WARNING] Erro ao gerar avaliação! Tentando mais uma vez...")
+            tries += 1
+
+    if avaliacao is None:
+        print("[WARNING] Avaliação continua nula! Pulando iteração!")
+        return None, None
 
     eval_verifications_result_df = expectations_verifier.get_eval_agent_verification_results(
         eval_expectations,

@@ -148,7 +148,7 @@ def _eval_transformation_agent(
         langsmith_api_key=langsmith_api_key,
         langsmith_project=langsmith_project,
         qt_max_iteracoes_agente=dataset_config.transform_agent_max_its,
-        qt_maxima_supersteps=dataset_config.eval_agent_max_supersteps,
+        qt_maxima_supersteps=dataset_config.transform_agent_max_supersteps,
         model=model)
 
     dados_transformados, tool_history = agent.get_base_transformada(

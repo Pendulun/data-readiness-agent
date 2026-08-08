@@ -146,7 +146,8 @@ def detect_outliers(col_name: str, runtime: ToolRuntime) -> dict:
     col = df[col_name]
 
     # Verifica se a coluna é numérica
-    if not pd.api.types.is_numeric_dtype(col):
+    if (not pd.api.types.is_numeric_dtype(col)
+        ) or pd.api.types.is_bool_dtype(values):
         return {
             "message": "A coluna não é numérica. Não é possível aplicar IQR."
         }

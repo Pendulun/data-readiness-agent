@@ -1,0 +1,358 @@
+tool_id,tool_name,sucess,args,run_id
+3,get_cols_names,True,{},1
+4,has_nulls,True,{'column': 'Type 2'},1
+15,fill_col_na,True,"{'column': 'Type 2', 'fill_value': 'Unknown'}",1
+6,get_column_type,True,{'column': 'Mean score'},1
+6,get_column_type,True,{'column': 'IMDB score'},1
+6,get_column_type,True,{'column': 'IMDB-Mean'},1
+7,get_col_unique,True,{'column': 'Mean score'},1
+7,get_col_unique,True,{'column': 'IMDB score'},1
+7,get_col_unique,True,{'column': 'IMDB-Mean'},1
+8,replace_substring,True,"{'column': 'Mean score', 'old_substring': ',', 'new_substring': '.'}",1
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",1
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",1
+13,convert_column_to_float,True,{'column': 'Mean score'},1
+13,convert_column_to_float,True,{'column': 'IMDB score'},1
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},1
+15,fill_col_na,True,"{'column': 'Friend Who chose it', 'fill_value': 1}",2
+15,fill_col_na,True,"{'column': 'Did Friend 5 sleep', 'fill_value': 0}",2
+15,fill_col_na,True,"{'column': 'Friend 2 score', 'fill_value': 4}",2
+15,fill_col_na,True,"{'column': 'Friend 5 score', 'fill_value': 9}",2
+15,fill_col_na,True,"{'column': 'Friend 7 score', 'fill_value': 9}",2
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 9}",2
+13,convert_column_to_float,False,{'column': 'IMDB score'},2
+13,convert_column_to_float,True,{'column': 'IMDB score'},2
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},2
+13,convert_column_to_float,True,{'column': 'Mean score'},2
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",2
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",2
+8,replace_substring,True,"{'column': 'Mean score', 'old_substring': ',', 'new_substring': '.'}",2
+15,fill_col_na,True,"{'column': 'Did Friend 5 sleep', 'fill_value': 0}",3
+15,fill_col_na,True,"{'column': 'Friend 2 score', 'fill_value': 0}",3
+15,fill_col_na,True,"{'column': 'Friend 5 score', 'fill_value': 0}",3
+15,fill_col_na,True,"{'column': 'Friend 7 score', 'fill_value': 0}",3
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 0}",3
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",3
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",3
+13,convert_column_to_float,True,{'column': 'IMDB score'},3
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},3
+13,convert_column_to_float,False,{'column': 'IMDB score'},4
+13,convert_column_to_float,True,{'column': 'IMDB score'},4
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",4
+13,convert_column_to_float,False,{'column': 'Mean score'},5
+13,convert_column_to_float,True,{'column': 'Mean score'},5
+13,convert_column_to_float,True,{'column': 'IMDB score'},5
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},5
+8,replace_substring,True,"{'column': 'Mean score', 'old_substring': ',', 'new_substring': '.'}",5
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",5
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",5
+15,fill_col_na,True,"{'column': 'Friend 2 score', 'fill_value': 0}",5
+15,fill_col_na,True,"{'column': 'Friend 5 score', 'fill_value': 0}",5
+15,fill_col_na,True,"{'column': 'Friend 7 score', 'fill_value': 0}",5
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 0}",5
+3,get_cols_names,True,{},6
+4,has_nulls,True,{'column': 'Friend 2 score'},6
+4,has_nulls,True,{'column': 'Friend 5 score'},6
+4,has_nulls,True,{'column': 'Friend 7 score'},6
+4,has_nulls,True,{'column': 'Friend 8 score'},6
+6,get_column_type,True,{'column': 'Mean score'},6
+6,get_column_type,True,{'column': 'IMDB score'},6
+6,get_column_type,True,{'column': 'IMDB-Mean'},6
+15,fill_col_na,True,"{'column': 'Friend 2 score', 'fill_value': 0}",6
+15,fill_col_na,True,"{'column': 'Friend 5 score', 'fill_value': 0}",6
+15,fill_col_na,True,"{'column': 'Friend 7 score', 'fill_value': 0}",6
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 0}",6
+13,convert_column_to_float,True,{'column': 'Mean score'},6
+13,convert_column_to_float,True,{'column': 'IMDB score'},6
+13,convert_column_to_float,False,{'column': 'IMDB-Mean'},6
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},6
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",6
+3,get_cols_names,True,{},7
+13,convert_column_to_float,True,{'column': 'Friend Who chose it'},7
+13,convert_column_to_float,True,{'column': 'Friend 2 score'},7
+13,convert_column_to_float,True,{'column': 'Friend 5 score'},7
+13,convert_column_to_float,True,{'column': 'Friend 7 score'},7
+13,convert_column_to_float,True,{'column': 'Friend 8 score'},7
+13,convert_column_to_float,True,{'column': 'IMDB score'},7
+13,convert_column_to_float,False,{'column': 'IMDB-Mean'},7
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},7
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",7
+15,fill_col_na,True,"{'column': 'Friend 5 score', 'fill_value': 6.0}",8
+15,fill_col_na,True,"{'column': 'Friend 7 score', 'fill_value': 6.0}",8
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 6.0}",8
+13,convert_column_to_float,True,{'column': 'Mean score'},8
+13,convert_column_to_float,True,{'column': 'IMDB score'},8
+13,convert_column_to_float,False,{'column': 'IMDB-Mean'},8
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},8
+13,convert_column_to_float,True,{'column': 'Mean score'},8
+13,convert_column_to_float,True,{'column': 'IMDB score'},8
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",8
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},8
+9,drop_column,True,{'column': 'ID'},8
+15,fill_col_na,True,"{'column': 'Friend 7 score', 'fill_value': 0}",9
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 0}",9
+13,convert_column_to_float,True,{'column': 'Mean score'},9
+13,convert_column_to_float,True,{'column': 'IMDB score'},9
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},9
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",9
+9,drop_column,True,{'column': 'Friend 2 score'},10
+9,drop_column,True,{'column': 'Friend 5 score'},10
+9,drop_column,True,{'column': 'Friend 7 score'},10
+9,drop_column,True,{'column': 'Friend 8 score'},10
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 0}",11
+13,convert_column_to_float,True,{'column': 'Mean score'},12
+13,convert_column_to_float,True,{'column': 'IMDB score'},12
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},12
+13,convert_column_to_float,True,{'column': 'Friend 5 score'},12
+13,convert_column_to_float,True,{'column': 'Friend 2 score'},12
+13,convert_column_to_float,True,{'column': 'Friend 7 score'},12
+13,convert_column_to_float,True,{'column': 'Friend 8 score'},12
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",12
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': '""', 'new_substring': ''}",13
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",13
+13,convert_column_to_float,True,{'column': 'IMDB score'},13
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},13
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},13
+9,drop_column,True,{'column': 'ID'},13
+9,drop_column,True,{'column': 'Movie'},13
+10,map_col_values,True,"{'column': 'Friend Who chose it', 'mapping': {'1.0': '1', '2.0': '2', '3.0': '3', '4.0': '4', '5.0': '5', '6.0': '6', '7.0': '7', '8.0': '8'}}",13
+10,map_col_values,True,"{'column': 'Type 1', 'mapping': {'Action': 0, 'Drama': 1, 'Horror': 2, 'Comedy': 3, 'Thriller': 4, 'Romance': 5, 'Sci-Fi': 6, 'Fantasy': 7, 'Adventure': 8, 'Mystery': 9, 'Documentary': 10, 'Animation': 11, 'Family': 12, 'Biography': 13, 'History': 14, 'Crime': 15, 'Musical': 16, 'War': 17, 'Western': 18}}",13
+10,map_col_values,True,"{'column': 'Type 2', 'mapping': {'Action': 0, 'Drama': 1, 'Horror': 2, 'Comedy': 3, 'Thriller': 4, 'Romance': 5, 'Sci-Fi': 6, 'Fantasy': 7, 'Adventure': 8, 'Mystery': 9, 'Documentary': 10, 'Animation': 11, 'Family': 12, 'Biography': 13, 'History': 14, 'Crime': 15, 'Musical': 16, 'War': 17, 'Western': 18}}",13
+15,fill_col_na,True,"{'column': 'Did Friend 5 sleep', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'Friend 2 score', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'Friend 5 score', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'Friend 7 score', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'Mean score', 'fill_value': 0}",13
+15,fill_col_na,True,"{'column': 'Duration (minutes)', 'fill_value': 0}",13
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ' ', 'new_substring': ''}",14
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",14
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",14
+13,convert_column_to_float,True,{'column': 'IMDB score'},14
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},14
+14,convert_column_to_int,True,{'column': 'Did Friend 5 sleep'},14
+14,convert_column_to_int,True,{'column': 'imputed_Did Friend 5 sleep'},14
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},14
+15,fill_col_na,True,"{'column': 'Mean score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Friend 2 score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Friend 5 score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Friend 7 score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Friend Who chose it', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Animation', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Duration (minutes)', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Year', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Type 1', 'fill_value': 'Unknown'}",14
+15,fill_col_na,True,"{'column': 'Type 2', 'fill_value': 'Unknown'}",14
+15,fill_col_na,True,"{'column': 'Movie', 'fill_value': 'Unknown'}",14
+15,fill_col_na,True,"{'column': 'Origin Country', 'fill_value': 'Unknown'}",14
+15,fill_col_na,True,"{'column': 'Friend 2 score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Friend 5 score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Friend 7 score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Friend 8 score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'Mean score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'IMDB score', 'fill_value': 0}",14
+15,fill_col_na,True,"{'column': 'IMDB-Mean', 'fill_value': 0}",14
+9,drop_column,True,{'column': 'imputed_Did Friend 5 sleep'},15
+9,drop_column,False,{'column': 'imputed_Friend 5 score'},15
+9,drop_column,False,{'column': 'imputed_Friend 2 score'},15
+9,drop_column,True,{'column': 'imputed_Friend Who chose it'},15
+9,drop_column,True,{'column': 'imputed_Type 2'},15
+9,drop_column,True,{'column': 'imputed_Friend 7 score'},15
+9,drop_column,True,{'column': 'imputed_Friend 8 score'},15
+9,drop_column,False,{'column': 'imputed_Friend 2 score'},15
+9,drop_column,False,{'column': 'imputed_Friend 5 score'},15
+9,drop_column,False,{'column': 'imputed_Friend 7 score'},15
+9,drop_column,False,{'column': 'imputed_Friend 8 score'},15
+9,drop_column,False,{'column': 'imputed_Friend Who chose it'},15
+9,drop_column,False,{'column': 'imputed_Type 2'},15
+9,drop_column,False,{'column': 'imputed_Did Friend 5 sleep'},15
+9,drop_column,False,{'column': 'imputed_Friend 2 score'},15
+9,drop_column,False,{'column': 'imputed_Friend 5 score'},15
+9,drop_column,False,{'column': 'imputed_Friend 7 score'},15
+9,drop_column,False,{'column': 'imputed_Friend 8 score'},15
+9,drop_column,False,{'column': 'imputed_Friend Who chose it'},15
+9,drop_column,False,{'column': 'imputed_Type 2'},15
+9,drop_column,False,{'column': 'imputed_Friend 2 score'},15
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",15
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",15
+13,convert_column_to_float,True,{'column': 'IMDB score'},15
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},15
+13,convert_column_to_float,True,{'column': 'Friend 5 score'},15
+13,convert_column_to_float,True,{'column': 'Friend 2 score'},15
+13,convert_column_to_float,True,{'column': 'Mean score'},15
+13,convert_column_to_float,True,{'column': 'Duration (minutes)'},15
+15,fill_col_na,True,"{'column': 'Friend 5 score', 'fill_value': 0}",15
+15,fill_col_na,True,"{'column': 'Friend 2 score', 'fill_value': 0}",15
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},15
+14,convert_column_to_int,True,{'column': 'Animation'},15
+10,map_col_values,True,"{'column': 'Animation', 'mapping': {'0': False, '1': True}}",15
+9,drop_column,True,{'column': 'Friend 5 score'},16
+9,drop_column,True,{'column': 'Mean score'},16
+9,drop_column,True,{'column': 'imputed_Friend 5 score'},16
+9,drop_column,True,{'column': 'ID'},16
+9,drop_column,True,{'column': 'Movie'},16
+9,drop_column,True,{'column': 'Type 1'},16
+9,drop_column,True,{'column': 'Type 2'},16
+9,drop_column,True,{'column': 'Origin Country'},16
+9,drop_column,True,{'column': 'Friend 2 score'},16
+9,drop_column,True,{'column': 'Friend 7 score'},16
+9,drop_column,True,{'column': 'Friend 8 score'},16
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",16
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},16
+13,convert_column_to_float,True,{'column': 'IMDB score'},16
+14,convert_column_to_int,True,{'column': 'Friend Who chose it'},16
+14,convert_column_to_int,True,{'column': 'Animation'},16
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},16
+15,fill_col_na,True,"{'column': 'Did Friend 5 sleep', 'fill_value': 0}",16
+10,map_col_values,True,"{'column': 'Did Friend 5 sleep', 'mapping': {'0.0': 0, '1.0': 1}}",16
+10,map_col_values,True,"{'column': 'Animation', 'mapping': {'0': 0, '1': 1}}",16
+10,map_col_values,True,"{'column': 'imputed_Type 2', 'mapping': {'false': 0, 'true': 1}}",16
+10,map_col_values,True,"{'column': 'imputed_Friend Who chose it', 'mapping': {'false': 0, 'true': 1}}",16
+10,map_col_values,False,"{'column': 'imputed_Did Friend 5 sleep', 'mapping': {'false': 0, 'true': 1}}",16
+10,map_col_values,True,"{'column': 'imputed_Friend 2 score', 'mapping': {'false': 0, 'true': 1}}",16
+10,map_col_values,True,"{'column': 'imputed_Friend 7 score', 'mapping': {'false': 0, 'true': 1}}",16
+10,map_col_values,True,"{'column': 'imputed_Friend 8 score', 'mapping': {'false': 0, 'true': 1}}",16
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",17
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",17
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},17
+13,convert_column_to_float,True,{'column': 'IMDB score'},17
+7,get_col_unique,True,{'column': 'IMDB score'},17
+7,get_col_unique,True,{'column': 'imputed_Did Friend 5 sleep'},17
+7,get_col_unique,True,{'column': 'Friend Who chose it'},17
+7,get_col_unique,True,{'column': 'imputed_Did Friend 5 sleep'},17
+7,get_col_unique,True,{'column': 'IMDB_minus_Mean_check'},17
+22,subtract_cols,True,"{'first_col': 'IMDB score', 'second_col': 'Mean score', 'new_col_name': 'IMDB_minus_Mean_check'}",17
+6,get_column_type,True,{'column': 'IMDB-Mean'},17
+6,get_column_type,True,{'column': 'IMDB score'},17
+6,get_column_type,True,{'column': 'Did Friend 5 sleep'},17
+6,get_column_type,True,{'column': 'Friend Who chose it'},17
+14,convert_column_to_int,True,{'column': 'Did Friend 5 sleep'},17
+14,convert_column_to_int,True,{'column': 'Friend Who chose it'},17
+14,convert_column_to_int,True,{'column': 'Did Friend 5 sleep'},18
+13,convert_column_to_float,True,{'column': 'IMDB score'},18
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},18
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},18
+10,map_col_values,True,"{'column': 'Did Friend 5 sleep', 'mapping': {'1': 1, '0': 0}}",18
+22,subtract_cols,True,"{'first_col': 'Mean score', 'second_col': 'IMDB score', 'new_col_name': 'diff_Mean_IMDB'}",18
+23,sum_cols,True,"{'first_col': 'imputed_Type 2', 'second_col': 'imputed_Friend Who chose it', 'new_col_name': 'num_imputed'}",18
+23,sum_cols,False,"{'first_col': 'num_imputed', 'second_col': 'imputed_Did Friend 5 sleep', 'new_col_name': 'num_imputed'}",18
+23,sum_cols,False,"{'first_col': 'num_imputed', 'second_col': 'imputed_Friend 2 score', 'new_col_name': 'num_imputed'}",18
+23,sum_cols,False,"{'first_col': 'num_imputed', 'second_col': 'imputed_Friend 5 score', 'new_col_name': 'num_imputed'}",18
+23,sum_cols,False,"{'first_col': 'num_imputed', 'second_col': 'imputed_Friend 7 score', 'new_col_name': 'num_imputed'}",18
+23,sum_cols,False,"{'first_col': 'num_imputed', 'second_col': 'imputed_Friend 8 score', 'new_col_name': 'num_imputed'}",18
+9,drop_column,True,{'column': 'ID'},18
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",19
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",19
+13,convert_column_to_float,True,{'column': 'IMDB score'},19
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},19
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},19
+14,convert_column_to_int,True,{'column': 'Friend Who chose it'},19
+9,drop_column,True,{'column': 'ID'},19
+9,drop_column,True,{'column': 'Movie'},19
+2,get_n_cols,True,{},19
+3,get_cols_names,True,{},19
+6,get_column_type,True,{'column': 'IMDB score'},19
+6,get_column_type,True,{'column': 'IMDB-Mean'},19
+6,get_column_type,True,{'column': 'Watch Date'},19
+6,get_column_type,True,{'column': 'Friend Who chose it'},19
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ',', 'new_substring': '.'}",20
+8,replace_substring,True,"{'column': 'IMDB score', 'old_substring': ' ', 'new_substring': ''}",20
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ',', 'new_substring': '.'}",20
+8,replace_substring,True,"{'column': 'IMDB-Mean', 'old_substring': ' ', 'new_substring': ''}",20
+13,convert_column_to_float,True,{'column': 'IMDB score'},20
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},20
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},20
+14,convert_column_to_int,True,{'column': 'Friend Who chose it'},20
+14,convert_column_to_int,True,{'column': 'Did Friend 5 sleep'},20
+14,convert_column_to_int,True,{'column': 'Animation'},20
+10,map_col_values,True,"{'column': 'Did Friend 5 sleep', 'mapping': {'0': False, '1': True}}",20
+10,map_col_values,True,"{'column': 'Animation', 'mapping': {'0': False, '1': True}}",20
+10,map_col_values,True,"{'column': 'Did Friend 5 sleep', 'mapping': {'0': False, '1': True}}",20
+9,drop_column,True,{'column': 'ID'},20
+9,drop_column,True,{'column': 'imputed_Type 2'},20
+9,drop_column,True,{'column': 'imputed_Friend Who chose it'},20
+9,drop_column,True,{'column': 'imputed_Did Friend 5 sleep'},20
+9,drop_column,True,{'column': 'imputed_Friend 2 score'},20
+9,drop_column,True,{'column': 'imputed_Friend 5 score'},20
+9,drop_column,True,{'column': 'imputed_Friend 7 score'},20
+9,drop_column,True,{'column': 'imputed_Friend 8 score'},20
+2,get_n_cols,True,{},20
+3,get_cols_names,True,{},20
+6,get_column_type,True,{'column': 'IMDB score'},20
+6,get_column_type,True,{'column': 'IMDB-Mean'},20
+6,get_column_type,True,{'column': 'Watch Date'},20
+6,get_column_type,True,{'column': 'Did Friend 5 sleep'},20
+6,get_column_type,True,{'column': 'Did Friend 5 sleep'},20
+7,get_col_unique,True,{'column': 'Did Friend 5 sleep'},20
+7,get_col_unique,True,{'column': 'Did Friend 5 sleep'},20
+13,convert_column_to_float,True,{'column': 'IMDB score'},21
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},21
+7,get_col_unique,True,{'column': 'Origin Country'},21
+10,map_col_values,True,"{'column': 'Origin Country', 'mapping': {'Brazil': 0, 'USA': 1, 'Spain': 2, 'France': 3, 'South Korea': 4, 'Japan': 5, 'Canada': 6, 'United Kingdom': 7, 'India': 8, 'Germany': 9, 'Australia': 10}}",21
+6,get_column_type,True,{'column': 'Did Friend 5 sleep'},21
+14,convert_column_to_int,True,{'column': 'Did Friend 5 sleep'},21
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},22
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},22
+7,get_col_unique,True,{'column': 'Origin Country'},22
+7,get_col_unique,True,{'column': 'Type 1'},22
+7,get_col_unique,True,{'column': 'Type 2'},22
+10,map_col_values,True,"{'column': 'Origin Country', 'mapping': {'Australia': 0, 'Brazil': 1, 'Canada': 2, 'France': 3, 'Germany': 4, 'India': 5, 'Japan': 6, 'South Korea': 7, 'Spain': 8, 'United Kingdom': 9, 'USA': 10}}",22
+10,map_col_values,True,"{'column': 'Type 1', 'mapping': {'Action': 0, 'Adventure': 1, 'Animation': 2, 'Comedy': 3, 'Crime': 4, 'Drama': 5, 'Family': 6, 'Fantasy': 7, 'Horror': 8, 'Mystery': 9, 'Romance': 10, 'Sci-Fi': 11, 'Science Fiction': 12, 'Suspense': 13, 'Terror': 14, 'Thriller': 15, 'War': 16, 'Western': 17}}",22
+10,map_col_values,True,"{'column': 'Type 2', 'mapping': {'Action': 0, 'Adventure': 1, 'Animation': 2, 'Comedy': 3, 'Crime': 4, 'Documentary': 5, 'Disaster': 6, 'Drama': 7, 'Experimental': 8, 'Family': 9, 'Fiction': 10, 'Fantasy': 11, 'Martial Arts': 12, 'Musical': 13, 'Mystery': 14, 'Police Fiction': 15, 'Romance': 16, 'Science Fiction': 17, 'Suspense': 18, 'Thriller': 19, 'Unknown': 20, 'War': 21, '}': 22}}",22
+6,get_column_type,True,{'column': 'IMDB-Mean'},22
+6,get_column_type,True,{'column': 'Watch Date'},22
+6,get_column_type,True,{'column': 'Origin Country'},22
+6,get_column_type,True,{'column': 'Type 1'},22
+6,get_column_type,True,{'column': 'Type 2'},22
+10,map_col_values,True,"{'column': 'Did Friend 5 sleep', 'mapping': {'1': True, '0': False}}",23
+10,map_col_values,True,"{'column': 'Origin Country', 'mapping': {'Brazil': 0, 'USA': 1, 'Spain': 2, 'France': 3, 'South Korea': 4, 'Japan': 5, 'Canada': 6, 'United Kingdom': 7, 'India': 8, 'Germany': 9, 'Australia': 10}}",23
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},23
+7,get_col_unique,True,{'column': 'Origin Country'},23
+9,drop_column,True,{'column': 'Did Friend 5 sleep'},24
+7,get_col_unique,True,{'column': 'Origin Country'},24
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},24
+3,get_cols_names,True,{},24
+10,map_col_values,True,"{'column': 'Origin Country', 'mapping': {'Brazil': 0, 'USA': 1, 'Spain': 2, 'France': 3, 'South Korea': 4, 'Japan': 5, 'Canada': 6, 'United Kingdom': 7, 'India': 8, 'Germany': 9, 'Australia': 10}}",24
+9,drop_column,True,{'column': 'Did Friend 5 sleep'},25
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},25
+9,drop_column,True,{'column': 'Did Friend 5 sleep'},26
+9,drop_column,True,{'column': 'Did Friend 5 sleep'},27
+9,drop_column,True,{'column': 'Movie'},27
+9,drop_column,True,{'column': 'Watch_Date'},27
+9,drop_column,True,{'column': 'ID'},27
+9,drop_column,False,{'column': 'Watch Date'},27
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},27
+16,rename_column,True,"{'column': 'Watch Date', 'new_column': 'Watch_Date'}",27
+16,rename_column,True,"{'column': 'Animation', 'new_column': 'Animation_bool'}",27
+16,rename_column,True,"{'column': 'Origin Country', 'new_column': 'Origin_Country'}",27
+16,rename_column,True,"{'column': 'Type 1', 'new_column': 'Type_1'}",27
+16,rename_column,True,"{'column': 'Type 2', 'new_column': 'Type_2'}",27
+10,map_col_values,True,"{'column': 'Origin Country', 'mapping': {'Brazil': 1, 'USA': 2, 'Spain': 3, 'France': 4, 'Germany': 5, 'Japan': 6, 'Italy': 7, 'UK': 8, 'Canada': 9, 'Mexico': 10, 'Argentina': 11}}",27
+10,map_col_values,True,"{'column': 'Animation', 'mapping': {'0': False, '1': True}}",27
+10,map_col_values,True,"{'column': 'Type 1', 'mapping': {'Action': 1, 'Drama': 2, 'Horror': 3}}",27
+10,map_col_values,True,"{'column': 'Type 2', 'mapping': {'Crime': 1, 'Horror': 2, 'Romance': 3, 'Thriller': 4, 'Comedy': 5}}",27
+13,convert_column_to_float,True,{'column': 'Friend Who chose it'},27
+13,convert_column_to_float,True,{'column': 'Friend 2 score'},27
+13,convert_column_to_float,True,{'column': 'Friend 5 score'},27
+13,convert_column_to_float,True,{'column': 'Friend 7 score'},27
+13,convert_column_to_float,True,{'column': 'Friend 8 score'},27
+13,convert_column_to_float,True,{'column': 'Mean score'},27
+13,convert_column_to_float,True,{'column': 'IMDB score'},27
+13,convert_column_to_float,True,{'column': 'IMDB-Mean'},27
+19,divide_value,True,"{'column': 'Animation', 'value': 1}",27
+19,divide_value,True,"{'column': 'Animation', 'value': 0.0}",27
+19,divide_value,True,"{'column': 'Duration (minutes)', 'value': 60}",27
+14,convert_column_to_int,True,{'column': 'Year'},27
+14,convert_column_to_int,False,{'column': 'Type 1'},27
+14,convert_column_to_int,False,{'column': 'Type 2'},27
+15,fill_col_na,True,"{'column': 'Friend Who chose it', 'fill_value': 0}",27
+2,get_n_cols,True,{},27
+9,drop_column,True,{'column': 'Did Friend 5 sleep'},28
+12,convert_column_to_datetime,True,{'column': 'Watch Date'},28
+13,convert_column_to_float,True,{'column': 'IMDB score'},28
+21,power_value,True,"{'column': 'IMDB score', 'value': 0.5}",28
+9,drop_column,True,{'column': 'Did Friend 5 sleep'},29
+15,fill_col_na,True,"{'column': 'Did Friend 5 sleep', 'fill_value': 'Unknown'}",30
+9,drop_column,True,{'column': 'Did Friend 5 sleep'},31
+8,replace_substring,True,"{'column': 'Did Friend 5 sleep', 'old_substring': 'Unknown', 'new_substring': ''}",32

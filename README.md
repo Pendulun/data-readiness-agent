@@ -8,6 +8,11 @@ This system analyzes and transforms a structured dataset to make it more suitabl
 
 The project was developed using `langchain` as a framework for agent management and `streamlit` to create the interface and hosting. Internally, the OpenAI `gpt-5-nano` model is used in both agents. This model is the cheapest OpenAI model currently available (07/2026). Therefore, the user needs to provide their own access key to the OpenAI API. The cost of processing a dataset depends on its size and the number of problems found by the system. In tests conducted with a Kaggle database containing 5500+ rows, 8 columns, and a small number of issues handled, the costs were approximately 2 to 4 cents per process.
 
+## Experiments
+
+See it at [this notebook](./notebooks/results-EN.ipynb)
+
+
 ## Learnings
 
 1. **Deterministic functions probably don't need to be tools.** Unless it's expensive, it might make sense to compute it once at the beginning before invoking the agent and reporting its result in an initial State.

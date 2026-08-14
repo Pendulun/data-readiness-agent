@@ -8,6 +8,10 @@ O sistema desenvolvido analisa e transforma uma base estruturada de forma que el
 
 O projeto foi desenvolvido usando `langchain` como framework para gerenciamento dos agentes e do `streamlit` para criar a interface e publicação. Internamente, é usado o modelo `gpt-5-nano`da OpenAI em ambos os agentes. Esse modelo é o modelo mais barato da OpenAI disponível atualmente (07/2026). Dessa forma, é necessário que o usuário informe uma chave própria de acesso à API da OpenAI. O custo de processar uma base depende do seu tamanho e da quantidade de problemas encontrados pelo sistema. Em testes realizados com uma base do Kaggle com 5500+ linhas, 8 colunas e uma quantidade pequena de problemas tratados, os custos ficaram em cerca de 2 a 4 centavos de dólar por processamento.
 
+## Experimentos
+
+Veja [nesse notebook](./notebooks/results-PT-BR.ipynb)
+
 ## Aprendizados
 
 1. **Funções determinísticas provavelmente não precisam ser tools.** A não ser que ela seja cara, pode fazer sentido computar ela de uma vez no início antes de invocar o agente e informar o seu resultado em um State inicial.

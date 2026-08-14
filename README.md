@@ -2,6 +2,8 @@
 
 🇧🇷 [Leia em Português](README.pt-BR.md)
 
+![System overview](system_overview.png)
+
 This system analyzes and transforms a structured dataset to make it more suitable for a classic machine learning modeling task (regression or classification). To do this, a first agent evaluates the dataset and generates points for improvement, while a second agent applies transformations based on the first agent's evaluation. The agents area applied sequentially, with the first generating the entire analysis and the second consuming its output to decide how to transform the dataset. Both agents have access to separate sets of tools that retrieve information or act directly on the dataset.
 
 The project was developed using `langchain` as a framework for agent management and `streamlit` to create the interface and hosting. Internally, the OpenAI `gpt-5-nano` model is used in both agents. This model is the cheapest OpenAI model currently available (07/2026). Therefore, the user needs to provide their own access key to the OpenAI API. The cost of processing a dataset depends on its size and the number of problems found by the system. In tests conducted with a Kaggle database containing 5500+ rows, 8 columns, and a small number of issues handled, the costs were approximately 2 to 4 cents per process.

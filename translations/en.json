@@ -3,7 +3,7 @@
         "main_header":"Data Readiness Agent", 
         "info1":"Specify the database, select the target column, and enter your OPENAI API KEY to evaluate the database!",
         "info2": "If you're hesitant to share your OpenAI key, feel free to check out the code for this project (link below).",
-        "info3": "The model used internally on both stages is the gpt-5-nano by default. It is currently the cheapest of all (July 2026).",
+        "info3": "The default models used in each step were defined after several experiments. The results of these experiments can be viewed by accessing the project repository.",
         "info4": "The cost of evaluating the database depends on the size of the database and the parameters you define.",
         "contact": "Created by "
     },

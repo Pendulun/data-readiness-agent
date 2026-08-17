@@ -159,7 +159,7 @@ def display_sidebar(translation: dict) -> SidebarInputs:
             eval_model = st.selectbox(
                 label=translation['eval_model_selectbox_label'],
                 options=config.ALLOWED_MODELS,
-                index=0,
+                index=config.ALLOWED_MODELS.index(config.DEFAULT_EVAL_MODEL),
                 persist_state='session',
                 key="base_eval_model",
                 disabled=uploaded_file is None,
@@ -167,7 +167,8 @@ def display_sidebar(translation: dict) -> SidebarInputs:
             transform_model = st.selectbox(
                 label=translation['transform_model_selectbox_label'],
                 options=config.ALLOWED_MODELS,
-                index=0,
+                index=config.ALLOWED_MODELS.index(
+                    config.DEFAULT_TRANSFORM_MODEL),
                 persist_state='session',
                 key="base_transform_model",
                 disabled=uploaded_file is None,
